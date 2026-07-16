@@ -9,37 +9,44 @@ const modes = [
   {
     cmd: "passkey",
     title: "Passkey",
-    tag: "Recommended",
+    tag: "Default",
     icon: "passkey" as const,
-    body: "Device-bound. Face ID, Touch ID, or a hardware key. Phishing-resistant by design — your vault unlocks with you, not a string someone can steal.",
+    body: "Device-bound. Face ID, Touch ID, or a hardware key. Phishing-resistant — your vault unlocks with you.",
   },
   {
     cmd: "password",
     title: "Password",
     tag: "Familiar",
     icon: "lock" as const,
-    body: "You choose the secret. Classic encryption when you want something portable across machines without a platform passkey.",
+    body: "You choose the secret. Portable encryption without a platform passkey.",
   },
   {
     cmd: "keyphrase",
-    title: "Keyphrase",
-    tag: "Recovery-grade",
+    title: "24-word keyphrase",
+    tag: "Recovery",
     icon: "words" as const,
-    body: "A human-readable phrase you write down once. Built for restore-from-paper and air-gapped habits miners already trust.",
+    body: "A full BIP39 twenty-four word phrase, shown once. Write it offline. The node will not repeat it.",
   },
   {
     cmd: "combo",
     title: "Combo",
     tag: "Stacked",
     icon: "layers" as const,
-    body: "Password → passkey → keyphrase. Layered unlock: something you know, something you are, something you can recover. Maximum ceremony, maximum control.",
+    body: "Password → passkey → keyphrase. Layered unlock for operators who want stacked ceremony.",
+  },
+  {
+    cmd: "master",
+    title: "Master",
+    tag: "Maximum",
+    icon: "layers" as const,
+    body: "Password + 24 words + randomized master key file. All three required. One factor alone unlocks nothing.",
   },
   {
     cmd: "nocrypt",
     title: "No crypt",
     tag: "Raw keys",
     icon: "key" as const,
-    body: "Just the keys. No envelope. For labs, throwaway nodes, and operators who already wrap secrets their own way — you own the risk.",
+    body: "Just the keys on disk (mode 0600). No envelope. Labs and throwaway nodes only.",
   },
 ];
 
@@ -145,9 +152,9 @@ export function Security() {
               the <ScrambleText text="lock." />
             </h2>
             <p className="section-body mt-6">
-              GRID does not decide how your secrets sleep. You pick the envelope —
-              passkey, password, keyphrase, all three stacked, or raw keys with no
-              wrap at all. Same mesh. Your rules.
+              GRID does not decide how your secrets sleep. Passkey by default —
+              or password, twenty-four words, stacked combo, full master factors,
+              or raw keys. Same mesh. Your rules.
             </p>
           </div>
 
@@ -167,9 +174,9 @@ export function Security() {
                     <ScrambleText text="Passkey" />
                   </h3>
                   <p className="mt-3 max-w-md text-sm leading-relaxed text-white/50 sm:text-base">
-                    One command to live under device credentials. Or step down to
-                    password, keyphrase, combo, or no envelope — when the operator
-                    knows what they are doing.
+                    <span className="font-mono text-white/70">grid auth</span>{" "}
+                    lives under device credentials. Or step into master mode when
+                    you need a key this machine is not allowed to keep.
                   </p>
                 </div>
               </div>
@@ -180,6 +187,31 @@ export function Security() {
           </div>
         </div>
 
+        {/* The Master is Destroyed */}
+        <div
+          id="master-destruction"
+          className="mt-16 border border-white/20 bg-gradient-to-b from-white/[0.07] to-transparent px-6 py-12 sm:px-12"
+        >
+          <p className="text-[0.65rem] font-semibold tracking-[0.28em] text-white/50 uppercase">
+            Master destruction
+          </p>
+          <blockquote className="mt-6 max-w-3xl text-xl font-medium leading-snug tracking-tight text-white sm:text-2xl sm:leading-snug">
+            The master is born once and dies on the node.
+            <span className="mt-4 block text-base font-normal leading-relaxed text-white/55 sm:text-lg">
+              GRID never keeps a recoverable master key under its home directory.
+              In master mode you receive a randomized master key, a twenty-four
+              word phrase, and a password. After you type{" "}
+              <span className="font-mono text-white/80">DESTROY</span>, the master
+              is wiped from this machine. Unlock forever requires every factor —
+              password, phrase, and master key file. Knowing one is knowing
+              nothing.
+            </span>
+          </blockquote>
+          <p className="mt-8 font-mono text-[0.7rem] tracking-wide text-white/35">
+            grid auth master
+          </p>
+        </div>
+
         <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {modes.map((m) => (
             <article
@@ -188,7 +220,7 @@ export function Security() {
                 m.cmd === "passkey"
                   ? "border-white/30 bg-white/[0.05]"
                   : ""
-              } ${m.cmd === "combo" ? "sm:col-span-2 lg:col-span-2" : ""}`}
+              } ${m.cmd === "master" ? "border-white/25 sm:col-span-2 lg:col-span-2" : ""}`}
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex h-11 w-11 items-center justify-center border border-white/20 bg-black/40">
@@ -203,26 +235,33 @@ export function Security() {
                 <ScrambleText text={m.title} />
               </h3>
               <p className="mt-1 font-mono text-[0.7rem] tracking-wide text-white/40">
-                grid auth {m.cmd}
+                {m.cmd === "passkey"
+                  ? "grid auth  (default)"
+                  : `grid auth ${m.cmd}`}
               </p>
               <p className="mt-4 flex-1 text-sm leading-relaxed text-white/50">
                 {m.body}
               </p>
 
-              {m.cmd === "combo" && (
+              {m.cmd === "master" && (
                 <ol className="mt-6 flex flex-wrap items-center gap-2 border-t border-white/10 pt-5 text-[0.65rem] tracking-[0.12em] text-white/55 uppercase">
                   <li className="border border-white/20 px-2.5 py-1">Password</li>
                   <li className="text-white/25" aria-hidden>
-                    →
+                    +
                   </li>
-                  <li className="inline-flex items-center gap-1.5 border border-white/25 px-2.5 py-1 text-white">
-                    <PasskeyIcon className="h-3 w-3" />
-                    Passkey
+                  <li className="border border-white/20 px-2.5 py-1">24 words</li>
+                  <li className="text-white/25" aria-hidden>
+                    +
+                  </li>
+                  <li className="border border-white/25 px-2.5 py-1 text-white">
+                    Master key
                   </li>
                   <li className="text-white/25" aria-hidden>
                     →
                   </li>
-                  <li className="border border-white/20 px-2.5 py-1">Keyphrase</li>
+                  <li className="border border-white/40 px-2.5 py-1 text-white">
+                    DESTROY on node
+                  </li>
                 </ol>
               )}
             </article>
@@ -240,8 +279,8 @@ export function Security() {
               d: "Unlock happens on your machine. The mesh never sees the envelope.",
             },
             {
-              t: "Honest modes",
-              d: "Including nocrypt — for people who already have a better vault.",
+              t: "Master dies here",
+              d: "In master mode the node keeps no recoverable master — only encrypted shares.",
             },
           ].map((x) => (
             <div key={x.t}>
