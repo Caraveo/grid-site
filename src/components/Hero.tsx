@@ -1,3 +1,6 @@
+import { PhaseLabel } from "./PhaseLabel";
+import { ScrambleText } from "./ScrambleText";
+
 export function Hero() {
   return (
     <section
@@ -12,16 +15,15 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-48 horizon" />
 
       <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center text-center">
-        <p className="section-label animate-fade-up">
-          Phase 1 · Ignition
-        </p>
+        <PhaseLabel />
 
-        <h1 className="mt-6 animate-fade-up delay-1 text-[clamp(3.5rem,12vw,8.5rem)] font-semibold leading-[0.9] tracking-[-0.04em]">
+        <h1 className="mt-6 animate-fade-up delay-1 text-[clamp(3.5rem,12vw,8.5rem)] font-thin leading-[0.9] tracking-[0.32em]">
           GRID
         </h1>
 
         <p className="mt-6 max-w-xl animate-fade-up delay-2 text-lg text-white/70 sm:text-xl sm:leading-relaxed">
-          Run a node. Do real work. Earn GRID.
+          Run a node. Do real work. Earn{" "}
+          <ScrambleText text="GRID" className="text-white" />.
           <br className="hidden sm:block" />
           <span className="text-white/45">
             {" "}

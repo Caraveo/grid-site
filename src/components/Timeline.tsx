@@ -1,3 +1,5 @@
+import { ScrambleText } from "./ScrambleText";
+
 const phases = [
   {
     id: "0",
@@ -76,9 +78,9 @@ export function Timeline() {
           </div>
 
           <h2 className="section-title mt-8">
-            Mainnet path.
+            <ScrambleText text="Mainnet path." />
             <br />
-            No testnet economy.
+            No <ScrambleText text="testnet" /> economy.
           </h2>
           <p className="mx-auto mt-6 section-body text-center">
             Software is live. The token economy is Genesis Earn → open utility —
@@ -166,7 +168,7 @@ export function Timeline() {
                     </div>
 
                     <h3 className="mt-3 text-lg font-semibold tracking-tight">
-                      {phase.title}
+                      <ScrambleText text={phase.title} />
                     </h3>
                     <p className="mt-1 text-[0.7rem] tracking-[0.12em] text-white/45 uppercase">
                       {phase.tagline}

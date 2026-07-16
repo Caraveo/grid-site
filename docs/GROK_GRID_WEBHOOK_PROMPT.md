@@ -63,7 +63,7 @@ globe_region = "NA-W"
 
 # Optional overrides (env wins if you prefer env-only)
 # site_url and webhook secret better as env for secrets:
-# GRID_SITE_URL=https://your-gsite.vercel.app
+# GRID_SITE_URL=grid-site-ochre.vercel.app
 # GRID_WEBHOOK_SECRET=replace-with-a-runtime-secret
 ```
 
@@ -88,7 +88,7 @@ curl -s -X POST http://localhost:3000/api/mesh/ping \
   -d '{"nodeId":"node_demo1","label":"garage","class":"S","region":"NA-W","lat":37.7,"lng":-122.4}'
 ```
 
-Then open `http://localhost:3000/#nodes`.
+Then open `https://grid-site-ochre.vercel.app/#nodes`.
 
 ---
 

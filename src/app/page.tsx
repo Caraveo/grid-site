@@ -5,6 +5,7 @@ import { Network } from "@/components/Network";
 import { Nodes } from "@/components/Nodes";
 import { Miners } from "@/components/Miners";
 import { Wallets } from "@/components/Wallets";
+import { Security } from "@/components/Security";
 import { Timeline } from "@/components/Timeline";
 import { Download } from "@/components/Download";
 import { Footer } from "@/components/Footer";
@@ -21,6 +22,7 @@ export default function Home() {
         <Nodes />
         <Miners />
         <Wallets />
+        <Security />
         <Timeline />
         <Download />
       </main>

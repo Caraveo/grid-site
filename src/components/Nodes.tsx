@@ -7,6 +7,7 @@ import {
   shortId,
   type PublicNode,
 } from "@/lib/network";
+import { ScrambleText } from "./ScrambleText";
 
 type MeshResponse = {
   phase: string;
@@ -161,11 +162,13 @@ export function Nodes() {
       <div className="relative mx-auto max-w-7xl">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
-            <p className="section-label">The living mesh</p>
+            <p className="section-label">
+              <ScrambleText text="The living mesh" />
+            </p>
             <h2 className="section-title mt-5">
-              Ping the
+              <ScrambleText text="Ping" /> the
               <br />
-              planet.
+              <ScrambleText text="planet." />
             </h2>
             <p className="section-body mt-6">
               When a machine joins, the world answers with light — a presence.
@@ -219,7 +222,7 @@ export function Nodes() {
                 </span>
               </div>
               <h3 className="mt-4 text-2xl font-semibold tracking-tight">
-                {genesis.label}
+                <ScrambleText text={genesis.label} />
               </h3>
               <p className="mt-2 text-sm text-white/45">
                 The first light. Every pulse on this map begins here —

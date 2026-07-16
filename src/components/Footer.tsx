@@ -46,6 +46,11 @@ export function Footer() {
                   </a>
                 </li>
                 <li>
+                  <a href="#security" className="transition hover:text-white">
+                    Security
+                  </a>
+                </li>
+                <li>
                   <a href="#timeline" className="transition hover:text-white">
                     Phases
                   </a>

@@ -1,3 +1,5 @@
+import { ScrambleText } from "./ScrambleText";
+
 export function Miners() {
   return (
     <section
@@ -7,11 +9,13 @@ export function Miners() {
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-16 lg:grid-cols-2 lg:gap-24">
           <div>
-            <p className="section-label">For Miners</p>
+            <p className="section-label">
+              <ScrambleText text="For Miners" />
+            </p>
             <h2 className="section-title mt-5">
-              Keep mining.
+              Keep <ScrambleText text="mining." />
               <br />
-              Mine useful.
+              Mine <ScrambleText text="useful." />
             </h2>
             <p className="section-body mt-6">
               You already did the hard part — the iron, the power, the discipline.
@@ -60,7 +64,9 @@ export function Miners() {
 
         {/* Flow */}
         <div className="mt-24">
-          <p className="section-label text-center">How you join</p>
+          <p className="section-label text-center">
+            <ScrambleText text="How you join" />
+          </p>
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {[
               {
@@ -84,7 +90,7 @@ export function Miners() {
                   {s.step}
                 </div>
                 <h3 className="mt-4 text-xl font-semibold tracking-tight">
-                  {s.title}
+                  <ScrambleText text={s.title} />
                 </h3>
                 <p className="mx-auto mt-3 max-w-xs text-sm leading-relaxed text-white/50">
                   {s.body}

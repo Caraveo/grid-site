@@ -22,6 +22,8 @@ const platforms = [
 const CURL =
   "curl -fsSL https://raw.githubusercontent.com/Caraveo/grid/master/scripts/install.sh | bash";
 
+import { ScrambleText } from "./ScrambleText";
+
 export function Download() {
   return (
     <section
@@ -32,8 +34,12 @@ export function Download() {
 
       <div className="relative mx-auto max-w-7xl">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="section-label">Phase 1 · Install</p>
-          <h2 className="section-title mt-5">Get GRID</h2>
+          <p className="section-label">
+            <ScrambleText text="Phase 1 · Install" />
+          </p>
+          <h2 className="section-title mt-5">
+            Get <ScrambleText text="GRID" />
+          </h2>
           <p className="mx-auto mt-6 section-body text-center">
             One binary. Useful mining CLI. Install with curl, or build from
             source. Mainnet path only — no public testnet economy.
@@ -48,7 +54,7 @@ export function Download() {
                 Available now
               </p>
               <h3 className="mt-2 text-2xl font-semibold tracking-tight">
-                Install with curl
+                Install with <ScrambleText text="curl" />
               </h3>
               <p className="mt-2 max-w-md text-sm text-white/50">
                 Tries a prebuilt release when published; otherwise builds from
