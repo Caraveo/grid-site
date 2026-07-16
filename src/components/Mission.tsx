@@ -1,3 +1,5 @@
+import { ScrambleText } from "./ScrambleText";
+
 export function Mission() {
   return (
     <section
@@ -6,13 +8,15 @@ export function Mission() {
     >
       <div className="mx-auto grid max-w-7xl gap-16 lg:grid-cols-12 lg:gap-12">
         <div className="lg:col-span-5">
-          <p className="section-label">Mission</p>
+          <p className="section-label">
+            <ScrambleText text="Mission" />
+          </p>
           <h2 className="section-title mt-5">
-            Compute
+            <ScrambleText text="Compute" />
             <br />
             without
             <br />
-            walls.
+            <ScrambleText text="walls." />
           </h2>
         </div>
 
@@ -25,8 +29,12 @@ export function Mission() {
           <p className="section-body text-base sm:text-lg">
             GRID measures real contribution. Not puzzles that burn power to prove
             you burned power —{" "}
-            <span className="text-white">verified useful work</span>: AI jobs,
-            frames, simulation, and the latency-critical worlds still coming.
+            <ScrambleText
+              text="verified useful work"
+              className="text-white"
+            />
+            : AI jobs, frames, simulation, and the latency-critical worlds still
+            coming.
           </p>
 
           <div className="mt-4 grid gap-4 sm:grid-cols-3">
@@ -40,7 +48,7 @@ export function Mission() {
                   {item.k}
                 </span>
                 <h3 className="mt-3 text-sm font-semibold tracking-wide uppercase">
-                  {item.t}
+                  <ScrambleText text={item.t} />
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-white/50">
                   {item.d}

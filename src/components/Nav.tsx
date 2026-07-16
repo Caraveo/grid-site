@@ -9,6 +9,7 @@ const links = [
   { href: "#nodes", label: "Nodes" },
   { href: "#miners", label: "Miners" },
   { href: "#wallets", label: "Wallets" },
+  { href: "#security", label: "Security" },
   { href: "#timeline", label: "Phases" },
   { href: "#download", label: "Download" },
 ];

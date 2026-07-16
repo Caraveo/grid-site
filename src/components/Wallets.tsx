@@ -21,6 +21,8 @@ const surfaces = [
   },
 ];
 
+import { ScrambleText } from "./ScrambleText";
+
 export function Wallets() {
   return (
     <section
@@ -29,11 +31,13 @@ export function Wallets() {
     >
       <div className="mx-auto max-w-7xl">
         <div className="max-w-2xl">
-          <p className="section-label">Edge wallets</p>
+          <p className="section-label">
+            <ScrambleText text="Edge wallets" />
+          </p>
           <h2 className="section-title mt-5">
-            Keys at the edge.
+            <ScrambleText text="Keys" /> at the edge.
             <br />
-            Exit on Bitcoin.
+            Exit on <ScrambleText text="Bitcoin." />
           </h2>
           <p className="section-body mt-6">
             CLI first. Then software, mobile, web, and services — same identity
@@ -50,7 +54,7 @@ export function Wallets() {
             >
               <div className="flex items-baseline justify-between gap-2">
                 <h3 className="text-lg font-semibold tracking-tight">
-                  {s.title}
+                  <ScrambleText text={s.title} />
                 </h3>
                 <span className="font-mono text-[0.6rem] tracking-[0.14em] text-white/35 uppercase">
                   {s.phase}

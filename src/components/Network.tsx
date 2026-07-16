@@ -17,6 +17,8 @@ const pillars = [
   },
 ];
 
+import { ScrambleText } from "./ScrambleText";
+
 export function Network() {
   return (
     <section
@@ -28,11 +30,13 @@ export function Network() {
 
       <div className="relative mx-auto max-w-7xl">
         <div className="max-w-2xl">
-          <p className="section-label">The Network</p>
+          <p className="section-label">
+            <ScrambleText text="The Network" />
+          </p>
           <h2 className="section-title mt-5">
-            One fabric.
+            One <ScrambleText text="fabric." />
             <br />
-            Infinite edges.
+            Infinite <ScrambleText text="edges." />
           </h2>
           <p className="section-body mt-6">
             GRID abstracts millions of machines into a unified computational environment.
@@ -51,7 +55,7 @@ export function Network() {
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3 className="text-lg font-semibold tracking-tight sm:text-xl">
-                  {p.title}
+                  <ScrambleText text={p.title} />
                 </h3>
               </div>
               <p className="mt-4 max-w-md text-sm leading-relaxed text-white/50 sm:text-base">
