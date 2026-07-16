@@ -58,8 +58,11 @@ export function Download() {
               </h3>
               <p className="mt-2 max-w-md text-sm text-white/50">
                 Tries a prebuilt release when published; otherwise builds from
-                source with cargo and installs to{" "}
-                <span className="font-mono text-white/70">~/.local/bin</span>.
+                source with cargo. Installs to{" "}
+                <span className="font-mono text-white/70">~/.local/bin</span>,
+                verifies Phase&nbsp;1 (<span className="font-mono">grid auth</span>
+                ), and replaces legacy binaries that reused the name{" "}
+                <span className="font-mono">grid</span>.
               </p>
             </div>
             <a
@@ -76,6 +79,20 @@ export function Download() {
             <p className="text-white/35"># install</p>
             <p className="break-all">
               <span className="text-white/40">$</span> {CURL}
+            </p>
+            <p className="mt-4 text-white/35"># verify (must show auth / master)</p>
+            <p>
+              <span className="text-white/40">$</span> hash -r && which grid &&
+              grid -V
+            </p>
+            <p>
+              <span className="text-white/40">$</span> grid auth --help
+            </p>
+            <p className="mt-4 text-white/35"># upgrade / replace legacy CLI</p>
+            <p className="break-all">
+              <span className="text-white/40">$</span> curl -fsSL
+              https://raw.githubusercontent.com/Caraveo/grid/master/scripts/install.sh
+              | bash -s -- --force
             </p>
             <p className="mt-4 text-white/35"># run the fabric (3 terminals)</p>
             <p>
