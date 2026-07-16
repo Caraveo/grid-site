@@ -3,7 +3,7 @@ import { ScrambleText } from "./ScrambleText";
 
 /**
  * Abstract surface for GRID operator auth modes (CLI: `grid auth …`).
- * Modes: passkey | password | keyphrase | combo | nocrypt.
+ * Modes: passkey | password | keyphrase | combo | master | nocrypt.
  */
 const modes = [
   {
@@ -39,7 +39,7 @@ const modes = [
     title: "Master",
     tag: "Maximum",
     icon: "layers" as const,
-    body: "Password + 24 words + randomized master key file. All three required. One factor alone unlocks nothing.",
+    body: "Password + passkey + 24 words + randomized master key. All four required. One factor alone unlocks nothing.",
   },
   {
     cmd: "nocrypt",
@@ -199,12 +199,13 @@ export function Security() {
             The master is born once and dies on the node.
             <span className="mt-4 block text-base font-normal leading-relaxed text-white/55 sm:text-lg">
               GRID never keeps a recoverable master key under its home directory.
-              In master mode you receive a randomized master key, a twenty-four
-              word phrase, and a password. After you type{" "}
+              In master mode you set a password, register a device passkey, write
+              down a twenty-four word phrase, and receive a randomized master key.
+              After you type{" "}
               <span className="font-mono text-white/80">DESTROY</span>, the master
               is wiped from this machine. Unlock forever requires every factor —
-              password, phrase, and master key file. Knowing one is knowing
-              nothing.
+              password, passkey, phrase, and master key file. Knowing one is
+              knowing nothing.
             </span>
           </blockquote>
           <p className="mt-8 font-mono text-[0.7rem] tracking-wide text-white/35">
@@ -246,6 +247,12 @@ export function Security() {
               {m.cmd === "master" && (
                 <ol className="mt-6 flex flex-wrap items-center gap-2 border-t border-white/10 pt-5 text-[0.65rem] tracking-[0.12em] text-white/55 uppercase">
                   <li className="border border-white/20 px-2.5 py-1">Password</li>
+                  <li className="text-white/25" aria-hidden>
+                    +
+                  </li>
+                  <li className="border border-white/25 px-2.5 py-1 text-white">
+                    Passkey
+                  </li>
                   <li className="text-white/25" aria-hidden>
                     +
                   </li>
