@@ -26,6 +26,16 @@ export function Footer() {
               </h4>
               <ul className="mt-4 space-y-3 text-sm text-white/60">
                 <li>
+                  <a href="/explain" className="transition hover:text-white">
+                    Explain
+                  </a>
+                </li>
+                <li>
+                  <a href="#mesh" className="transition hover:text-white">
+                    MESH
+                  </a>
+                </li>
+                <li>
                   <a href="#mission" className="transition hover:text-white">
                     Mission
                   </a>
@@ -79,7 +89,17 @@ export function Footer() {
                     rel="noopener noreferrer"
                     className="transition hover:text-white"
                   >
-                    GitHub
+                    GRID (node)
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/Caraveo/grid-net"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="transition hover:text-white"
+                  >
+                    MESH (browser)
                   </a>
                 </li>
                 <li>

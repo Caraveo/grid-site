@@ -33,11 +33,14 @@ export function Hero() {
         </p>
 
         <div className="mt-10 flex flex-col items-center gap-4 animate-fade-up delay-3 sm:flex-row">
-          <a href="/registry" className="btn-primary min-w-[200px]">
-            Registry
+          <a href="#mesh" className="btn-primary min-w-[200px]">
+            Download MESH
           </a>
-          <a href="#download" className="btn-ghost min-w-[200px]">
-            Download
+          <a href="/explain" className="btn-ghost min-w-[200px]">
+            Explain
+          </a>
+          <a href="/registry" className="btn-ghost min-w-[200px]">
+            Registry
           </a>
         </div>
 
@@ -48,9 +51,9 @@ export function Hero() {
 
       {/* Scroll cue */}
       <a
-        href="#mission"
+        href="#mesh"
         className="absolute bottom-10 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-3 text-white/40 transition hover:text-white/70"
-        aria-label="Scroll to mission"
+        aria-label="Scroll to MESH"
       >
         <span className="text-[0.6rem] tracking-[0.25em] uppercase">Scroll</span>
         <span className="scroll-line h-10 w-px origin-top bg-white/60" />

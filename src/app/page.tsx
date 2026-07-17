@@ -1,5 +1,6 @@
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/Hero";
+import { Mesh } from "@/components/Mesh";
 import { Mission } from "@/components/Mission";
 import { Network } from "@/components/Network";
 import { Nodes } from "@/components/Nodes";
@@ -17,6 +18,7 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
+        <Mesh />
         <Mission />
         <Network />
         <Nodes />

@@ -1,23 +1,151 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Logo } from "./Logo";
 
-const links = [
-  { href: "#mission", label: "Mission" },
-  { href: "#network", label: "Network" },
-  { href: "#nodes", label: "Nodes" },
-  { href: "#miners", label: "Miners" },
-  { href: "#wallets", label: "Wallets" },
-  { href: "#security", label: "Security" },
-  { href: "#timeline", label: "Phases" },
-  { href: "#download", label: "Download" },
+type NavItem = {
+  label: string;
+  href?: string;
+  children?: { href: string; label: string; hint?: string }[];
+};
+
+/**
+ * Organized mega-structure with submenus.
+ * Hash links stay on the home page; real routes use full paths.
+ */
+const menu: NavItem[] = [
+  {
+    label: "Learn",
+    children: [
+      {
+        href: "/explain",
+        label: "Explain",
+        hint: "Simple overview · diagrams",
+      },
+      { href: "/#mission", label: "Mission", hint: "Why GRID exists" },
+      { href: "/#network", label: "Network", hint: "Planetary fabric" },
+      { href: "/#security", label: "Security", hint: "Bitcoin TSL" },
+      { href: "/#timeline", label: "Phases", hint: "Roadmap" },
+    ],
+  },
+  {
+    label: "Network",
+    children: [
+      { href: "/#mesh", label: "MESH", hint: "grid:// browser" },
+      { href: "/#nodes", label: "Nodes", hint: "Machines on the fabric" },
+      { href: "/#miners", label: "Miners", hint: "Useful work & earn" },
+      { href: "/registry", label: "Registry", hint: "Public names" },
+    ],
+  },
+  {
+    label: "Get started",
+    children: [
+      { href: "/#download", label: "Download", hint: "Install GRID CLI" },
+      { href: "/#wallets", label: "Wallets", hint: "GRID → Bitcoin" },
+      { href: "/explain", label: "How it works", hint: "Start here" },
+    ],
+  },
 ];
 
+function DesktopDropdown({ item }: { item: NavItem }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLLIElement>(null);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const enter = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setOpen(true);
+  };
+  const leave = () => {
+    closeTimer.current = setTimeout(() => setOpen(false), 120);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+    };
+  }, []);
+
+  if (!item.children?.length) {
+    return (
+      <li>
+        <a
+          href={item.href ?? "#"}
+          className="text-[0.7rem] font-medium tracking-[0.2em] text-white/70 uppercase transition hover:text-white"
+        >
+          {item.label}
+        </a>
+      </li>
+    );
+  }
+
+  return (
+    <li
+      ref={ref}
+      className="relative"
+      onMouseEnter={enter}
+      onMouseLeave={leave}
+      onFocus={enter}
+      onBlur={(e) => {
+        if (!ref.current?.contains(e.relatedTarget as Node)) setOpen(false);
+      }}
+    >
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-haspopup="true"
+        className="flex items-center gap-1.5 text-[0.7rem] font-medium tracking-[0.2em] text-white/70 uppercase transition hover:text-white"
+        onClick={() => setOpen((v) => !v)}
+      >
+        {item.label}
+        <svg
+          width="10"
+          height="10"
+          viewBox="0 0 10 10"
+          fill="none"
+          className={`opacity-50 transition ${open ? "rotate-180" : ""}`}
+          aria-hidden
+        >
+          <path
+            d="M2 3.5L5 6.5L8 3.5"
+            stroke="currentColor"
+            strokeWidth="1.2"
+            strokeLinecap="round"
+          />
+        </svg>
+      </button>
+
+      {open && (
+        <div className="absolute top-full left-1/2 z-50 pt-3 -translate-x-1/2">
+          <div className="min-w-[240px] border border-white/12 bg-black/95 py-2 shadow-2xl shadow-black/50 backdrop-blur-xl">
+            {item.children.map((c) => (
+              <a
+                key={c.href + c.label}
+                href={c.href}
+                className="block px-4 py-2.5 transition hover:bg-white/[0.06]"
+                onClick={() => setOpen(false)}
+              >
+                <span className="block text-[0.72rem] font-medium tracking-[0.16em] text-white/90 uppercase">
+                  {c.label}
+                </span>
+                {c.hint && (
+                  <span className="mt-0.5 block text-[0.7rem] text-white/35">
+                    {c.hint}
+                  </span>
+                )}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </li>
+  );
+}
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [mobileSection, setMobileSection] = useState<string | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -38,17 +166,18 @@ export function Nav() {
           <span className="text-sm font-semibold tracking-[0.35em]">GRID</span>
         </a>
 
-        <ul className="hidden items-center gap-10 md:flex">
-          {links.map((l) => (
-            <li key={l.href}>
-              <a
-                href={`/${l.href}`}
-                className="text-[0.7rem] font-medium tracking-[0.2em] text-white/70 uppercase transition hover:text-white"
-              >
-                {l.label}
-              </a>
-            </li>
+        <ul className="hidden items-center gap-8 lg:gap-10 md:flex">
+          {menu.map((item) => (
+            <DesktopDropdown key={item.label} item={item} />
           ))}
+          <li>
+            <a
+              href="/explain"
+              className="text-[0.7rem] font-medium tracking-[0.2em] text-white/90 uppercase transition hover:text-white"
+            >
+              Explain
+            </a>
+          </li>
         </ul>
 
         <div className="flex items-center gap-3">
@@ -84,20 +213,72 @@ export function Nav() {
       </nav>
 
       {open && (
-        <div className="border-t border-white/10 bg-black/95 backdrop-blur-xl md:hidden">
+        <div className="max-h-[min(80vh,640px)] overflow-y-auto border-t border-white/10 bg-black/95 backdrop-blur-xl md:hidden">
           <ul className="flex flex-col px-5 py-4">
-            {links.map((l) => (
-              <li key={l.href}>
-                <a
-                  href={l.href}
-                  onClick={() => setOpen(false)}
-                  className="block py-3 text-sm tracking-[0.18em] text-white/80 uppercase"
+            <li>
+              <a
+                href="/explain"
+                onClick={() => setOpen(false)}
+                className="block py-3 text-sm tracking-[0.18em] text-white uppercase"
+              >
+                Explain
+              </a>
+            </li>
+            {menu.map((item) => (
+              <li key={item.label} className="border-t border-white/8">
+                <button
+                  type="button"
+                  className="flex w-full items-center justify-between py-3 text-left text-sm tracking-[0.18em] text-white/80 uppercase"
+                  onClick={() =>
+                    setMobileSection((s) =>
+                      s === item.label ? null : item.label,
+                    )
+                  }
+                  aria-expanded={mobileSection === item.label}
                 >
-                  {l.label}
-                </a>
+                  {item.label}
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 10 10"
+                    fill="none"
+                    className={`opacity-40 transition ${
+                      mobileSection === item.label ? "rotate-180" : ""
+                    }`}
+                  >
+                    <path
+                      d="M2 3.5L5 6.5L8 3.5"
+                      stroke="currentColor"
+                      strokeWidth="1.2"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </button>
+                {mobileSection === item.label && item.children && (
+                  <ul className="mb-2 border-l border-white/10 pl-4">
+                    {item.children.map((c) => (
+                      <li key={c.href + c.label}>
+                        <a
+                          href={c.href}
+                          onClick={() => setOpen(false)}
+                          className="block py-2.5"
+                        >
+                          <span className="block text-[0.8rem] tracking-[0.14em] text-white/85 uppercase">
+                            {c.label}
+                          </span>
+                          {c.hint && (
+                            <span className="mt-0.5 block text-xs text-white/35">
+                              {c.hint}
+                            </span>
+                          )}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
             ))}
-            <li className="pt-2">
+            <li className="border-t border-white/10 pt-4">
               <a
                 href="/registry"
                 onClick={() => setOpen(false)}
