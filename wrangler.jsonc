@@ -43,4 +43,5 @@
   },
   // Secrets (never commit):
   //   npx wrangler secret put GRID_WEBHOOK_SECRET
+  //   npx wrangler secret put GRID_ADMIN_SECRET   # min 16 chars, admin dashboard
 }

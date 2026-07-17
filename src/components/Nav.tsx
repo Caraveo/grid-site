@@ -14,6 +14,7 @@ const links = [
   { href: "#download", label: "Download" },
 ];
 
+
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -32,7 +33,7 @@ export function Nav() {
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8 lg:h-20 lg:px-10">
-        <a href="#top" className="group flex items-center gap-2.5 text-white">
+        <a href="/" className="group flex items-center gap-2.5 text-white">
           <Logo className="h-7 w-7" />
           <span className="text-sm font-semibold tracking-[0.35em]">GRID</span>
         </a>
@@ -41,7 +42,7 @@ export function Nav() {
           {links.map((l) => (
             <li key={l.href}>
               <a
-                href={l.href}
+                href={`/${l.href}`}
                 className="text-[0.7rem] font-medium tracking-[0.2em] text-white/70 uppercase transition hover:text-white"
               >
                 {l.label}
@@ -52,7 +53,13 @@ export function Nav() {
 
         <div className="flex items-center gap-3">
           <a
-            href="#download"
+            href="/registry"
+            className="inline-flex border border-white/50 bg-white px-4 py-2 text-[0.65rem] font-semibold tracking-[0.18em] text-black uppercase transition hover:bg-transparent hover:text-white"
+          >
+            Registry
+          </a>
+          <a
+            href="/#download"
             className="hidden border border-white/50 px-4 py-2 text-[0.65rem] font-semibold tracking-[0.18em] uppercase transition hover:border-white hover:bg-white hover:text-black sm:inline-flex"
           >
             Get GRID
@@ -92,9 +99,18 @@ export function Nav() {
             ))}
             <li className="pt-2">
               <a
-                href="#download"
+                href="/registry"
                 onClick={() => setOpen(false)}
                 className="btn-primary w-full"
+              >
+                Registry
+              </a>
+            </li>
+            <li className="pt-2">
+              <a
+                href="/#download"
+                onClick={() => setOpen(false)}
+                className="btn-ghost w-full"
               >
                 Get GRID
               </a>
