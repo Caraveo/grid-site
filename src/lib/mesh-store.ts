@@ -1,5 +1,13 @@
-import { promises as fs } from "fs";
-import path from "path";
+/**
+ * Mesh peer store — location-only globe pings.
+ *
+ * Storage backends (first match wins):
+ * 1. Cloudflare KV (`MESH_KV` binding) — durable production store
+ * 2. Local `data/mesh-store.json` — Node / next dev fallback
+ *
+ * Never stores IPs, ports, hostnames, wallets, or coordinator URLs.
+ */
+
 import {
   type NodeClass,
   type NodeStatus,
@@ -16,11 +24,12 @@ import {
   sanitizeStatus,
 } from "./sanitize";
 
-const STORE_PATH = path.join(process.cwd(), "data", "mesh-store.json");
+const KV_KEY = "mesh-store-v1";
 const PING_TTL_MS = 1000 * 60 * 60 * 24 * 14; // 14 days
 const RECENT_PING_MS = 1000 * 45; // celebrate / ring for 45s
 const MAX_PEERS = 500;
 const MAX_BODY_BYTES = 4_096;
+const MAX_STORE_BYTES = 2_000_000;
 
 export type PingInput = {
   nodeId: string;
@@ -46,22 +55,50 @@ export type MeshStoreFile = {
   peers: Record<string, StoredPing>;
 };
 
-// Process-local cache (helps serverless warm instances)
-let memory: MeshStoreFile | null = null;
+/** FS-only warm cache (never used as source of truth when KV is available). */
+let fsMemory: MeshStoreFile | null = null;
+
+type MeshKv = {
+  get(key: string, type?: "text"): Promise<string | null>;
+  put(key: string, value: string): Promise<void>;
+};
+
+async function getMeshKv(): Promise<MeshKv | null> {
+  try {
+    const { getCloudflareContext } = await import("@opennextjs/cloudflare");
+    const { env } = await getCloudflareContext({ async: true });
+    const kv = (env as { MESH_KV?: MeshKv }).MESH_KV;
+    return kv ?? null;
+  } catch {
+    // Outside Workers / before platform proxy is ready
+    return null;
+  }
+}
+
+function envStr(key: string, fallback = ""): string {
+  try {
+    // Prefer process.env (populated from bindings + .env in OpenNext/Node)
+    const v = process.env[key];
+    if (v != null && String(v).length > 0) return String(v);
+  } catch {
+    /* ignore */
+  }
+  return fallback;
+}
 
 function defaultGenesis(): StoredPing {
   const coords = sanitizeLatLng(
-    process.env.GENESIS_LAT ?? "37.5",
-    process.env.GENESIS_LNG ?? "-122.0",
+    envStr("GENESIS_LAT", "37.5"),
+    envStr("GENESIS_LNG", "-122.0"),
   ) ?? { lat: 37.5, lng: -122 };
   const lat = quantizeCoord(coords.lat);
   const lng = quantizeCoord(coords.lng);
   const now = new Date().toISOString();
   return {
     id: "genesis",
-    label: sanitizeLabel(process.env.GENESIS_LABEL ?? "GENESIS", "GENESIS", 32),
+    label: sanitizeLabel(envStr("GENESIS_LABEL", "GENESIS"), "GENESIS", 32),
     class: "L",
-    region: sanitizeRegion(process.env.GENESIS_REGION ?? "Origin"),
+    region: sanitizeRegion(envStr("GENESIS_REGION", "Origin")),
     status: "online",
     role: "genesis",
     lat,
@@ -75,7 +112,9 @@ function defaultGenesis(): StoredPing {
 
 function emptyStore(): MeshStoreFile {
   return {
-    phase: sanitizeRegion(process.env.GRID_PHASE ?? "0").replace("—", "0").slice(0, 8) || "0",
+    phase:
+      sanitizeRegion(envStr("GRID_PHASE", "1")).replace("—", "0").slice(0, 8) ||
+      "1",
     updatedAt: new Date().toISOString(),
     genesis: defaultGenesis(),
     peers: {},
@@ -113,59 +152,103 @@ function scrubStoredPeer(
   };
 }
 
-async function ensureLoaded(): Promise<MeshStoreFile> {
-  if (memory) return memory;
+function parseAndScrub(raw: string): MeshStoreFile {
+  if (raw.length > MAX_STORE_BYTES) return emptyStore();
+  let parsed: MeshStoreFile;
   try {
-    const raw = await fs.readFile(STORE_PATH, "utf8");
-    if (raw.length > 2_000_000) {
-      memory = emptyStore();
-      return memory;
-    }
-    const parsed = JSON.parse(raw) as MeshStoreFile;
-    const store = emptyStore();
-    if (parsed.genesis) {
-      const g = scrubStoredPeer(
-        { ...parsed.genesis, role: "genesis" } as StoredPing,
-        { allowGenesis: true },
-      );
-      if (g) {
-        store.genesis = {
-          ...g,
-          id: "genesis",
-          role: "genesis",
-          label: sanitizeLabel(g.label, "GENESIS"),
-        };
-      }
-    }
-    store.peers = {};
-    for (const [k, p] of Object.entries(parsed.peers ?? {})) {
-      const scrubbed = scrubStoredPeer(p);
-      if (scrubbed) store.peers[scrubbed.id] = scrubbed;
-      void k;
-    }
-    store.updatedAt =
-      typeof parsed.updatedAt === "string"
-        ? parsed.updatedAt.slice(0, 40)
-        : store.updatedAt;
-    memory = store;
-    return memory;
+    parsed = JSON.parse(raw) as MeshStoreFile;
   } catch {
-    memory = emptyStore();
-    await persist(memory).catch(() => {
-      /* ephemeral envs (some serverless) can't write disk */
-    });
-    return memory;
+    return emptyStore();
+  }
+  const store = emptyStore();
+  if (parsed.genesis) {
+    const g = scrubStoredPeer(
+      { ...parsed.genesis, role: "genesis" } as StoredPing,
+      { allowGenesis: true },
+    );
+    if (g) {
+      store.genesis = {
+        ...g,
+        id: "genesis",
+        role: "genesis",
+        label: sanitizeLabel(g.label, "GENESIS"),
+      };
+    }
+  }
+  store.peers = {};
+  for (const p of Object.values(parsed.peers ?? {})) {
+    const scrubbed = scrubStoredPeer(p);
+    if (scrubbed) store.peers[scrubbed.id] = scrubbed;
+  }
+  store.updatedAt =
+    typeof parsed.updatedAt === "string"
+      ? parsed.updatedAt.slice(0, 40)
+      : store.updatedAt;
+  if (typeof parsed.phase === "string") {
+    store.phase =
+      String(parsed.phase).replace(/[^0-9a-zA-Z._-]/g, "").slice(0, 8) ||
+      store.phase;
+  }
+  return store;
+}
+
+async function loadFromFs(): Promise<MeshStoreFile> {
+  if (fsMemory) return fsMemory;
+  try {
+    const { promises: fs } = await import("fs");
+    const path = await import("path");
+    const storePath = path.join(process.cwd(), "data", "mesh-store.json");
+    const raw = await fs.readFile(storePath, "utf8");
+    fsMemory = parseAndScrub(raw);
+    return fsMemory;
+  } catch {
+    fsMemory = emptyStore();
+    return fsMemory;
   }
 }
 
-async function persist(store: MeshStoreFile): Promise<void> {
-  memory = store;
+async function saveToFs(store: MeshStoreFile): Promise<void> {
+  fsMemory = store;
   try {
-    await fs.mkdir(path.dirname(STORE_PATH), { recursive: true });
-    await fs.writeFile(STORE_PATH, JSON.stringify(store, null, 2), "utf8");
+    const { promises: fs } = await import("fs");
+    const path = await import("path");
+    const storePath = path.join(process.cwd(), "data", "mesh-store.json");
+    await fs.mkdir(path.dirname(storePath), { recursive: true });
+    await fs.writeFile(storePath, JSON.stringify(store, null, 2), "utf8");
   } catch {
-    // Serverless without FS: memory-only until cold start
+    // ephemeral / read-only FS
   }
+}
+
+async function ensureLoaded(): Promise<{
+  store: MeshStoreFile;
+  backend: "kv" | "fs";
+  kv: MeshKv | null;
+}> {
+  const kv = await getMeshKv();
+  if (kv) {
+    const raw = await kv.get(KV_KEY, "text");
+    if (raw) {
+      return { store: parseAndScrub(raw), backend: "kv", kv };
+    }
+    const store = emptyStore();
+    return { store, backend: "kv", kv };
+  }
+  const store = await loadFromFs();
+  return { store, backend: "fs", kv: null };
+}
+
+async function persist(
+  store: MeshStoreFile,
+  backend: "kv" | "fs",
+  kv: MeshKv | null,
+): Promise<void> {
+  const payload = JSON.stringify(store);
+  if (backend === "kv" && kv) {
+    await kv.put(KV_KEY, payload);
+    return;
+  }
+  await saveToFs(store);
 }
 
 /** @deprecated use filterPingBody from sanitize — kept for route import compat */
@@ -189,7 +272,7 @@ export async function upsertPing(input: PingInput): Promise<PingResult> {
     throw new MeshError(400, "invalid nodeId");
   }
 
-  const store = await ensureLoaded();
+  const { store, backend, kv } = await ensureLoaded();
   const now = new Date().toISOString();
   const lat = quantizeCoord(coords.lat);
   const lng = quantizeCoord(coords.lng);
@@ -247,9 +330,8 @@ export async function upsertPing(input: PingInput): Promise<PingResult> {
     }
   }
 
-  await persist(store);
+  await persist(store, backend, kv);
 
-  // Message uses already-sanitized label only
   const message = isNew
     ? `Welcome to the mesh, ${label}. You're a node.`
     : `Pulse received, ${label}. Still on the mesh.`;
@@ -258,7 +340,7 @@ export async function upsertPing(input: PingInput): Promise<PingResult> {
 }
 
 export async function getPublicMesh() {
-  const store = await ensureLoaded();
+  const { store } = await ensureLoaded();
   const now = Date.now();
   const peers = Object.values(store.peers)
     .map((p) => scrubStoredPeer(p))
@@ -288,7 +370,9 @@ export async function getPublicMesh() {
     }));
 
   return {
-    phase: String(store.phase ?? "0").replace(/[^0-9a-zA-Z._-]/g, "").slice(0, 8) || "0",
+    phase:
+      String(store.phase ?? "1").replace(/[^0-9a-zA-Z._-]/g, "").slice(0, 8) ||
+      "1",
     updatedAt: store.updatedAt,
     genesis: publicView(store.genesis),
     nodes,
@@ -303,7 +387,6 @@ export async function getPublicMesh() {
 }
 
 function publicView(n: StoredPing): PublicNode {
-  // Re-sanitize on every read so poisoned disk never reaches the UI
   const id = n.role === "genesis" ? "genesis" : sanitizeNodeId(n.id) ?? "peer";
   return {
     id,
@@ -327,19 +410,31 @@ export class MeshError extends Error {
   }
 }
 
+function timingSafeEqualString(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  const enc = new TextEncoder();
+  const aa = enc.encode(a);
+  const bb = enc.encode(b);
+  // Web Crypto subtle.timingSafeEqual is not available everywhere;
+  // constant-time XOR fold works for equal-length secrets.
+  let diff = 0;
+  for (let i = 0; i < aa.length; i++) {
+    diff |= aa[i] ^ bb[i];
+  }
+  return diff === 0;
+}
+
 export function verifyWebhookSecret(req: Request): boolean {
-  const expected = process.env.GRID_WEBHOOK_SECRET;
-  // Local dev: allow open if secret not set
+  const expected = envStr("GRID_WEBHOOK_SECRET");
+  // Local dev: allow open if secret not set. Production must set the secret.
   if (!expected) {
-    if (process.env.NODE_ENV === "production") return false;
-    return true;
+    return envStr("NODE_ENV") !== "production";
   }
   const auth = req.headers.get("authorization") ?? "";
   const bearer = auth.startsWith("Bearer ") ? auth.slice(7).trim() : "";
-  const header = req.headers.get("x-grid-secret") ?? "";
-  // Constant-time-ish compare for equal-length secrets
-  if (bearer.length === expected.length && bearer === expected) return true;
-  if (header.length === expected.length && header === expected) return true;
+  const header = (req.headers.get("x-grid-secret") ?? "").trim();
+  if (bearer && timingSafeEqualString(bearer, expected)) return true;
+  if (header && timingSafeEqualString(header, expected)) return true;
   return false;
 }
 

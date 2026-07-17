@@ -1,0 +1,10 @@
+# Copy to .dev.vars for local Workers preview (`npm run preview` / wrangler).
+# .dev.vars is gitignored.
+
+NEXTJS_ENV=development
+GRID_WEBHOOK_SECRET=dev-secret-change-me
+GRID_PHASE=1
+GENESIS_LAT=37.5
+GENESIS_LNG=-122.0
+GENESIS_LABEL=GENESIS
+GENESIS_REGION=Origin

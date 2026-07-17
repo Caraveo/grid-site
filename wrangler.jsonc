@@ -1,0 +1,46 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "grid-site",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-07-17",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "workers_dev": true,
+  "preview_urls": true,
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS",
+  },
+  "observability": {
+    "enabled": true,
+  },
+  // Custom domain — zone must already be on this Cloudflare account.
+  // If deploy fails on routes, attach the domain in the dashboard or
+  // temporarily remove this block and re-add after DNS is ready.
+  "routes": [
+    { "pattern": "grid-compute.com", "custom_domain": true },
+    { "pattern": "www.grid-compute.com", "custom_domain": true },
+  ],
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "grid-site",
+    },
+  ],
+  // Durable mesh peer store (location-only globe pings).
+  "kv_namespaces": [
+    {
+      "binding": "MESH_KV",
+      "id": "5208b9e52eb14933bdee027cb124c3f7",
+    },
+  ],
+  // Non-secret defaults (override in dashboard).
+  "vars": {
+    "GRID_PHASE": "1",
+    "GENESIS_LAT": "37.5",
+    "GENESIS_LNG": "-122.0",
+    "GENESIS_LABEL": "GENESIS",
+    "GENESIS_REGION": "Origin",
+  },
+  // Secrets (never commit):
+  //   npx wrangler secret put GRID_WEBHOOK_SECRET
+}
