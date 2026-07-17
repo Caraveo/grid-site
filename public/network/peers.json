@@ -1,7 +1,8 @@
 {
+  "registry": "https://grid-compute.com",
   "phase": "1",
   "updatedAt": "2026-07-16T00:00:00.000Z",
-  "note": "Public peer registry for Phase 0/1. Genesis tracks peers. Never include IPs, hostnames, or wallets.",
+  "note": "Static seed only. Live registry: GET https://grid-compute.com/api/registry — never include IPs.",
   "genesis": {
     "id": "genesis",
     "label": "GENESIS",

@@ -17,6 +17,9 @@
 /.next/
 /out/
 
+# OpenNext Cloudflare adapter output
+.open-next
+
 # production
 /build
 
@@ -33,12 +36,14 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 !.env.example
+!.dev.vars.example
 
 # mesh store mutates at runtime (seed can be recreated)
 /data/mesh-store.json
 
-# vercel
-.vercel
+# cloudflare / wrangler
+.wrangler
+.dev.vars
 
 # typescript
 *.tsbuildinfo

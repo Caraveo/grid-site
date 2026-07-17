@@ -2,56 +2,108 @@
 
 Cinematic launch site for **[GRID](https://github.com/caraveo/grid)** — useful mining for a planetary compute network.
 
-SpaceX-inspired, fully static, download-first. Built with Next.js (static export) + Tailwind.
+**Production:** [https://grid-compute.com](https://grid-compute.com) · **Platform:** Cloudflare Workers (OpenNext)
+
+SpaceX-inspired, download-first. Next.js App Router + Tailwind. Marketing pages are static-friendly; `/api/mesh/*` is dynamic for the public globe.
 
 > Observes the GRID product/repo; **does not modify** the GRID codebase.
 
 ---
 
-## Local
+## Local development
 
 ```bash
 npm install
-npm run dev
+cp .env.example .env.local          # optional mesh secret for local
+npm run dev                         # Next.js dev server (Node)
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
 
-### Static production build
+`initOpenNextCloudflareForDev()` in `next.config.ts` wires local bindings (including simulated `MESH_KV`) into `next dev`.
+
+### Workers-accurate preview
 
 ```bash
-npm run build
-# Output: out/
-npx serve out
+cp .dev.vars.example .dev.vars      # secrets for workerd
+npm run preview                     # OpenNext build + wrangler dev
 ```
 
 ---
 
-## Vercel (planned)
+## Cloudflare deploy
 
-1. Push this repo to GitHub (e.g. `caraveo/gsite` or `caraveo/grid-site`).
-2. [vercel.com/new](https://vercel.com/new) → import the repo.
-3. Framework preset: **Next.js** (auto-detected).
-4. Build: `npm run build` · Output: `out` (because `output: "export"`).
-5. Deploy. Optional: attach a custom domain (`grid.network`, etc.).
+Domain: **grid-compute.com** (and `www`).
+
+```bash
+# 1) Log in once
+npx wrangler login
+
+# 2) Set production webhook secret (interactive prompt)
+npx wrangler secret put GRID_WEBHOOK_SECRET
+
+# 3) Build + deploy Worker + assets + auto-provision MESH_KV
+npm run deploy
+```
+
+| Piece | Role |
+|-------|------|
+| `@opennextjs/cloudflare` | Next.js → Workers adapter |
+| `wrangler.jsonc` | Worker name, routes, KV, vars |
+| `MESH_KV` | Durable mesh peer store (auto-provisioned if `id` omitted) |
+| `GRID_WEBHOOK_SECRET` | Auth for `POST /api/mesh/ping` |
+| Custom routes | `grid-compute.com` + `www.grid-compute.com` |
+
+If custom-domain routes fail (zone not on this account yet), remove the `routes` array from `wrangler.jsonc`, deploy to `*.workers.dev`, then attach **grid-compute.com** in the Cloudflare dashboard (Workers → grid-site → Settings → Domains).
+
+### Useful scripts
+
+| Script | What |
+|--------|------|
+| `npm run dev` | Next.js local (fast iteration) |
+| `npm run preview` | OpenNext build + local workerd |
+| `npm run deploy` | Build + deploy to Cloudflare |
+| `npm run upload` | Build + upload version (no full deploy promote) |
+| `npm run cf-typegen` | Regenerate `cloudflare-env.d.ts` |
+| `npm run cf-build` | OpenNext build only |
 
 ### Env / secrets
 
-None required for the static site. Future dynamic pieces (waitlist API, release redirects) can add serverless routes later — for now the site is pure static HTML.
+| Name | Where | Notes |
+|------|--------|--------|
+| `GRID_WEBHOOK_SECRET` | `wrangler secret put` | **Required** in production |
+| `GRID_PHASE` | `wrangler.jsonc` vars | Default `1` |
+| `GENESIS_*` | vars | Globe genesis pin |
 
-### Peer mesh + globe webhook
+Miners (GRID CLI):
+
+```bash
+# ~/.grid/env
+# GRID_SITE_URL defaults to https://grid-compute.com
+GRID_WEBHOOK_SECRET=...   # same as Worker secret
+GRID_GLOBE_LAT=37.7
+GRID_GLOBE_LNG=-122.4
+GRID_GLOBE_REGION=NA-W
+
+grid registry             # list public peers from this site
+```
+
+---
+
+## Public mesh registry + globe webhook
+
+**This site is the GRID public peer registry.**
 
 | Endpoint | Role |
 |----------|------|
-| `POST /api/mesh/ping` | Webhook — location-only node pulse |
-| `GET /api/mesh` | Public globe + peer list for the Nodes UI |
+| `GET /api/registry` | **Canonical** registry (CLI: `grid registry`) |
+| `GET /api/mesh` | Same data for the Nodes globe UI |
+| `POST /api/mesh/ping` | Location-only node pulse (auth required in prod) |
 
 **Auth (production):** `Authorization: Bearer $GRID_WEBHOOK_SECRET` or header `X-Grid-Secret`.
 
-**Body (location only — never IPs):**
-
 ```bash
-curl -s -X POST http://localhost:3000/api/mesh/ping \
+curl -s -X POST https://grid-compute.com/api/mesh/ping \
   -H 'content-type: application/json' \
   -H "authorization: Bearer $GRID_WEBHOOK_SECRET" \
   -d '{
@@ -65,27 +117,10 @@ curl -s -X POST http://localhost:3000/api/mesh/ping \
   }'
 ```
 
-- Coords are **quantized ~0.5°** before storage  
-- Sensitive field names are stripped if sent by mistake  
-- Store: `data/mesh-store.json` (local) / memory on serverless cold starts  
-- UI: cinematic globe + expanding **“I'M A NODE”** join pings  
-
-Env: copy `.env.example` → `.env.local`.
-
-**GRID CLI integration prompt** (paste into Grok for the GRID repo):  
-[`docs/GROK_GRID_WEBHOOK_PROMPT.md`](./docs/GROK_GRID_WEBHOOK_PROMPT.md)
-
-> Note: static `output: "export"` was removed so API routes work on Vercel.
-
-### Releases on the Download section
-
-macOS / Linux / Windows cards are placeholders. When GitHub Releases publish artifacts, point each card at:
-
-```
-https://github.com/caraveo/grid/releases/latest/download/<asset>
-```
-
-Or host binaries on a CDN and swap the `Download` component links.
+- Coords quantized ~0.5° before storage  
+- Allowlist keys only; strips IPs / HTML / nested junk  
+- **Store:** Cloudflare **KV** (`MESH_KV`) in production; `data/mesh-store.json` when KV is unavailable (local Node)  
+- UI: globe + **“I'M A NODE”** join pings  
 
 ---
 
@@ -93,14 +128,17 @@ Or host binaries on a CDN and swap the `Download` component links.
 
 ```
 src/
-  app/              # layout, page, global styles
-  components/       # Nav, Hero, Nodes, MeshGraph, …
-  lib/network.ts    # public peer types (no IPs)
-public/
-  network/peers.json  # genesis-maintained peer registry
+  app/                 # layout, page, /api/mesh/*
+  components/          # Nav, Hero, Nodes, NodeGlobe, …
+  lib/
+    mesh-store.ts      # KV + FS store, sanitization, auth
+    network.ts         # public peer types
+    sanitize.ts        # allowlist filters
+wrangler.jsonc         # Cloudflare Worker config
+open-next.config.ts    # OpenNext adapter
+cloudflare-env.d.ts    # Env / binding types
+public/_headers        # long-cache /_next/static
 ```
-
-Content is intentionally **abstract** (mission, mesh, PoR, miners, download) — product detail lives in the GRID white papers and GitHub.
 
 ---
 
@@ -108,7 +146,7 @@ Content is intentionally **abstract** (mission, mesh, PoR, miners, download) —
 
 | Source | Used for |
 |--------|----------|
-| `GRID` README / CLI | Download / install path |
+| GRID README / CLI | Download / install path |
 | White paper abstract | Mission language |
 | `letter.md` | Miner section quote |
 | Token spec | Bitcoin TSL line, PoR framing |
