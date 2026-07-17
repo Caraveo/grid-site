@@ -29,7 +29,7 @@ const FLOW = [
   {
     k: "06",
     t: "MESH",
-    d: "The browser for the mesh. Type a compute label. Default scheme is grid://. Same mental model as the CLI: garage ↔ grid://garage.grid.",
+    d: "The browser for the mesh. Type a realm. Default scheme is grid://. Same mental model as the CLI: garage ↔ grid://garage.grid.",
   },
 ];
 
@@ -79,14 +79,18 @@ export function Mesh() {
           </div>
         </div>
 
-        {/* Address model */}
+        {/* Realms (mesh “domains”) */}
         <div className="mx-auto mt-16 max-w-3xl border border-white/15 bg-white/[0.03] p-8 sm:p-10">
           <p className="text-[0.7rem] font-semibold tracking-[0.22em] text-white/45 uppercase">
-            Address model
+            Realms
           </p>
           <h3 className="mt-2 text-xl font-semibold tracking-tight sm:text-2xl">
-            Type a compute name. No extension required.
+            Type a realm. No extension required.
           </h3>
+          <p className="mt-3 text-sm text-white/45">
+            On the web: domains. On MESH:{" "}
+            <span className="text-white/75">realms</span>.
+          </p>
           <div className="mt-6 overflow-x-auto border border-white/10 bg-black/60 p-5 font-mono text-xs leading-relaxed text-white/70 sm:text-sm">
             <p>
               <span className="text-white/40">x</span>
@@ -101,7 +105,7 @@ export function Mesh() {
             <p className="mt-2">
               <span className="text-white/40">grid launch garage</span>
               <span className="mx-3 text-white/25">↔</span>
-              <span className="text-white">browser: garage</span>
+              <span className="text-white">realm garage in MESH</span>
             </p>
           </div>
           <p className="mt-5 text-sm leading-relaxed text-white/45">

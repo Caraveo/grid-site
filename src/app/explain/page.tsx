@@ -220,10 +220,10 @@ export default function ExplainPage() {
           <RolesDiagram />
         </Section>
 
-        {/* 06 — Addresses */}
+        {/* 06 — Realms (MESH “domains”) */}
         <Section
-          id="addresses"
-          label="06 · Opening the mesh"
+          id="realms"
+          label="06 · Realms"
           title={
             <>
               Type a name.
@@ -234,21 +234,31 @@ export default function ExplainPage() {
             </>
           }
         >
-          <p className="mb-8 max-w-2xl section-body text-base">
-            On the web you type domains. On MESH you type{" "}
-            <strong className="font-normal text-white/85">compute names</strong>.
+          <p className="mb-4 max-w-2xl section-body text-base">
+            On the web you type <strong className="font-normal text-white/70">domains</strong>.
+            On MESH you type{" "}
+            <strong className="font-normal text-white/85">realms</strong>.
             No extension required.
+          </p>
+          <p className="mb-8 max-w-2xl text-sm leading-relaxed text-white/40">
+            A <span className="text-white/70">realm</span> is the mesh address for a
+            compute you (or someone) published — the GRID name for what the web
+            calls a domain.
           </p>
           <AddressDiagram />
           <div className="mt-8 panel p-6 font-mono text-sm leading-relaxed text-white/70">
-            <p className="text-white/40">// equivalence</p>
+            <p className="text-white/40">// realm equivalence</p>
             <p className="mt-2">
               x &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;≡ &nbsp;
               x.grid &nbsp;&nbsp;&nbsp;&nbsp;≡ &nbsp; grid://x.grid/
             </p>
+            <p className="mt-4 text-white/40">// web domain → mesh realm</p>
+            <p className="mt-2">
+              example.com &nbsp;≈ &nbsp; realm &nbsp;x &nbsp;→ &nbsp; grid://x.grid
+            </p>
             <p className="mt-4 text-white/40">// same idea as the CLI</p>
             <p className="mt-2">
-              grid launch garage &nbsp;↔ &nbsp; type garage in MESH
+              grid launch garage &nbsp;↔ &nbsp; realm garage in MESH
             </p>
           </div>
         </Section>

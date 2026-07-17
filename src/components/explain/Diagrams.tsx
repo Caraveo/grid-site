@@ -216,7 +216,7 @@ export function AddressDiagram() {
       <div className="grid sm:grid-cols-3">
         <div className="border-b border-white/10 p-6 sm:border-r sm:border-b-0">
           <p className="font-mono text-[0.65rem] tracking-[0.2em] text-white/35 uppercase">
-            You type
+            Realm
           </p>
           <p className="mt-4 font-mono text-2xl text-white">x</p>
           <p className="mt-2 text-xs text-white/40">or garage · home · …</p>
@@ -232,13 +232,13 @@ export function AddressDiagram() {
         </div>
         <div className="p-6">
           <p className="font-mono text-[0.65rem] tracking-[0.2em] text-white/35 uppercase">
-            You land on
+            Address
           </p>
           <p className="mt-4 font-mono text-lg text-white sm:text-xl">
             grid://x.grid
           </p>
           <p className="mt-2 text-xs text-white/40">
-            that compute on the mesh
+            that realm on the mesh
           </p>
         </div>
       </div>
@@ -265,11 +265,27 @@ export function RolesDiagram() {
       ),
     },
     {
-      title: "Compute",
-      body: "A named unit you own — garage, render-1 — addressable as a label.",
+      title: "Realm",
+      body: "A mesh address — what the web calls a domain. garage → grid://garage.grid.",
       icon: (
         <path
           d="M10 28 L20 8 L30 28 Z"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          fill="none"
+        />
+      ),
+    },
+    {
+      title: "Compute",
+      body: "Capacity you host on a realm — the work unit behind the name.",
+      icon: (
+        <rect
+          x="10"
+          y="12"
+          width="20"
+          height="16"
+          rx="2"
           stroke="currentColor"
           strokeWidth="1.5"
           fill="none"
@@ -303,7 +319,7 @@ export function RolesDiagram() {
     },
     {
       title: "MESH",
-      body: "The browser. Type a name. Open grid:// sites on the mesh.",
+      body: "The browser. Type a realm. Open grid:// addresses on the mesh.",
       icon: (
         <>
           <rect
@@ -322,7 +338,7 @@ export function RolesDiagram() {
     },
     {
       title: "Registry",
-      body: "Public list of peers & computes by name — never raw IPs.",
+      body: "Public list of peers & realms — never raw IPs.",
       icon: (
         <path
           d="M12 10h16v20H12z M16 14h8 M16 20h8 M16 26h5"
@@ -335,7 +351,7 @@ export function RolesDiagram() {
   ];
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {roles.map((r) => (
         <div key={r.title} className="panel p-6">
           <div className="flex h-10 w-10 items-center justify-center text-white/70">
@@ -399,7 +415,7 @@ export function GridVsMeshDiagram() {
           </li>
           <li className="flex gap-3">
             <span className="text-white/30">▸</span>
-            Type a compute name — no https by default
+            Type a realm — no https by default
           </li>
           <li className="flex gap-3">
             <span className="text-white/30">▸</span>
