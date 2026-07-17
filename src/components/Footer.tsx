@@ -60,6 +60,11 @@ export function Footer() {
                     Download
                   </a>
                 </li>
+                <li>
+                  <a href="/registry" className="transition hover:text-white">
+                    Registry
+                  </a>
+                </li>
               </ul>
             </div>
             <div>

@@ -96,9 +96,13 @@ grid registry             # list public peers from this site
 
 | Endpoint | Role |
 |----------|------|
-| `GET /api/registry` | **Canonical** registry (CLI: `grid registry`) |
-| `GET /api/mesh` | Same data for the Nodes globe UI |
+| `GET /api/registry` | **Canonical** registry — peers + computes (CLI: `grid registry`) |
+| `GET /api/registry/computes` | Compute capacity (`?available=1` for free slots only) |
+| `POST /api/registry/computes` | Host announce / heartbeat (auth in prod) |
+| `GET /api/mesh` | Globe peers UI |
 | `POST /api/mesh/ping` | Location-only node pulse (auth required in prod) |
+| `GET /registry` | Public node registration (Cash App → `$Caraveo`) |
+| `GET /admin` | **Operator dashboard** (not linked in nav; secret auth) |
 
 **Auth (production):** `Authorization: Bearer $GRID_WEBHOOK_SECRET` or header `X-Grid-Secret`.
 

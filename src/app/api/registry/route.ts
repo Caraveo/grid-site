@@ -1,31 +1,74 @@
 import { NextResponse } from "next/server";
+import { buildRegistryDirectory } from "@/lib/registry-directory";
 import { getPublicMesh } from "@/lib/mesh-store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-/** Canonical public mesh registry — https://grid-compute.com/api/registry */
+/** Canonical public registry — https://grid-compute.com/api/registry */
 const REGISTRY = "https://grid-compute.com";
 
 /**
  * GET /api/registry
  *
- * Public peer registry for GRID CLI (`grid registry`) and external clients.
- * Location-only fields — never IPs, ports, hostnames, or wallets.
+ * registry.grid source of truth:
+ * only entities with active paid registration (node and/or compute).
+ * Live mesh pings alone do NOT list you here.
  */
 export async function GET() {
-  const mesh = await getPublicMesh();
+  const [dir, mesh] = await Promise.all([
+    buildRegistryDirectory(),
+    getPublicMesh(),
+  ]);
+
   return NextResponse.json(
     {
       registry: REGISTRY,
       phase: mesh.phase,
-      updatedAt: mesh.updatedAt,
-      note: "Public mesh registry. Location-only. Never includes IPs or endpoints.",
+      updatedAt: new Date().toISOString(),
+      note: dir.rule,
+      rule: dir.rule,
+      /** Registered directory for registry.grid */
+      entries: dir.entries,
+      /** Active registrations that host nodes (filtered mesh peers) */
+      peers: dir.nodes.filter((n) => n.role !== "genesis"),
+      nodes: dir.nodes,
       genesis: mesh.genesis,
-      peers: mesh.peers,
-      nodes: mesh.nodes,
-      recentPings: mesh.recentPings,
-      stats: mesh.stats,
+      recentPings:
+        mesh.recentPings?.filter((p) => {
+          const lab = String(p.label ?? "")
+            .toLowerCase()
+            .replace(/[^a-z0-9_-]/g, "");
+          const id = String(p.id ?? "").toLowerCase();
+          return dir.entries.some(
+            (e) => e.name === lab || id.includes(e.name) || id === e.name,
+          );
+        }) ?? [],
+      /** Live computes only if name is active registry compute */
+      computes: dir.computes,
+      computeStats: {
+        total: dir.computes.length,
+        available: dir.computes.filter((c) => c.status === "available").length,
+        busy: dir.computes.filter((c) => c.status === "busy").length,
+        offline: dir.computes.filter((c) => c.status === "offline").length,
+        freeSlots: dir.computes
+          .filter((c) => c.status === "available")
+          .reduce((s, c) => s + (c.freeSlots ?? 0), 0),
+      },
+      stats: {
+        ...mesh.stats,
+        registered: dir.stats.registered,
+        registeredNodes: dir.stats.nodes,
+        registeredComputes: dir.stats.computes,
+        onlineRegisteredNodes: dir.stats.onlineNodes,
+        availableRegisteredComputes: dir.stats.availableComputes,
+      },
+      links: {
+        register: `${REGISTRY}/registry`,
+        computes: `${REGISTRY}/api/registry/computes`,
+        available: `${REGISTRY}/api/registry/computes?available=1`,
+        meshPing: `${REGISTRY}/api/mesh/ping`,
+      },
     },
     {
       headers: {

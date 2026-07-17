@@ -33,11 +33,11 @@ export function Hero() {
         </p>
 
         <div className="mt-10 flex flex-col items-center gap-4 animate-fade-up delay-3 sm:flex-row">
-          <a href="#download" className="btn-primary min-w-[200px]">
-            Download
+          <a href="/registry" className="btn-primary min-w-[200px]">
+            Registry
           </a>
-          <a href="#mission" className="btn-ghost min-w-[200px]">
-            Explore
+          <a href="#download" className="btn-ghost min-w-[200px]">
+            Download
           </a>
         </div>
 
