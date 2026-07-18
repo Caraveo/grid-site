@@ -131,8 +131,10 @@ export const DOWNLOADS = {
     darwinX64: "/downloads/cli/grid-darwin-x86_64",
     darwinArm64: "/downloads/cli/grid-darwin-aarch64",
     linuxX64: "/downloads/cli/grid-linux-x86_64" as string | null,
+    windowsX64: "/downloads/cli/grid-windows-x86_64.exe",
     installSh: "/downloads/install.sh",
-    version: "0.2.0",
+    installPs: "/downloads/install.ps1",
+    version: "0.2.16",
   },
 };
 
@@ -142,6 +144,9 @@ export const CLI_INSTALL_CURL =
 
 export const CLI_INSTALL_FORCE =
   "curl -fsSL https://grid-compute.com/downloads/install.sh | bash -s -- --force";
+
+export const CLI_INSTALL_WINDOWS =
+  "irm https://grid-compute.com/downloads/install.ps1 | iex";
 
 export function getMeshDownload(id: MeshPlatformId): MeshDownload | undefined {
   return MESH_DOWNLOADS.find((p) => p.id === id);

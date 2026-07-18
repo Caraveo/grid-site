@@ -2,7 +2,7 @@
 
 [![Cloudflare](https://img.shields.io/badge/platform-Cloudflare%20Workers-F38020.svg)](https://workers.cloudflare.com/)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black.svg)](https://nextjs.org/)
-[![Version](https://img.shields.io/badge/version-0.3.3-blue.svg)](https://github.com/Caraveo/grid-site/releases)
+[![Version](https://img.shields.io/badge/version-0.3.4-blue.svg)](https://github.com/Caraveo/grid-site/releases)
 [![Status](https://img.shields.io/badge/status-PREALPHA-red.svg)](https://github.com/Caraveo/grid-site)
 
 Cinematic launch site for **[GRID](https://github.com/caraveo/grid)** — useful mining for a planetary compute network.
@@ -26,6 +26,23 @@ npm run dev                         # Next.js dev server (Node)
 Open [http://localhost:3000](http://localhost:3000).
 
 `initOpenNextCloudflareForDev()` in `next.config.ts` wires local bindings (including simulated `MESH_KV`) into `next dev`.
+
+## GRID CLI downloads
+
+The site is the canonical release endpoint for the GRID CLI. The matching
+macOS (Intel and Apple Silicon), Linux x86_64, and Windows x86_64 binaries live
+under `/downloads/cli/` and are published with the site deployment.
+
+```bash
+# macOS and Linux x86_64
+curl -fsSL https://grid-compute.com/downloads/install.sh | bash
+
+# Windows PowerShell
+irm https://grid-compute.com/downloads/install.ps1 | iex
+```
+
+The Windows installer installs the native CLI. Hosts run container workloads
+through the supported WSL2 Linux/containerd path.
 
 ### Workers-accurate preview
 

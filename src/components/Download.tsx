@@ -5,6 +5,7 @@ import { ScrambleText } from "./ScrambleText";
 import {
   CLI_INSTALL_CURL,
   CLI_INSTALL_FORCE,
+  CLI_INSTALL_WINDOWS,
   DOWNLOADS,
 } from "@/lib/downloads";
 
@@ -47,6 +48,30 @@ const platforms: CliPlatform[] = [
     note: DOWNLOADS.cli.linuxX64
       ? "Static-ish glibc binary"
       : "Cross-build shipping soon",
+  },
+  {
+    id: "windows-x64",
+    name: "Windows",
+    arch: "x86_64 · CLI",
+    status: "ready",
+    href: DOWNLOADS.cli.windowsX64,
+    filename: "grid-windows-x86_64.exe",
+    note: "Native CLI. Run host containers through the WSL2 Linux path.",
+  },
+];
+
+const QUICK_STARTS = [
+  {
+    os: "macOS",
+    code: "curl -fsSL https://grid-compute.com/downloads/install.sh | bash\nnerdctl info\ngrid init --name my-node --class S",
+  },
+  {
+    os: "Linux",
+    code: "curl -fsSL https://grid-compute.com/downloads/install.sh | bash\nnerdctl info\ngrid init --name my-node --class S",
+  },
+  {
+    os: "Windows",
+    code: `${CLI_INSTALL_WINDOWS}\ngrid --version\n# For host jobs: wsl --install -d Ubuntu`,
   },
 ];
 
@@ -170,6 +195,7 @@ export function Download() {
           <div className="space-y-4 px-6 py-6 sm:px-10 sm:py-8">
             <CopyBlock label="Install" code={CLI_INSTALL_CURL} />
             <CopyBlock label="Upgrade / reinstall" code={CLI_INSTALL_FORCE} />
+            <CopyBlock label="Windows PowerShell" code={CLI_INSTALL_WINDOWS} />
             <CopyBlock
               label="Verify"
               code={`hash -r && which grid && grid -V
@@ -203,7 +229,7 @@ grid auth --help`}
           <p className="text-center font-mono text-[0.65rem] tracking-[0.22em] text-white/35 uppercase">
             Direct binaries · same release
           </p>
-          <div className="mt-5 grid gap-4 sm:grid-cols-3">
+          <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {platforms.map((p) => (
               <div
                 key={p.id}
@@ -239,6 +265,17 @@ grid auth --help`}
                   </p>
                 )}
               </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-12">
+          <p className="text-center font-mono text-[0.65rem] tracking-[0.22em] text-white/35 uppercase">
+            Get started now
+          </p>
+          <div className="mt-5 grid gap-4 lg:grid-cols-3">
+            {QUICK_STARTS.map((start) => (
+              <CopyBlock key={start.os} label={start.os} code={start.code} />
             ))}
           </div>
         </div>
