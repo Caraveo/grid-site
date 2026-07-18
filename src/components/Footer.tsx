@@ -32,6 +32,11 @@ export function Footer() {
                   </a>
                 </li>
                 <li>
+                  <a href="/slud" className="transition hover:text-white">
+                    SLUD
+                  </a>
+                </li>
+                <li>
                   <a
                     href="https://docs.grid-compute.com"
                     className="transition hover:text-white"
@@ -87,6 +92,11 @@ export function Footer() {
                 <li>
                   <a href="/#download" className="transition hover:text-white">
                     Download
+                  </a>
+                </li>
+                <li>
+                  <a href="/shop" className="transition hover:text-white">
+                    Shop
                   </a>
                 </li>
               </ul>
@@ -167,10 +177,34 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col items-start justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row sm:items-center">
+        <div className="mt-16 flex flex-col items-start justify-between gap-6 border-t border-white/10 pt-8 sm:flex-row sm:items-center">
           <p className="text-xs text-white/30">
             © {new Date().getFullYear()} GRID. Software MIT. Vision docs CC-BY-4.0.
           </p>
+
+          <a
+            href="https://ziateam.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative inline-flex items-center justify-center opacity-55 transition hover:opacity-100"
+            aria-label="From the team that brought you Zia Vision"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/zia-glasses.png"
+              alt=""
+              width={88}
+              height={28}
+              className="h-7 w-auto select-none"
+            />
+            <span
+              role="tooltip"
+              className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 w-max max-w-[16rem] -translate-x-1/2 border border-white/15 bg-black/95 px-3 py-2 text-center text-[0.7rem] leading-snug tracking-wide text-white/80 opacity-0 shadow-lg transition duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
+            >
+              From the team that brought you Zia Vision
+            </span>
+          </a>
+
           <p className="font-mono text-[0.65rem] tracking-[0.15em] text-white/25 uppercase">
             Hosted downloads · Phase 1 · No testnet economy
           </p>

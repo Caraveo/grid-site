@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { DOCS_NAV } from "@/lib/docs-nav";
@@ -92,6 +93,7 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
             >
               Registry
             </a>
+            <LanguageSwitcher />
             <ThemeToggle />
           </div>
         </div>

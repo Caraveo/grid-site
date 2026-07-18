@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Providers } from "@/components/Providers";
 import { buildMetadata, PAGES, SITE_NAME, SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
@@ -37,7 +38,7 @@ export const metadata: Metadata = {
   },
 };
 
-/** Runs before paint — prevents flash of wrong theme */
+/** Runs before paint — prevents flash of wrong theme / sets html lang from locale */
 const themeInitScript = `
 (function(){
   try {
@@ -52,6 +53,8 @@ const themeInitScript = `
     d.classList.add(t);
     d.dataset.theme = t;
     d.style.colorScheme = t;
+    var loc = localStorage.getItem('grid-locale');
+    if (loc) d.lang = loc === 'en' ? 'en' : loc;
   } catch (e) {}
 })();
 `;
@@ -74,7 +77,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body className="min-h-full bg-background text-foreground">
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

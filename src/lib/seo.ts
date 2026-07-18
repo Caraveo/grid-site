@@ -132,6 +132,24 @@ export const PAGES = {
       "useful mining",
     ],
   },
+  slud: {
+    title: "SLUD — Spam. Scam. Slop. | GRID",
+    description:
+      "Is your web SLUD? Spam, scams, and AI slop buried the legacy web. Protection by default. KillTheWeb. Build the new web — scan, block, verify, protect.",
+    path: "/slud",
+    label: "SLUD",
+    ogImage: "/downloads/og/card-03.png",
+    keywords: [
+      "SLUD",
+      "spam",
+      "scam",
+      "slop",
+      "KillTheWeb",
+      "MESH",
+      "protection by default",
+      "clean web",
+    ],
+  },
   docs: {
     title: "Docs — Public Registry API | GRID",
     description:
@@ -146,6 +164,25 @@ export const PAGES = {
       "computes",
       "docs.grid-compute.com",
       "developer docs",
+    ],
+  },
+  shop: {
+    title: "Shop — GRID Compute tees | GRID",
+    description:
+      "Twelve GRID Compute tees — Core Signal, Canvas, Depth, Nodes, Sphere, and more. $100 each via Cash App $Caraveo or equivalent Bitcoin.",
+    path: "/shop",
+    label: "SHOP",
+    ogImage: "/downloads/og/card-00.png",
+    keywords: [
+      "GRID",
+      "shop",
+      "tee",
+      "t-shirt",
+      "merch",
+      "GRID Compute",
+      "Cash App",
+      "Bitcoin",
+      "$Caraveo",
     ],
   },
   admin: {
