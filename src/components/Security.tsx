@@ -3,7 +3,8 @@ import { ScrambleText } from "./ScrambleText";
 
 /**
  * Abstract surface for GRID operator auth modes (CLI: `grid auth …`).
- * Modes: passkey | password | keyphrase | combo | master | nocrypt.
+ * Modes: passkey | password | keyphrase | combo | nocrypt.
+ * Master-destruction vault mode is intentionally not offered.
  */
 const modes = [
   {
@@ -33,13 +34,6 @@ const modes = [
     tag: "Stacked",
     icon: "layers" as const,
     body: "Password → passkey → keyphrase. Layered unlock for operators who want stacked ceremony.",
-  },
-  {
-    cmd: "master",
-    title: "Master",
-    tag: "Maximum",
-    icon: "layers" as const,
-    body: "Password + passkey + 24 words + randomized master key. All four required. One factor alone unlocks nothing.",
   },
   {
     cmd: "nocrypt",
@@ -153,8 +147,8 @@ export function Security() {
             </h2>
             <p className="section-body mt-6">
               GRID does not decide how your secrets sleep. Passkey by default —
-              or password, twenty-four words, stacked combo, full master factors,
-              or raw keys. Same mesh. Your rules.
+              or password, twenty-four words, stacked combo, or raw keys for
+              labs. Same mesh. Your rules.
             </p>
           </div>
 
@@ -170,13 +164,13 @@ export function Security() {
                     Default path
                   </p>
                   <h3 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
-                    Encrypted by{" "}
-                    <ScrambleText text="Passkey" />
+                    Encrypted by <ScrambleText text="Passkey" />
                   </h3>
                   <p className="mt-3 max-w-md text-sm leading-relaxed text-white/50 sm:text-base">
                     <span className="font-mono text-white/70">grid auth</span>{" "}
-                    lives under device credentials. Or step into master mode when
-                    you need a key this machine is not allowed to keep.
+                    lives under device credentials. Genesis authority and
+                    operator vaults are separate — no ceremony requires
+                    destroying a master key on the node.
                   </p>
                 </div>
               </div>
@@ -187,41 +181,13 @@ export function Security() {
           </div>
         </div>
 
-        {/* The Master is Destroyed */}
-        <div
-          id="master-destruction"
-          className="mt-16 border border-white/20 bg-gradient-to-b from-white/[0.07] to-transparent px-6 py-12 sm:px-12"
-        >
-          <p className="text-[0.65rem] font-semibold tracking-[0.28em] text-white/50 uppercase">
-            Master destruction
-          </p>
-          <blockquote className="mt-6 max-w-3xl text-xl font-medium leading-snug tracking-tight text-white sm:text-2xl sm:leading-snug">
-            The master is born once and dies on the node.
-            <span className="mt-4 block text-base font-normal leading-relaxed text-white/55 sm:text-lg">
-              GRID never keeps a recoverable master key under its home directory.
-              In master mode you set a password, register a device passkey, write
-              down a twenty-four word phrase, and receive a randomized master key.
-              After you type{" "}
-              <span className="font-mono text-white/80">DESTROY</span>, the master
-              is wiped from this machine. Unlock forever requires every factor —
-              password, passkey, phrase, and master key file. Knowing one is
-              knowing nothing.
-            </span>
-          </blockquote>
-          <p className="mt-8 font-mono text-[0.7rem] tracking-wide text-white/35">
-            grid auth master
-          </p>
-        </div>
-
         <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {modes.map((m) => (
             <article
               key={m.cmd}
               className={`panel flex flex-col p-6 sm:p-7 ${
-                m.cmd === "passkey"
-                  ? "border-white/30 bg-white/[0.05]"
-                  : ""
-              } ${m.cmd === "master" ? "border-white/25 sm:col-span-2 lg:col-span-2" : ""}`}
+                m.cmd === "passkey" ? "border-white/30 bg-white/[0.05]" : ""
+              }`}
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex h-11 w-11 items-center justify-center border border-white/20 bg-black/40">
@@ -243,34 +209,6 @@ export function Security() {
               <p className="mt-4 flex-1 text-sm leading-relaxed text-white/50">
                 {m.body}
               </p>
-
-              {m.cmd === "master" && (
-                <ol className="mt-6 flex flex-wrap items-center gap-2 border-t border-white/10 pt-5 text-[0.65rem] tracking-[0.12em] text-white/55 uppercase">
-                  <li className="border border-white/20 px-2.5 py-1">Password</li>
-                  <li className="text-white/25" aria-hidden>
-                    +
-                  </li>
-                  <li className="border border-white/25 px-2.5 py-1 text-white">
-                    Passkey
-                  </li>
-                  <li className="text-white/25" aria-hidden>
-                    +
-                  </li>
-                  <li className="border border-white/20 px-2.5 py-1">24 words</li>
-                  <li className="text-white/25" aria-hidden>
-                    +
-                  </li>
-                  <li className="border border-white/25 px-2.5 py-1 text-white">
-                    Master key
-                  </li>
-                  <li className="text-white/25" aria-hidden>
-                    →
-                  </li>
-                  <li className="border border-white/40 px-2.5 py-1 text-white">
-                    DESTROY on node
-                  </li>
-                </ol>
-              )}
             </article>
           ))}
         </div>
@@ -286,8 +224,8 @@ export function Security() {
               d: "Unlock happens on your machine. The mesh never sees the envelope.",
             },
             {
-              t: "Master dies here",
-              d: "In master mode the node keeps no recoverable master — only encrypted shares.",
+              t: "Genesis is separate",
+              d: "Peer policy and truth signatures use genesis keys — not vault master destruction.",
             },
           ].map((x) => (
             <div key={x.t}>
