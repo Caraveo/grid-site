@@ -484,3 +484,9 @@ html.light .font-mono.bg-black\/60 {
 html.light .shadow-black\/50 {
   --tw-shadow-color: rgba(0, 0, 0, 0.12) !important;
 }
+
+/* Shop checkout stays readable against the white theme. */
+html.light .shop-checkout-modal {
+  background-color: #ffffff !important;
+  color: var(--fg-strong);
+}
