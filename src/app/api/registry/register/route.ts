@@ -163,16 +163,44 @@ export async function POST(req: Request) {
       { status: 400 },
     );
   } catch (e) {
-    if (e instanceof RegError) {
+    // Prefer structured RegError; also detect duplicated-class instanceof failures after bundling
+    const status =
+      e instanceof RegError
+        ? e.status
+        : typeof e === "object" &&
+            e !== null &&
+            "status" in e &&
+            typeof (e as { status: unknown }).status === "number"
+          ? (e as { status: number }).status
+          : 500;
+    const message =
+      e instanceof Error
+        ? e.message
+        : typeof e === "object" &&
+            e !== null &&
+            "message" in e &&
+            typeof (e as { message: unknown }).message === "string"
+          ? (e as { message: string }).message
+          : "internal error";
+
+    if (status >= 400 && status < 600 && message && message !== "internal error") {
       return NextResponse.json(
-        { ok: false, error: e.message },
-        { status: e.status },
+        { ok: false, error: message },
+        { status },
       );
     }
+    // Fallback: surface raw error text so operators aren't stuck with opaque 500s
     console.error("[registry/register]", e);
+    const raw = e instanceof Error ? e.message : String(e ?? "internal error");
+    const friendly =
+      /10048|free usage limit|quota|rate limit/i.test(raw)
+        ? "Registry storage write limit reached for today (Cloudflare free tier). Try again after UTC midnight, or upgrade the Cloudflare plan."
+        : raw && raw.length < 220
+          ? raw
+          : "internal error";
     return NextResponse.json(
-      { ok: false, error: "internal error" },
-      { status: 500 },
+      { ok: false, error: friendly },
+      { status: /10048|free usage limit|quota|rate limit/i.test(raw) ? 503 : 500 },
     );
   }
 }
