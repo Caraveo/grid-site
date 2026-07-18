@@ -488,9 +488,11 @@ export function RegisterFlow() {
             </p>
             <p className="mt-4 text-sm text-white/50">
               Pay{" "}
-              <strong className="text-white">${fee.toFixed(2)}</strong> to{" "}
+              <strong className="text-white">${fee.toFixed(2)}</strong> via Cash
+              App to{" "}
               <strong className="font-mono text-white">{cashtag}</strong> with
-              this note:
+              this exact note. Fee prevents abuse and funds human review
+              (employment). Donations accepted at {cashtag} anytime.
             </p>
             <div className="mt-3 flex flex-wrap items-center gap-2">
               <code className="rounded-lg border border-white/15 bg-black px-3 py-2 font-mono text-sm text-white">

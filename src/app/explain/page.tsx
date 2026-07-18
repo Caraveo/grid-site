@@ -11,17 +11,9 @@ import {
   MeshPlanetDiagram,
   RolesDiagram,
 } from "@/components/explain/Diagrams";
+import { buildMetadata, PAGES } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Explain — GRID & MESH in plain English",
-  description:
-    "A simple visual overview of GRID (planetary compute network) and MESH (the grid:// browser). How useful mining works, how names resolve, and how Bitcoin secures value.",
-  openGraph: {
-    title: "Explain — GRID & MESH",
-    description:
-      "Super-simple diagrams: what GRID is, what MESH is, and how they work together.",
-  },
-};
+export const metadata: Metadata = buildMetadata(PAGES.explain);
 
 function Section({
   id,
@@ -263,7 +255,45 @@ export default function ExplainPage() {
           </div>
         </Section>
 
-        {/* 07 — CTA */}
+        {/* 07 — Ember */}
+        <Section
+          id="ember"
+          label="07 · Ember"
+          title={
+            <>
+              The full stack
+              <br />
+              <span className="font-thin text-white/70">for one realm</span>
+            </>
+          }
+        >
+          <p className="mb-6 max-w-2xl section-body text-base">
+            An <strong className="font-normal text-white/85">ember</strong> is
+            host + mine + compute +{" "}
+            <strong className="font-normal text-white/85">paid registry</strong>{" "}
+            for a single address like{" "}
+            <span className="font-mono text-white/80">grid://fire.grid</span>.
+            Registry activation is Cash App{" "}
+            <strong className="text-white/90">$5 → $Caraveo</strong> — prevents
+            abuse, funds review employment. Donations accepted.
+          </p>
+          <div className="panel p-6 font-mono text-sm leading-relaxed text-white/70">
+            <p className="text-white/40">// CLI</p>
+            <p className="mt-2">grid ember fire</p>
+            <p className="mt-1">grid register fire &nbsp;# pay $Caraveo</p>
+            <p className="mt-1">grid ember fire --start</p>
+          </div>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a href="/ember" className="btn-primary">
+              Ember guide
+            </a>
+            <a href="/registry" className="btn-ghost">
+              Registry · paywall
+            </a>
+          </div>
+        </Section>
+
+        {/* 08 — CTA */}
         <section className="relative border-t border-white/10 px-5 py-24">
           <div className="pointer-events-none absolute inset-0 hero-glow opacity-40" />
           <div className="relative mx-auto max-w-3xl text-center">
@@ -272,15 +302,18 @@ export default function ExplainPage() {
               Ready when you are
             </h2>
             <p className="mx-auto mt-6 max-w-lg section-body text-center">
-              Install the node, register a public name, or open the live
+              Install the node, light an ember, or activate a public name on the
               registry. The mesh only grows when machines join.
             </p>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
               <a href="/#download" className="btn-primary">
                 Download GRID
               </a>
+              <a href="/ember" className="btn-ghost">
+                Ember
+              </a>
               <a href="/registry" className="btn-ghost">
-                Public registry
+                Registry
               </a>
               <a href="/#mesh" className="btn-ghost">
                 About MESH

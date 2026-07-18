@@ -278,8 +278,8 @@ export async function upsertComputes(input: ComputeAnnounceInput): Promise<{
 
   if (updated.length === 0 && rejected.length > 0) {
     throw new ComputeError(
-      403,
-      `Compute name(s) not on registry.grid (register + approve as compute first): ${rejected.join(", ")}`,
+      402,
+      `Compute name(s) not activated on registry.grid: ${rejected.join(", ")}. Pay $5 Cash App to $Caraveo with your registration note → confirm → admin approve. Donations accepted at $Caraveo. (Prevents abuse · funds review employment.)`,
     );
   }
 

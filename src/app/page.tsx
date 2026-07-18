@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/Hero";
 import { Mesh } from "@/components/Mesh";
@@ -10,6 +11,9 @@ import { Security } from "@/components/Security";
 import { Timeline } from "@/components/Timeline";
 import { Download } from "@/components/Download";
 import { Footer } from "@/components/Footer";
+import { buildMetadata, PAGES } from "@/lib/seo";
+
+export const metadata: Metadata = buildMetadata(PAGES.home);
 
 export default function Home() {
   return (

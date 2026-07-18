@@ -11,7 +11,9 @@
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
-    "cf-build": "opennextjs-cloudflare build"
+    "cf-build": "opennextjs-cloudflare build",
+    "og:generate": "node scripts/generate-og.mjs",
+    "prebuild": "node scripts/generate-og.mjs"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "^1.20.1",
@@ -19,7 +21,8 @@
     "@simplewebauthn/server": "^13.3.2",
     "next": "16.2.10",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "tweetnacl": "^1.0.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

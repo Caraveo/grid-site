@@ -51,12 +51,10 @@ export function Miners() {
                 — GRID
               </span>
               <a
-                href="https://github.com/caraveo/grid"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#download"
                 className="text-[0.7rem] tracking-[0.15em] text-white/50 uppercase transition hover:text-white"
               >
-                Read more →
+                Install GRID →
               </a>
             </footer>
           </blockquote>

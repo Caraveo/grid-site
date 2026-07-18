@@ -91,13 +91,8 @@ export function Timeline() {
             <a href="#download" className="btn-primary min-w-[200px]">
               Install GRID
             </a>
-            <a
-              href="https://github.com/Caraveo/grid"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-ghost min-w-[200px]"
-            >
-              Watch the repo
+            <a href="#mesh-downloads" className="btn-ghost min-w-[200px]">
+              Download Mesh
             </a>
           </div>
         </div>

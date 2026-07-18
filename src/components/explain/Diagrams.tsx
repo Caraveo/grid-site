@@ -337,8 +337,20 @@ export function RolesDiagram() {
       ),
     },
     {
+      title: "Ember",
+      body: "The full stack for one realm: host + mine + compute + paid registry.",
+      icon: (
+        <path
+          d="M20 6c4 6 8 10 8 16a8 8 0 1 1-16 0c0-6 4-10 8-16z"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          fill="none"
+        />
+      ),
+    },
+    {
       title: "Registry",
-      body: "Public list of peers & realms — never raw IPs.",
+      body: "Public list of peers & realms — paid activation ($5 → $Caraveo). Never raw IPs.",
       icon: (
         <path
           d="M12 10h16v20H12z M16 14h8 M16 20h8 M16 26h5"

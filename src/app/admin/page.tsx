@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { AdminDashboard } from "@/components/AdminDashboard";
+import { buildMetadata, PAGES } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Admin — GRID",
-  description: "Operator dashboard",
+  ...buildMetadata(PAGES.admin),
   robots: { index: false, follow: false, nocache: true },
 };
 
