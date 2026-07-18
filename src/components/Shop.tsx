@@ -205,13 +205,13 @@ function CheckoutModal({
           </button>
         </div>
 
-        <div className="relative mx-auto aspect-square w-full max-w-[280px] bg-[#737373]">
+        <div className="relative aspect-square w-full bg-[#737373]">
           <Image
             src={product.image}
             alt={product.alt}
             fill
-            sizes="280px"
-            className="object-contain p-4"
+            sizes="(max-width: 640px) 100vw, 512px"
+            className="object-contain"
           />
         </div>
 
