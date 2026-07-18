@@ -3,7 +3,7 @@
 #  GRID CLI installer — official binary from grid-compute.com
 #
 #  What this script does:
-#    1. Detects your OS + CPU (macOS Intel / Apple Silicon, Linux x86_64 / aarch64)
+#    1. Detects your OS + CPU (macOS Intel / Apple Silicon, Linux x86_64)
 #    2. Downloads the matching Phase-1 `grid` binary over HTTPS
 #    3. Verifies it looks like a real GRID CLI (runs `grid auth --help`)
 #    4. Installs to ~/.local/bin/grid (or --prefix / --system)
@@ -35,7 +35,7 @@ FORCE=0
 SYSTEM=0
 UNINSTALL=0
 YES=0
-VERSION_HINT="0.2.0"
+VERSION_HINT="0.2.16"
 
 for arg in "$@"; do
   case "$arg" in
@@ -216,7 +216,11 @@ os_arch() {
     darwin) os="darwin" ;;
     *) die "unsupported OS: $os — see ${ORIGIN}/#download for packages" ;;
   esac
-  echo "${os}-${arch}"
+  case "${os}-${arch}" in
+    darwin-x86_64|darwin-aarch64|linux-x86_64) echo "${os}-${arch}" ;;
+    linux-aarch64) die "Linux ARM64 is not published yet — use a Linux x86_64 host or download a supported release" ;;
+    *) die "unsupported platform: ${os}-${arch}" ;;
+  esac
 }
 
 asset_name() {
@@ -229,7 +233,6 @@ human_platform() {
     darwin-x86_64) echo "macOS · Intel (x86_64)" ;;
     darwin-aarch64) echo "macOS · Apple Silicon (aarch64)" ;;
     linux-x86_64) echo "Linux · x86_64" ;;
-    linux-aarch64) echo "Linux · aarch64" ;;
     *) echo "$(os_arch)" ;;
   esac
 }
