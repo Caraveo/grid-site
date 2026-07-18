@@ -32,6 +32,14 @@ export function Footer() {
                   </a>
                 </li>
                 <li>
+                  <a
+                    href="https://docs.grid-compute.com"
+                    className="transition hover:text-white"
+                  >
+                    Docs
+                  </a>
+                </li>
+                <li>
                   <a href="/ember" className="transition hover:text-white">
                     Ember
                   </a>

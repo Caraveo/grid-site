@@ -19,6 +19,7 @@
   "routes": [
     { "pattern": "grid-compute.com", "custom_domain": true },
     { "pattern": "www.grid-compute.com", "custom_domain": true },
+    { "pattern": "docs.grid-compute.com", "custom_domain": true },
   ],
   "services": [
     {
