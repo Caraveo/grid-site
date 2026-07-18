@@ -36,7 +36,7 @@ export type MeshDownload = {
   available: boolean;
 };
 
-const MESH_VERSION = "0.1.0";
+const MESH_VERSION = "0.2.0";
 
 /**
  * Mesh browser builds.
@@ -130,7 +130,7 @@ export const DOWNLOADS = {
   cli: {
     darwinX64: "/downloads/cli/grid-darwin-x86_64",
     installSh: "/downloads/install.sh",
-    version: "0.1.0",
+    version: "0.2.0",
   },
 } as const;
 

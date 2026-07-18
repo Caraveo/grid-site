@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 
 export const SITE_URL = "https://grid-compute.com";
 export const SITE_NAME = "GRID";
+/** Marketing / site version (bump with releases). */
+export const SITE_VERSION = "0.2.0";
 
 export type PageSeo = {
   title: string;
