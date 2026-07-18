@@ -130,6 +130,22 @@ export const PAGES = {
       "useful mining",
     ],
   },
+  docs: {
+    title: "Docs — Public Registry API | GRID",
+    description:
+      "Developer documentation for the GRID public registry, mesh globe, computes, name registration, CLI, and earn use cases. Data-only — no private keys or host endpoints.",
+    path: "/docs",
+    label: "DOCS",
+    ogImage: "/downloads/og/card-03.png",
+    keywords: [
+      "GRID API",
+      "registry API",
+      "mesh",
+      "computes",
+      "docs.grid-compute.com",
+      "developer docs",
+    ],
+  },
   admin: {
     title: "Admin — GRID registry",
     description: "GRID registry administration.",

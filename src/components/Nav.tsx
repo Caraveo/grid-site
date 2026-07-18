@@ -24,6 +24,11 @@ const menu: NavItem[] = [
         hint: "Simple overview · diagrams",
       },
       {
+        href: "https://docs.grid-compute.com",
+        label: "Docs",
+        hint: "Public API · registry · earn",
+      },
+      {
         href: "/ember",
         label: "Ember",
         hint: "host + mine + compute + registry",
