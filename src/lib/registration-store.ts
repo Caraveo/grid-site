@@ -240,12 +240,37 @@ async function loadStore(): Promise<{ store: StoreFile; kv: MeshKv | null }> {
   }
 }
 
+function kvWriteErrorMessage(e: unknown): string {
+  const msg = e instanceof Error ? e.message : String(e ?? "");
+  const lower = msg.toLowerCase();
+  // Cloudflare free tier daily write cap → Workers surface this as put failures
+  if (
+    lower.includes("10048") ||
+    lower.includes("free usage limit") ||
+    lower.includes("limit for this operation") ||
+    lower.includes("429") ||
+    lower.includes("rate limit") ||
+    lower.includes("quota")
+  ) {
+    return "Registry storage write limit reached for today (Cloudflare free tier). Try again after UTC midnight, or upgrade the Cloudflare plan.";
+  }
+  if (lower.includes("not found") || lower.includes("10013")) {
+    return "Registry storage binding missing or misconfigured (MESH_KV).";
+  }
+  return msg ? `Registry save failed: ${msg.slice(0, 180)}` : "Registry save failed";
+}
+
 async function saveStore(store: StoreFile, kv: MeshKv | null): Promise<void> {
   store.updatedAt = new Date().toISOString();
   const payload = JSON.stringify(store);
   if (kv) {
-    await kv.put(KV_KEY, payload);
-    return;
+    try {
+      await kv.put(KV_KEY, payload);
+      return;
+    } catch (e) {
+      console.error("[registration-store] MESH_KV.put failed", e);
+      throw new RegError(503, kvWriteErrorMessage(e));
+    }
   }
   fsMemory = store;
   try {
@@ -254,8 +279,13 @@ async function saveStore(store: StoreFile, kv: MeshKv | null): Promise<void> {
     const p = path.join(process.cwd(), "data", "registrations.json");
     await fs.mkdir(path.dirname(p), { recursive: true });
     await fs.writeFile(p, JSON.stringify(store, null, 2), "utf8");
-  } catch {
-    /* ephemeral */
+  } catch (e) {
+    console.error("[registration-store] fs save failed", e);
+    // Workers without KV would lose data — fail loudly so we never pretend success
+    throw new RegError(
+      503,
+      "Registry storage unavailable (no MESH_KV binding and disk write failed).",
+    );
   }
 }
 
