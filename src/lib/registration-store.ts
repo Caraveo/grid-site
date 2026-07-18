@@ -9,6 +9,7 @@ import {
   sanitizeNodeId,
   sanitizeRegion,
 } from "./sanitize";
+import { isTermReserved } from "./reserved-store";
 
 const KV_KEY = "name-registrations-v1";
 const MAX_REG = 5_000;
@@ -328,6 +329,13 @@ export async function startRegistration(input: {
     throw new RegError(
       400,
       "Invalid name (2–32 chars, a-z 0-9 _ -; reserved names blocked)",
+    );
+  }
+
+  if (await isTermReserved(name)) {
+    throw new RegError(
+      409,
+      `Name «${name}» is reserved and cannot be registered`,
     );
   }
 

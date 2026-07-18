@@ -1,81 +1,150 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 import { Logo } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
+import { useLocale } from "@/lib/i18n/LocaleContext";
+import type { MessageKey } from "@/lib/i18n/locales";
 
-type NavItem = {
-  label: string;
-  href?: string;
-  children?: { href: string; label: string; hint?: string }[];
+type NavChild = {
+  href: string;
+  labelKey: MessageKey;
+  hintKey?: MessageKey;
 };
 
-/**
- * Organized mega-structure with submenus.
- * Hash links stay on the home page; real routes use full paths.
- */
-const menu: NavItem[] = [
-  {
-    label: "Learn",
-    children: [
-      {
-        href: "/explain",
-        label: "Explain",
-        hint: "Simple overview · diagrams",
-      },
-      {
-        href: "https://docs.grid-compute.com",
-        label: "Docs",
-        hint: "Public API · registry · earn",
-      },
-      {
-        href: "/ember",
-        label: "Ember",
-        hint: "host + mine + compute + registry",
-      },
-      { href: "/#mission", label: "Mission", hint: "Why GRID exists" },
-      { href: "/#network", label: "Network", hint: "Planetary fabric" },
-      { href: "/#security", label: "Security", hint: "Bitcoin TSL" },
-      { href: "/#timeline", label: "Phases", hint: "Roadmap" },
-    ],
-  },
-  {
-    label: "Network",
-    children: [
-      { href: "/#mesh-downloads", label: "Mesh", hint: "Mac · Linux · Windows" },
-      { href: "/#mesh", label: "About Mesh", hint: "grid:// browser" },
-      { href: "/#nodes", label: "Nodes", hint: "Machines on the fabric" },
-      { href: "/#miners", label: "Miners", hint: "Useful work & earn" },
-      {
-        href: "/registry",
-        label: "Registry",
-        hint: "Paid names · $5 $Caraveo",
-      },
-      {
-        href: "/ember",
-        label: "Ember",
-        hint: "Full realm stack",
-      },
-    ],
-  },
-  {
-    label: "Get started",
-    children: [
-      { href: "/registry", label: "Register", hint: "Activate a public name" },
-      { href: "/ember", label: "Run an ember", hint: "fire.grid checklist" },
-      {
-        href: "/#mesh-downloads",
-        label: "Mesh app",
-        hint: "Mac · Linux · Windows 11+",
-      },
-      { href: "/#download", label: "GRID CLI", hint: "Download node binary" },
-      { href: "/#wallets", label: "Wallets", hint: "GRID → Bitcoin" },
-      { href: "/explain", label: "How it works", hint: "Start here" },
-    ],
-  },
-];
+type NavItem = {
+  labelKey: MessageKey;
+  href?: string;
+  children?: NavChild[];
+};
+
+function useMenu(): NavItem[] {
+  return [
+    {
+      labelKey: "nav.learn",
+      children: [
+        {
+          href: "/explain",
+          labelKey: "nav.explain",
+          hintKey: "nav.explain.hint",
+        },
+        {
+          href: "/slud",
+          labelKey: "nav.slud",
+          hintKey: "nav.slud.hint",
+        },
+        {
+          href: "https://docs.grid-compute.com",
+          labelKey: "nav.docs",
+          hintKey: "nav.docs.hint",
+        },
+        {
+          href: "/ember",
+          labelKey: "nav.emberItem",
+          hintKey: "nav.ember.hint",
+        },
+        {
+          href: "/#mission",
+          labelKey: "nav.mission",
+          hintKey: "nav.mission.hint",
+        },
+        {
+          href: "/#network",
+          labelKey: "nav.networkItem",
+          hintKey: "nav.network.hint",
+        },
+        {
+          href: "/#security",
+          labelKey: "nav.security",
+          hintKey: "nav.security.hint",
+        },
+        {
+          href: "/#timeline",
+          labelKey: "nav.phases",
+          hintKey: "nav.phases.hint",
+        },
+      ],
+    },
+    {
+      labelKey: "nav.network",
+      children: [
+        {
+          href: "/#mesh-downloads",
+          labelKey: "nav.mesh",
+          hintKey: "nav.mesh.hint",
+        },
+        {
+          href: "/#mesh",
+          labelKey: "nav.aboutMesh",
+          hintKey: "nav.aboutMesh.hint",
+        },
+        {
+          href: "/#nodes",
+          labelKey: "nav.nodes",
+          hintKey: "nav.nodes.hint",
+        },
+        {
+          href: "/#miners",
+          labelKey: "nav.miners",
+          hintKey: "nav.miners.hint",
+        },
+        {
+          href: "/registry",
+          labelKey: "nav.registryItem",
+          hintKey: "nav.registry.hint",
+        },
+        {
+          href: "/ember",
+          labelKey: "nav.emberFull",
+          hintKey: "nav.emberFull.hint",
+        },
+      ],
+    },
+    {
+      labelKey: "nav.getStarted",
+      children: [
+        {
+          href: "/registry",
+          labelKey: "nav.register",
+          hintKey: "nav.register.hint",
+        },
+        {
+          href: "/ember",
+          labelKey: "nav.runEmber",
+          hintKey: "nav.runEmber.hint",
+        },
+        {
+          href: "/#mesh-downloads",
+          labelKey: "nav.meshApp",
+          hintKey: "nav.meshApp.hint",
+        },
+        {
+          href: "/#download",
+          labelKey: "nav.cli",
+          hintKey: "nav.cli.hint",
+        },
+        {
+          href: "/#wallets",
+          labelKey: "nav.wallets",
+          hintKey: "nav.wallets.hint",
+        },
+        {
+          href: "/explain",
+          labelKey: "nav.how",
+          hintKey: "nav.how.hint",
+        },
+      ],
+    },
+    {
+      labelKey: "nav.shop",
+      href: "/shop",
+    },
+  ];
+}
 
 function DesktopDropdown({ item }: { item: NavItem }) {
+  const { t } = useLocale();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLLIElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -101,7 +170,7 @@ function DesktopDropdown({ item }: { item: NavItem }) {
           href={item.href ?? "#"}
           className="text-[0.7rem] font-medium tracking-[0.2em] text-white/70 uppercase transition hover:text-white"
         >
-          {item.label}
+          {t(item.labelKey)}
         </a>
       </li>
     );
@@ -125,7 +194,7 @@ function DesktopDropdown({ item }: { item: NavItem }) {
         className="flex items-center gap-1.5 text-[0.7rem] font-medium tracking-[0.2em] text-white/70 uppercase transition hover:text-white"
         onClick={() => setOpen((v) => !v)}
       >
-        {item.label}
+        {t(item.labelKey)}
         <svg
           width="10"
           height="10"
@@ -148,17 +217,17 @@ function DesktopDropdown({ item }: { item: NavItem }) {
           <div className="min-w-[240px] border border-white/12 bg-black/95 py-2 shadow-2xl shadow-black/50 backdrop-blur-xl">
             {item.children.map((c) => (
               <a
-                key={c.href + c.label}
+                key={c.href + c.labelKey}
                 href={c.href}
                 className="block px-4 py-2.5 transition hover:bg-white/[0.06]"
                 onClick={() => setOpen(false)}
               >
                 <span className="block text-[0.72rem] font-medium tracking-[0.16em] text-white/90 uppercase">
-                  {c.label}
+                  {t(c.labelKey)}
                 </span>
-                {c.hint && (
+                {c.hintKey && (
                   <span className="mt-0.5 block text-[0.7rem] text-white/35">
-                    {c.hint}
+                    {t(c.hintKey)}
                   </span>
                 )}
               </a>
@@ -171,6 +240,8 @@ function DesktopDropdown({ item }: { item: NavItem }) {
 }
 
 export function Nav() {
+  const { t } = useLocale();
+  const menu = useMenu();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [mobileSection, setMobileSection] = useState<string | null>(null);
@@ -196,33 +267,34 @@ export function Nav() {
 
         <ul className="hidden items-center gap-8 lg:gap-10 md:flex">
           {menu.map((item) => (
-            <DesktopDropdown key={item.label} item={item} />
+            <DesktopDropdown key={item.labelKey} item={item} />
           ))}
         </ul>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <LanguageSwitcher />
           <ThemeToggle />
           <a
             href="/ember"
             className="hidden border border-white/25 px-4 py-2 text-[0.65rem] font-semibold tracking-[0.18em] uppercase transition hover:border-white/60 hover:text-white sm:inline-flex"
           >
-            Ember
+            {t("nav.ember")}
           </a>
           <a
             href="/registry"
             className="inline-flex border border-white/50 bg-white px-4 py-2 text-[0.65rem] font-semibold tracking-[0.18em] text-black uppercase transition hover:bg-transparent hover:text-white"
           >
-            Registry
+            {t("nav.registry")}
           </a>
           <a
             href="/#download"
             className="hidden border border-white/50 px-4 py-2 text-[0.65rem] font-semibold tracking-[0.18em] uppercase transition hover:border-white hover:bg-white hover:text-black sm:inline-flex"
           >
-            Get GRID
+            {t("nav.getGrid")}
           </a>
           <button
             type="button"
-            aria-label="Menu"
+            aria-label={t("nav.menu")}
             className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 md:hidden"
             onClick={() => setOpen((v) => !v)}
           >
@@ -243,62 +315,80 @@ export function Nav() {
         <div className="max-h-[min(80vh,640px)] overflow-y-auto border-t border-white/10 bg-black/95 backdrop-blur-xl md:hidden">
           <ul className="flex flex-col px-5 py-4">
             {menu.map((item) => (
-              <li key={item.label} className="border-t border-white/8">
-                <button
-                  type="button"
-                  className="flex w-full items-center justify-between py-3 text-left text-sm tracking-[0.18em] text-white/80 uppercase"
-                  onClick={() =>
-                    setMobileSection((s) =>
-                      s === item.label ? null : item.label,
-                    )
-                  }
-                  aria-expanded={mobileSection === item.label}
-                >
-                  {item.label}
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 10 10"
-                    fill="none"
-                    className={`opacity-40 transition ${
-                      mobileSection === item.label ? "rotate-180" : ""
-                    }`}
+              <li key={item.labelKey} className="border-t border-white/8">
+                {item.children?.length ? (
+                  <>
+                    <button
+                      type="button"
+                      className="flex w-full items-center justify-between py-3 text-left text-sm tracking-[0.18em] text-white/80 uppercase"
+                      onClick={() =>
+                        setMobileSection((s) =>
+                          s === item.labelKey ? null : item.labelKey,
+                        )
+                      }
+                      aria-expanded={mobileSection === item.labelKey}
+                    >
+                      {t(item.labelKey)}
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 10 10"
+                        fill="none"
+                        className={`opacity-40 transition ${
+                          mobileSection === item.labelKey ? "rotate-180" : ""
+                        }`}
+                      >
+                        <path
+                          d="M2 3.5L5 6.5L8 3.5"
+                          stroke="currentColor"
+                          strokeWidth="1.2"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    </button>
+                    {mobileSection === item.labelKey && (
+                      <ul className="mb-2 border-l border-white/10 pl-4">
+                        {item.children.map((c) => (
+                          <li key={c.href + c.labelKey}>
+                            <a
+                              href={c.href}
+                              onClick={() => setOpen(false)}
+                              className="block py-2.5"
+                            >
+                              <span className="block text-[0.8rem] tracking-[0.14em] text-white/85 uppercase">
+                                {t(c.labelKey)}
+                              </span>
+                              {c.hintKey && (
+                                <span className="mt-0.5 block text-xs text-white/35">
+                                  {t(c.hintKey)}
+                                </span>
+                              )}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </>
+                ) : (
+                  <a
+                    href={item.href ?? "#"}
+                    onClick={() => setOpen(false)}
+                    className="block py-3 text-sm tracking-[0.18em] text-white/80 uppercase"
                   >
-                    <path
-                      d="M2 3.5L5 6.5L8 3.5"
-                      stroke="currentColor"
-                      strokeWidth="1.2"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                </button>
-                {mobileSection === item.label && item.children && (
-                  <ul className="mb-2 border-l border-white/10 pl-4">
-                    {item.children.map((c) => (
-                      <li key={c.href + c.label}>
-                        <a
-                          href={c.href}
-                          onClick={() => setOpen(false)}
-                          className="block py-2.5"
-                        >
-                          <span className="block text-[0.8rem] tracking-[0.14em] text-white/85 uppercase">
-                            {c.label}
-                          </span>
-                          {c.hint && (
-                            <span className="mt-0.5 block text-xs text-white/35">
-                              {c.hint}
-                            </span>
-                          )}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
+                    {t(item.labelKey)}
+                  </a>
                 )}
               </li>
             ))}
             <li className="border-t border-white/10 pt-4 flex items-center justify-between gap-3 py-2">
               <span className="text-sm tracking-[0.14em] text-white/50 uppercase">
-                Theme
+                {t("lang.title")}
+              </span>
+              <LanguageSwitcher />
+            </li>
+            <li className="flex items-center justify-between gap-3 py-2">
+              <span className="text-sm tracking-[0.14em] text-white/50 uppercase">
+                {t("nav.theme")}
               </span>
               <ThemeToggle />
             </li>
@@ -308,7 +398,7 @@ export function Nav() {
                 onClick={() => setOpen(false)}
                 className="btn-ghost w-full"
               >
-                Ember
+                {t("nav.ember")}
               </a>
             </li>
             <li className="pt-2">
@@ -317,16 +407,16 @@ export function Nav() {
                 onClick={() => setOpen(false)}
                 className="btn-primary w-full"
               >
-                Registry
+                {t("nav.registry")}
               </a>
             </li>
-            <li className="pt-2">
+            <li className="pt-2 pb-2">
               <a
                 href="/#download"
                 onClick={() => setOpen(false)}
                 className="btn-ghost w-full"
               >
-                Get GRID
+                {t("nav.getGrid")}
               </a>
             </li>
           </ul>

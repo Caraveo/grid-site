@@ -129,10 +129,12 @@ export const DOWNLOADS = {
   },
   cli: {
     darwinX64: "/downloads/cli/grid-darwin-x86_64",
+    darwinArm64: "/downloads/cli/grid-darwin-aarch64",
+    linuxX64: "/downloads/cli/grid-linux-x86_64" as string | null,
     installSh: "/downloads/install.sh",
     version: "0.2.0",
   },
-} as const;
+};
 
 /** One-liner shown in the UI (installs CLI from this site). */
 export const CLI_INSTALL_CURL =

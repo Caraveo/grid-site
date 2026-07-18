@@ -1,15 +1,31 @@
 #!/usr/bin/env bash
-# GRID CLI installer — downloads the Phase 1 binary from grid-compute.com
+# ─────────────────────────────────────────────────────────────────────────────
+#  GRID CLI installer — official binary from grid-compute.com
 #
-# One-liner:
-#   curl -fsSL https://grid-compute.com/downloads/install.sh | bash
+#  What this script does:
+#    1. Detects your OS + CPU (macOS Intel / Apple Silicon, Linux x86_64 / aarch64)
+#    2. Downloads the matching Phase-1 `grid` binary over HTTPS
+#    3. Verifies it looks like a real GRID CLI (runs `grid auth --help`)
+#    4. Installs to ~/.local/bin/grid (or --prefix / --system)
+#    5. Optionally adds that directory to your PATH in .zshrc / .bashrc
 #
-# Options (after bash -s -- …):
-#   --force         Reinstall even if Phase-1 grid is already present
-#   --system        Prefer /usr/local/bin (uses sudo if needed)
-#   --prefix=DIR    Install directory (default: ~/.local/bin)
-#   --uninstall     Remove managed grid binary
-#   -h | --help
+#  What it does NOT do:
+#    · Does not run as root unless you choose --system and sudo is required
+#    · Does not send telemetry or open outbound connections except the download
+#    · Does not modify Docker, launchd, or start a node daemon
+#    · Does not touch your wallet / chain.json / operator keys
+#
+#  One-liner:
+#    curl -fsSL https://grid-compute.com/downloads/install.sh | bash
+#
+#  Options (after bash -s -- …):
+#    --force         Reinstall even if Phase-1 grid is already present
+#    --system        Prefer /usr/local/bin (uses sudo if needed)
+#    --prefix=DIR    Install directory (default: ~/.local/bin)
+#    --uninstall     Remove managed grid binary
+#    --yes           Non-interactive (skip optional PATH prompt nuances)
+#    -h | --help
+# ─────────────────────────────────────────────────────────────────────────────
 set -euo pipefail
 
 ORIGIN="${GRID_ORIGIN:-https://grid-compute.com}"
@@ -18,28 +34,47 @@ PREFIX="${GRID_PREFIX:-}"
 FORCE=0
 SYSTEM=0
 UNINSTALL=0
+YES=0
+VERSION_HINT="0.2.0"
 
 for arg in "$@"; do
   case "$arg" in
     --force) FORCE=1 ;;
     --system) SYSTEM=1 ;;
     --uninstall) UNINSTALL=1 ;;
+    --yes|-y) YES=1 ;;
     --prefix=*) PREFIX="${arg#*=}" ;;
     -h|--help)
       cat <<EOF
-GRID install — Phase 1 useful mining CLI (hosted on grid-compute.com)
 
-  curl -fsSL ${ORIGIN}/downloads/install.sh | bash
+  GRID CLI installer  ·  v${VERSION_HINT}+  ·  ${ORIGIN}
 
-Options (pass after bash -s --):
-  --force         Reinstall even if Phase-1 grid already works
-  --system        Prefer /usr/local/bin (may use sudo)
-  --prefix=DIR    Install binary into DIR (default: ~/.local/bin)
-  --uninstall     Remove managed grid binary
-  -h, --help      This help
+  Installs the official Phase-1 node binary so you can host compute, mine
+  security PoR, register names, and talk to the public mesh registry.
 
-After install, verify:
-  hash -r && which grid && grid -V && grid auth --help
+  Usage:
+    curl -fsSL ${ORIGIN}/downloads/install.sh | bash
+    curl -fsSL ${ORIGIN}/downloads/install.sh | bash -s -- --force
+    curl -fsSL ${ORIGIN}/downloads/install.sh | bash -s -- --prefix=\$HOME/bin
+
+  Options:
+    --force         Reinstall / upgrade even if grid already works
+    --system        Prefer /usr/local/bin (may prompt for sudo)
+    --prefix=DIR    Install binary into DIR (default: ~/.local/bin)
+    --uninstall     Remove the managed grid binary
+    --yes           Non-interactive defaults
+    -h, --help      This help
+
+  After install:
+    hash -r && which grid && grid -V
+    grid status          # node + blockchain size + security check
+    grid auth --help     # passkey / operator protection
+    grid init --name my-node --class S
+    grid node            # host + mine
+
+  Docs:  https://docs.grid-compute.com
+  Site:  ${ORIGIN}
+
 EOF
       exit 0
       ;;
@@ -50,24 +85,43 @@ EOF
   esac
 done
 
+# ── pretty terminal ──────────────────────────────────────────────────────────
 if [[ -t 1 ]]; then
   BOLD=$'\033[1m'; DIM=$'\033[2m'; GREEN=$'\033[32m'; YELLOW=$'\033[33m'
-  RED=$'\033[31m'; RESET=$'\033[0m'
+  RED=$'\033[31m'; CYAN=$'\033[36m'; RESET=$'\033[0m'
 else
-  BOLD=""; DIM=""; GREEN=""; YELLOW=""; RED=""; RESET=""
+  BOLD=""; DIM=""; GREEN=""; YELLOW=""; RED=""; CYAN=""; RESET=""
 fi
 info()  { printf '%s→%s %s\n' "$DIM" "$RESET" "$*" >&2; }
 ok()    { printf '%s✓%s %s\n' "$GREEN" "$RESET" "$*" >&2; }
 warn()  { printf '%s!%s %s\n' "$YELLOW" "$RESET" "$*" >&2; }
 die()   { printf '%serror:%s %s\n' "$RED" "$RESET" "$*" >&2; exit 1; }
+step()  { printf '\n%s▸%s %s%s%s\n' "$CYAN" "$RESET" "$BOLD" "$*" "$RESET" >&2; }
+
+banner() {
+  cat >&2 <<EOF
+
+${BOLD}${CYAN}      /\\
+     /  \\
+    / ## \\     G R I D
+    \\    /     useful mining · bitcoin TSL
+     \\  /
+      \\/${RESET}
+
+${DIM}  Official CLI installer · ${ORIGIN}
+  Phase 1 · host · mine · registry · wallet${RESET}
+
+EOF
+}
 
 need_cmd() {
-  command -v "$1" >/dev/null 2>&1 || die "missing required command: $1"
+  command -v "$1" >/dev/null 2>&1 || die "missing required command: $1 (install it and re-run)"
 }
 
 is_phase1_binary() {
   local bin="$1"
   [[ -x "$bin" ]] || return 1
+  # Phase-1 CLI always exposes auth / status / registry
   if "$bin" auth --help >/dev/null 2>&1; then
     return 0
   fi
@@ -106,7 +160,7 @@ install_file() {
     return 0
   fi
 
-  if [[ -t 0 ]] && command -v sudo >/dev/null 2>&1; then
+  if command -v sudo >/dev/null 2>&1; then
     warn "Need elevated rights to write $dest"
     if sudo mkdir -p "$dest_dir" && sudo install -m 755 "$src" "$dest"; then
       return 0
@@ -139,12 +193,10 @@ ensure_path_export() {
     if [[ -f "$rc" ]] && grep -qF "$dest_dir" "$rc" 2>/dev/null; then
       info "PATH already referenced in $rc"
     else
-      if [[ -t 0 || -t 1 ]]; then
-        if [[ "$dest_dir" == "$HOME/.local/bin" || "$dest_dir" == "$HOME/bin" ]]; then
-          printf '\n# GRID CLI\n%s\n' "$line" >> "$rc"
-          ok "Appended PATH export to $rc"
-          export PATH="$dest_dir:$PATH"
-        fi
+      if [[ "$dest_dir" == "$HOME/.local/bin" || "$dest_dir" == "$HOME/bin" || "$YES" -eq 1 ]]; then
+        printf '\n# GRID CLI\n%s\n' "$line" >> "$rc"
+        ok "Appended PATH export to $rc"
+        export PATH="$dest_dir:$PATH"
       fi
     fi
   fi
@@ -157,24 +209,35 @@ os_arch() {
   case "$arch" in
     x86_64|amd64) arch="x86_64" ;;
     aarch64|arm64) arch="aarch64" ;;
-    *) die "unsupported arch: $arch" ;;
+    *) die "unsupported CPU architecture: $arch" ;;
   esac
   case "$os" in
     linux) os="linux" ;;
     darwin) os="darwin" ;;
-    *) die "unsupported OS: $os — download a binary from ${ORIGIN}/#download" ;;
+    *) die "unsupported OS: $os — see ${ORIGIN}/#download for packages" ;;
   esac
   echo "${os}-${arch}"
 }
 
 asset_name() {
-  local platform
-  platform="$(os_arch)"
-  # Site hosts: grid-darwin-x86_64, grid-darwin-aarch64, grid-linux-x86_64, …
-  echo "grid-${platform}"
+  # Hosted as: grid-darwin-x86_64, grid-darwin-aarch64, grid-linux-x86_64, …
+  echo "grid-$(os_arch)"
 }
 
+human_platform() {
+  case "$(os_arch)" in
+    darwin-x86_64) echo "macOS · Intel (x86_64)" ;;
+    darwin-aarch64) echo "macOS · Apple Silicon (aarch64)" ;;
+    linux-x86_64) echo "Linux · x86_64" ;;
+    linux-aarch64) echo "Linux · aarch64" ;;
+    *) echo "$(os_arch)" ;;
+  esac
+}
+
+# ── uninstall ────────────────────────────────────────────────────────────────
 if [[ "$UNINSTALL" -eq 1 ]]; then
+  banner
+  step "Uninstall"
   bin_dir="$(resolve_bin_dir)"
   dest="$bin_dir/grid"
   if [[ -f "$dest" ]]; then
@@ -183,19 +246,31 @@ if [[ "$UNINSTALL" -eq 1 ]]; then
   else
     info "No grid binary at $dest"
   fi
+  info "Note: ~/.grid config, keys, and chain.json were left untouched."
   exit 0
 fi
 
+# ── install ──────────────────────────────────────────────────────────────────
+banner
 need_cmd curl
 need_cmd install
 need_cmd uname
+need_cmd mktemp
+need_cmd chmod
+
+step "Detect platform"
+plat="$(human_platform)"
+ok "$plat"
 
 bin_dir="$(resolve_bin_dir)"
 dest="$bin_dir/grid"
+info "Install target: $dest"
 
+step "Check for existing install"
 if [[ "$FORCE" -eq 0 ]] && is_phase1_binary "$dest"; then
   ok "Phase-1 grid already installed at $dest"
   "$dest" -V 2>/dev/null || true
+  info "Re-run with --force to upgrade."
   exit 0
 fi
 
@@ -204,7 +279,11 @@ if [[ "$FORCE" -eq 0 ]]; then
   if [[ -n "$existing" ]] && is_phase1_binary "$existing"; then
     ok "Phase-1 grid already on PATH: $existing"
     "$existing" -V 2>/dev/null || true
+    info "Re-run with --force to replace: curl -fsSL ${ORIGIN}/downloads/install.sh | bash -s -- --force"
     exit 0
+  fi
+  if [[ -n "$existing" ]]; then
+    warn "Found non-Phase-1 binary at $existing (will not remove automatically)"
   fi
 fi
 
@@ -213,16 +292,28 @@ url="${ORIGIN}/downloads/cli/${asset}"
 tmp="$(mktemp "${TMPDIR:-/tmp}/grid-cli.XXXXXX")"
 trap 'rm -f "$tmp"' EXIT
 
-info "Downloading ${asset}"
-info "  $url"
-if ! curl -fsSL "$url" -o "$tmp"; then
-  die "download failed — no prebuilt binary for $(os_arch) yet at $url"
+step "Download"
+info "Asset:  $asset"
+info "URL:    $url"
+if ! curl -fsSL --proto '=https' --tlsv1.2 "$url" -o "$tmp"; then
+  die "download failed — no prebuilt binary for $(os_arch) yet.
+  Browse ${ORIGIN}/#download or build from source: https://docs.grid-compute.com"
 fi
+
+# basic size sanity (empty / HTML error pages)
+bytes="$(wc -c <"$tmp" | tr -d ' ')"
+if [[ "${bytes:-0}" -lt 1000000 ]]; then
+  die "downloaded file is too small (${bytes} bytes) — expected a multi-MB binary. URL may be missing."
+fi
+ok "Downloaded $(printf '%s' "$bytes" | awk '{printf "%.1f MiB", $1/1024/1024}')"
 chmod +x "$tmp"
 
+step "Verify binary"
 if ! is_phase1_binary "$tmp"; then
-  die "downloaded file is not a Phase-1 grid binary (missing grid auth)"
+  die "downloaded file is not a Phase-1 grid binary (missing 'grid auth')"
 fi
+ver="$("$tmp" -V 2>/dev/null | head -1 || true)"
+ok "Looks good${ver:+ · $ver}"
 
 # Back up non-phase1 binaries that collide on name
 if [[ -x "$dest" ]] && ! is_phase1_binary "$dest"; then
@@ -231,17 +322,43 @@ if [[ -x "$dest" ]] && ! is_phase1_binary "$dest"; then
   mv -f "$dest" "$bak" 2>/dev/null || true
 fi
 
-info "Installing → $dest"
+step "Install"
+info "Writing → $dest"
 if ! install_file "$tmp" "$dest"; then
-  die "could not write $dest (try --prefix=\$HOME/bin or --system)"
+  die "could not write $dest
+  Try:  bash -s -- --prefix=\$HOME/bin
+    or: bash -s -- --system"
 fi
+ok "Installed $dest"
 
+step "PATH"
 ensure_path_export "$bin_dir"
 
-ok "Installed Phase-1 GRID CLI"
+step "Done"
+ok "GRID CLI is ready"
+echo >&2
 if is_phase1_binary "$dest"; then
   "$dest" -V 2>/dev/null || true
-  info "Next: grid auth --help · grid init --name garage --class S · grid node"
-else
-  die "install completed but $dest failed Phase-1 check"
 fi
+
+cat >&2 <<EOF
+
+${BOLD}What you installed${RESET}
+  ${DIM}A single ${RESET}${BOLD}grid${RESET}${DIM} binary — the Phase-1 node CLI.${RESET}
+  ${DIM}Host useful containers, mine PoR, claim names, wallet, registry.${RESET}
+
+${BOLD}Next steps${RESET}
+  ${CYAN}hash -r && which grid && grid -V${RESET}
+  ${CYAN}grid status${RESET}                 ${DIM}# node + blockchain size + security check${RESET}
+  ${CYAN}grid auth --help${RESET}            ${DIM}# protect operator keys (passkey)${RESET}
+  ${CYAN}grid init --name my-node --class S${RESET}
+  ${CYAN}grid node${RESET}                   ${DIM}# host + mine on the fabric${RESET}
+  ${CYAN}grid registry${RESET}               ${DIM}# public mesh from grid-compute.com${RESET}
+
+${BOLD}Upgrade later${RESET}
+  ${DIM}curl -fsSL ${ORIGIN}/downloads/install.sh | bash -s -- --force${RESET}
+
+${DIM}Docs · https://docs.grid-compute.com
+Site · ${ORIGIN}${RESET}
+
+EOF

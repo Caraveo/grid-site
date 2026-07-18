@@ -2,7 +2,7 @@
 
 [![Cloudflare](https://img.shields.io/badge/platform-Cloudflare%20Workers-F38020.svg)](https://workers.cloudflare.com/)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black.svg)](https://nextjs.org/)
-[![Version](https://img.shields.io/badge/version-0.3.2-blue.svg)](https://github.com/Caraveo/grid-site/releases)
+[![Version](https://img.shields.io/badge/version-0.3.3-blue.svg)](https://github.com/Caraveo/grid-site/releases)
 [![Status](https://img.shields.io/badge/status-PREALPHA-red.svg)](https://github.com/Caraveo/grid-site)
 
 Cinematic launch site for **[GRID](https://github.com/caraveo/grid)** — useful mining for a planetary compute network.
