@@ -1,4 +1,6 @@
 import { ScrambleText } from "./ScrambleText";
+import { DOWNLOADS } from "@/lib/downloads";
+import { MeshDownloads } from "./MeshDownloads";
 
 const FLOW = [
   {
@@ -9,27 +11,27 @@ const FLOW = [
   {
     k: "02",
     t: "Compute",
-    d: "A named capacity unit you own exclusively. Launch it (grid launch garage), announce free slots, become addressable as garage.",
+    d: "A named capacity unit you own. Launch it, go public, become addressable as a realm on the mesh.",
   },
   {
     k: "03",
-    t: "Host",
-    d: "Pull useful container_work. Jobs run fully isolated — no host mounts, cap-drop ALL, resource limits. Higher earn path.",
+    t: "Realm",
+    d: "Type a name in Mesh. No extension required. garage becomes grid://garage.grid — like a domain for compute.",
   },
   {
     k: "04",
-    t: "Mine",
-    d: "Proof-of-Resource security work (blake3_work). Coordinator re-computes the digest. Credits land in your local earn ledger.",
+    t: "Host",
+    d: "Serve useful work from your machine. Isolated capacity. The fabric routes jobs to ready nodes.",
   },
   {
     k: "05",
     t: "Registry",
-    d: "grid-compute.com lists peers and computes by name and capacity only — never IPs, ports, or endpoints. Location, not attack surface.",
+    d: "Public names and capacity on grid-compute.com — never IPs, ports, or endpoints. Location, not attack surface.",
   },
   {
     k: "06",
-    t: "MESH",
-    d: "The browser for the mesh. Type a realm. Default scheme is grid://. Same mental model as the CLI: garage ↔ grid://garage.grid.",
+    t: "Mesh",
+    d: "The desktop browser for the mesh. Open grid:// the way the old web opened https — primary network is compute.",
   },
 ];
 
@@ -52,34 +54,41 @@ export function Mesh() {
         {/* Header */}
         <div className="mx-auto max-w-3xl text-center">
           <p className="section-label">
-            <ScrambleText text="For those that Know…" />
+            <ScrambleText text="Mesh · Desktop browser" />
           </p>
           <h2 className="section-title mt-5">
-            Download <ScrambleText text="MESH" />
+            Download <ScrambleText text="Mesh" />
           </h2>
           <p className="mx-auto mt-6 section-body text-center">
-            MESH is the browser for the GRID mesh. Nodes host named computes.
-            The registry publishes capacity. You open{" "}
-            <span className="font-mono text-white/80">grid://</span> the way
-            the old web opened https — except the primary network is compute.
+            Mesh is the desktop app for the GRID mesh. Type a realm. Open{" "}
+            <span className="font-mono text-white/80">grid://</span> the way the
+            old web opened https — the primary network is compute.
           </p>
-
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a
-              href="https://github.com/Caraveo/grid-net"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary min-w-[200px]"
-            >
-              Get MESH →
-            </a>
-            <a href="#download" className="btn-ghost min-w-[200px]">
-              Node CLI
-            </a>
-          </div>
+          <p className="mt-4 font-mono text-[0.65rem] tracking-[0.18em] text-white/35 uppercase">
+            v{DOWNLOADS.mesh.version} · auto-detects your machine
+          </p>
         </div>
 
-        {/* Realms (mesh “domains”) */}
+        {/* Smart downloads — best build for this browser */}
+        <MeshDownloads />
+
+        <p className="mx-auto mt-8 max-w-xl text-center text-xs leading-relaxed text-white/35">
+          Your browser picks the best Mesh build (OS + architecture). All
+          packages live on{" "}
+          <span className="font-mono text-white/45">
+            grid-compute.com/downloads/mesh
+          </span>
+          . Need the node CLI?{" "}
+          <a
+            href="#download"
+            className="text-white/55 underline-offset-2 hover:underline"
+          >
+            GRID CLI
+          </a>
+          .
+        </p>
+
+        {/* Realms */}
         <div className="mx-auto mt-16 max-w-3xl border border-white/15 bg-white/[0.03] p-8 sm:p-10">
           <p className="text-[0.7rem] font-semibold tracking-[0.22em] text-white/45 uppercase">
             Realms
@@ -88,7 +97,7 @@ export function Mesh() {
             Type a realm. No extension required.
           </h3>
           <p className="mt-3 text-sm text-white/45">
-            On the web: domains. On MESH:{" "}
+            On the web: domains. In Mesh:{" "}
             <span className="text-white/75">realms</span>.
           </p>
           <div className="mt-6 overflow-x-auto border border-white/10 bg-black/60 p-5 font-mono text-xs leading-relaxed text-white/70 sm:text-sm">
@@ -98,21 +107,20 @@ export function Mesh() {
               <span className="text-white">grid://x.grid/</span>
             </p>
             <p className="mt-2">
-              <span className="text-white/40">garage</span>
+              <span className="text-white/40">fire</span>
               <span className="mx-3 text-white/25">→</span>
-              <span className="text-white">grid://garage.grid/</span>
+              <span className="text-white">grid://fire.grid/</span>
             </p>
             <p className="mt-2">
-              <span className="text-white/40">grid launch garage</span>
+              <span className="text-white/40">grid launch fire</span>
               <span className="mx-3 text-white/25">↔</span>
-              <span className="text-white">realm garage in MESH</span>
+              <span className="text-white">realm fire in Mesh</span>
             </p>
           </div>
           <p className="mt-5 text-sm leading-relaxed text-white/45">
-            MESH claims the{" "}
-            <span className="font-mono text-white/70">grid://</span> scheme on
-            macOS, Windows, and Linux so system links open the mesh browser —
-            not a legacy tab.
+            Mesh registers the{" "}
+            <span className="font-mono text-white/70">grid://</span> scheme so
+            system links open the mesh browser — not a legacy tab.
           </p>
         </div>
 
@@ -124,12 +132,12 @@ export function Mesh() {
                 <ScrambleText text="How it works" />
               </p>
               <h3 className="mt-4 text-2xl font-semibold tracking-tight sm:text-3xl">
-                Nodes. Computes. Verified work.
+                Nodes. Realms. The fabric.
               </h3>
             </div>
             <p className="max-w-md text-sm leading-relaxed text-white/45 lg:text-right">
-              GRID runs the fabric. MESH is how you navigate it. Together they
-              turn idle iron into addressable, earnable capacity.
+              GRID runs the fabric. Mesh is how you navigate it. Together they
+              turn machines into addressable capacity you can open by name.
             </p>
           </div>
 
@@ -153,14 +161,14 @@ export function Mesh() {
           </div>
         </div>
 
-        {/* Resolve pipeline + run loop */}
+        {/* Resolve pipeline */}
         <div className="mt-10 grid gap-6 lg:grid-cols-2">
           <div className="panel p-6 sm:p-8">
             <p className="text-[0.65rem] font-semibold tracking-[0.22em] text-white/40 uppercase">
-              MESH resolve order
+              Mesh resolve order
             </p>
             <p className="mt-3 text-sm leading-relaxed text-white/50">
-              When you type a bare label, MESH walks this path until something
+              When you type a bare label, Mesh walks this path until something
               answers:
             </p>
             <ol className="mt-6 space-y-4">
@@ -182,41 +190,34 @@ export function Mesh() {
 
           <div className="panel p-6 sm:p-8">
             <p className="text-[0.65rem] font-semibold tracking-[0.22em] text-white/40 uppercase">
-              Node loop · three terminals
+              Platforms
             </p>
-            <div className="mt-5 overflow-x-auto border border-white/10 bg-black/60 p-5 font-mono text-xs leading-relaxed text-white/70 sm:text-sm">
-              <p className="text-white/35"># coordinator (jobs + PoR)</p>
-              <p>
-                <span className="text-white/40">$</span> grid coord
-              </p>
-              <p className="mt-3 text-white/35"># name capacity, go public</p>
-              <p>
-                <span className="text-white/40">$</span> grid init --name garage
-                --class S
-              </p>
-              <p>
-                <span className="text-white/40">$</span> grid launch garage
-                --public
-              </p>
-              <p>
-                <span className="text-white/40">$</span> grid host
-              </p>
-              <p className="mt-3 text-white/35"># optional security mine</p>
-              <p>
-                <span className="text-white/40">$</span> grid mine
-              </p>
-              <p className="mt-3 text-white/35"># then open MESH</p>
-              <p>
-                <span className="text-white/40">$</span>{" "}
-                <span className="text-white">garage</span>
-                <span className="text-white/35"> → grid://garage.grid</span>
-              </p>
-            </div>
-            <p className="mt-4 text-xs leading-relaxed text-white/40">
-              Host path needs Docker (or Colima). Containers are isolated from
-              the host. Public announces hit the registry; MESH reads the same
-              feed.
-            </p>
+            <ul className="mt-5 space-y-4 text-sm text-white/55">
+              <li className="flex justify-between gap-4 border-b border-white/8 pb-3">
+                <span>Mac · Intel</span>
+                <span className="font-mono text-xs text-white/40">.dmg · .zip</span>
+              </li>
+              <li className="flex justify-between gap-4 border-b border-white/8 pb-3">
+                <span>Mac · M-Series</span>
+                <span className="font-mono text-xs text-white/40">.dmg · .zip</span>
+              </li>
+              <li className="flex justify-between gap-4 border-b border-white/8 pb-3">
+                <span>Linux · Browser</span>
+                <span className="font-mono text-xs text-white/40">
+                  AppImage · .deb
+                </span>
+              </li>
+              <li className="flex justify-between gap-4">
+                <span>Windows 11+</span>
+                <span className="font-mono text-xs text-white/40">.zip</span>
+              </li>
+            </ul>
+            <a
+              href="#mesh-downloads"
+              className="mt-8 inline-flex text-[0.7rem] font-semibold tracking-[0.16em] text-white/70 uppercase transition hover:text-white"
+            >
+              Jump to downloads →
+            </a>
           </div>
         </div>
 
@@ -224,14 +225,14 @@ export function Mesh() {
         <div className="mt-16 grid gap-8 border-t border-white/10 pt-12 sm:grid-cols-3">
           {[
             {
-              t: "GRID",
-              d: "Node CLI — host useful work, mine PoR, earn.",
-              href: "https://github.com/Caraveo/grid",
+              t: "Mesh app",
+              d: "Desktop browser for grid:// — Mac, Linux, Windows 11+.",
+              href: "#mesh-downloads",
             },
             {
-              t: "MESH",
-              d: "Browser for grid:// — the primary web of compute.",
-              href: "https://github.com/Caraveo/grid-net",
+              t: "GRID CLI",
+              d: "Node binary — run capacity on your machine.",
+              href: "#download",
             },
             {
               t: "Registry",
@@ -239,14 +240,7 @@ export function Mesh() {
               href: "/registry",
             },
           ].map((item) => (
-            <a
-              key={item.t}
-              href={item.href}
-              {...(item.href.startsWith("http")
-                ? { target: "_blank", rel: "noopener noreferrer" }
-                : {})}
-              className="group block"
-            >
+            <a key={item.t} href={item.href} className="group block">
               <p className="text-sm font-semibold tracking-[0.18em] uppercase transition group-hover:text-white">
                 {item.t}
                 <span className="ml-2 text-white/30 transition group-hover:text-white/70">

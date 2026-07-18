@@ -363,6 +363,8 @@ export async function startRegistration(input: {
       `Send to ${CASH_APP_HANDLE} (Cash App).`,
       `Put this exact note: ${note}`,
       "No other payment methods are accepted.",
+      "Fee prevents name spam / abuse and funds review employment.",
+      `Donations accepted at ${CASH_APP_HANDLE} anytime (any amount).`,
       "After paying, return here and confirm to submit for review.",
     ],
   };

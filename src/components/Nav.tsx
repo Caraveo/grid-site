@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Logo } from "./Logo";
+import { ThemeToggle } from "./ThemeToggle";
 
 type NavItem = {
   label: string;
@@ -22,6 +23,11 @@ const menu: NavItem[] = [
         label: "Explain",
         hint: "Simple overview · diagrams",
       },
+      {
+        href: "/ember",
+        label: "Ember",
+        hint: "host + mine + compute + registry",
+      },
       { href: "/#mission", label: "Mission", hint: "Why GRID exists" },
       { href: "/#network", label: "Network", hint: "Planetary fabric" },
       { href: "/#security", label: "Security", hint: "Bitcoin TSL" },
@@ -31,16 +37,33 @@ const menu: NavItem[] = [
   {
     label: "Network",
     children: [
-      { href: "/#mesh", label: "MESH", hint: "grid:// browser" },
+      { href: "/#mesh-downloads", label: "Mesh", hint: "Mac · Linux · Windows" },
+      { href: "/#mesh", label: "About Mesh", hint: "grid:// browser" },
       { href: "/#nodes", label: "Nodes", hint: "Machines on the fabric" },
       { href: "/#miners", label: "Miners", hint: "Useful work & earn" },
-      { href: "/registry", label: "Registry", hint: "Public names" },
+      {
+        href: "/registry",
+        label: "Registry",
+        hint: "Paid names · $5 $Caraveo",
+      },
+      {
+        href: "/ember",
+        label: "Ember",
+        hint: "Full realm stack",
+      },
     ],
   },
   {
     label: "Get started",
     children: [
-      { href: "/#download", label: "Download", hint: "Install GRID CLI" },
+      { href: "/registry", label: "Register", hint: "Activate a public name" },
+      { href: "/ember", label: "Run an ember", hint: "fire.grid checklist" },
+      {
+        href: "/#mesh-downloads",
+        label: "Mesh app",
+        hint: "Mac · Linux · Windows 11+",
+      },
+      { href: "/#download", label: "GRID CLI", hint: "Download node binary" },
       { href: "/#wallets", label: "Wallets", hint: "GRID → Bitcoin" },
       { href: "/explain", label: "How it works", hint: "Start here" },
     ],
@@ -170,17 +193,16 @@ export function Nav() {
           {menu.map((item) => (
             <DesktopDropdown key={item.label} item={item} />
           ))}
-          <li>
-            <a
-              href="/explain"
-              className="text-[0.7rem] font-medium tracking-[0.2em] text-white/90 uppercase transition hover:text-white"
-            >
-              Explain
-            </a>
-          </li>
         </ul>
 
         <div className="flex items-center gap-3">
+          <ThemeToggle />
+          <a
+            href="/ember"
+            className="hidden border border-white/25 px-4 py-2 text-[0.65rem] font-semibold tracking-[0.18em] uppercase transition hover:border-white/60 hover:text-white sm:inline-flex"
+          >
+            Ember
+          </a>
           <a
             href="/registry"
             className="inline-flex border border-white/50 bg-white px-4 py-2 text-[0.65rem] font-semibold tracking-[0.18em] text-black uppercase transition hover:bg-transparent hover:text-white"
@@ -215,15 +237,6 @@ export function Nav() {
       {open && (
         <div className="max-h-[min(80vh,640px)] overflow-y-auto border-t border-white/10 bg-black/95 backdrop-blur-xl md:hidden">
           <ul className="flex flex-col px-5 py-4">
-            <li>
-              <a
-                href="/explain"
-                onClick={() => setOpen(false)}
-                className="block py-3 text-sm tracking-[0.18em] text-white uppercase"
-              >
-                Explain
-              </a>
-            </li>
             {menu.map((item) => (
               <li key={item.label} className="border-t border-white/8">
                 <button
@@ -278,7 +291,22 @@ export function Nav() {
                 )}
               </li>
             ))}
-            <li className="border-t border-white/10 pt-4">
+            <li className="border-t border-white/10 pt-4 flex items-center justify-between gap-3 py-2">
+              <span className="text-sm tracking-[0.14em] text-white/50 uppercase">
+                Theme
+              </span>
+              <ThemeToggle />
+            </li>
+            <li className="pt-2">
+              <a
+                href="/ember"
+                onClick={() => setOpen(false)}
+                className="btn-ghost w-full"
+              >
+                Ember
+              </a>
+            </li>
+            <li className="pt-2">
               <a
                 href="/registry"
                 onClick={() => setOpen(false)}

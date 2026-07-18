@@ -107,7 +107,7 @@ export async function buildRegistryDirectory(): Promise<{
   });
 
   return {
-    rule: "registry.grid requires active registration (Cash App → $Caraveo → admin approve) as node and/or compute",
+    rule: "registry.grid requires paid activation: Cash App $5 → $Caraveo (exact note) → confirm → admin approve. Prevents abuse · funds review employment. Donations accepted at $Caraveo.",
     entries,
     nodes: registeredPeers,
     computes,

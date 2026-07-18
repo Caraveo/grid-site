@@ -33,8 +33,8 @@ export function Hero() {
         </p>
 
         <div className="mt-10 flex flex-col items-center gap-4 animate-fade-up delay-3 sm:flex-row">
-          <a href="#mesh" className="btn-primary min-w-[200px]">
-            Download MESH
+          <a href="#mesh-downloads" className="btn-primary min-w-[200px]">
+            Download Mesh
           </a>
           <a href="/explain" className="btn-ghost min-w-[200px]">
             Explain

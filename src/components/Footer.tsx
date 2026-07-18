@@ -1,4 +1,5 @@
 import { Logo } from "./Logo";
+import { DOWNLOADS } from "@/lib/downloads";
 
 export function Footer() {
   return (
@@ -31,43 +32,8 @@ export function Footer() {
                   </a>
                 </li>
                 <li>
-                  <a href="#mesh" className="transition hover:text-white">
-                    MESH
-                  </a>
-                </li>
-                <li>
-                  <a href="#mission" className="transition hover:text-white">
-                    Mission
-                  </a>
-                </li>
-                <li>
-                  <a href="#network" className="transition hover:text-white">
-                    Network
-                  </a>
-                </li>
-                <li>
-                  <a href="#nodes" className="transition hover:text-white">
-                    Nodes
-                  </a>
-                </li>
-                <li>
-                  <a href="#wallets" className="transition hover:text-white">
-                    Wallets
-                  </a>
-                </li>
-                <li>
-                  <a href="#security" className="transition hover:text-white">
-                    Security
-                  </a>
-                </li>
-                <li>
-                  <a href="#timeline" className="transition hover:text-white">
-                    Phases
-                  </a>
-                </li>
-                <li>
-                  <a href="#download" className="transition hover:text-white">
-                    Download
+                  <a href="/ember" className="transition hover:text-white">
+                    Ember
                   </a>
                 </li>
                 <li>
@@ -75,51 +41,101 @@ export function Footer() {
                     Registry
                   </a>
                 </li>
+                <li>
+                  <a href="/#mesh" className="transition hover:text-white">
+                    MESH
+                  </a>
+                </li>
+                <li>
+                  <a href="/#mission" className="transition hover:text-white">
+                    Mission
+                  </a>
+                </li>
+                <li>
+                  <a href="/#network" className="transition hover:text-white">
+                    Network
+                  </a>
+                </li>
+                <li>
+                  <a href="/#nodes" className="transition hover:text-white">
+                    Nodes
+                  </a>
+                </li>
+                <li>
+                  <a href="/#wallets" className="transition hover:text-white">
+                    Wallets
+                  </a>
+                </li>
+                <li>
+                  <a href="/#security" className="transition hover:text-white">
+                    Security
+                  </a>
+                </li>
+                <li>
+                  <a href="/#timeline" className="transition hover:text-white">
+                    Phases
+                  </a>
+                </li>
+                <li>
+                  <a href="/#download" className="transition hover:text-white">
+                    Download
+                  </a>
+                </li>
               </ul>
             </div>
             <div>
               <h4 className="text-[0.65rem] font-semibold tracking-[0.2em] text-white/35 uppercase">
-                Open source
+                Mesh downloads
               </h4>
               <ul className="mt-4 space-y-3 text-sm text-white/60">
                 <li>
                   <a
-                    href="https://github.com/Caraveo/grid"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href="/downloads/mesh/mac-intel/MESH.dmg"
+                    download="MESH-mac-intel.dmg"
                     className="transition hover:text-white"
                   >
-                    GRID (node)
+                    Mac · Intel
                   </a>
                 </li>
                 <li>
                   <a
-                    href="https://github.com/Caraveo/grid-net"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href="/downloads/mesh/mac-arm/MESH.dmg"
+                    download="MESH-mac-arm.dmg"
                     className="transition hover:text-white"
                   >
-                    MESH (browser)
+                    Mac · M-Series
                   </a>
                 </li>
                 <li>
                   <a
-                    href="https://github.com/Caraveo/grid/blob/master/README.md"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href="/downloads/mesh/linux/MESH.AppImage"
+                    download="MESH-linux.AppImage"
                     className="transition hover:text-white"
                   >
-                    Docs
+                    Linux · Browser
                   </a>
                 </li>
                 <li>
                   <a
-                    href="https://github.com/Caraveo/grid/blob/master/letter.md"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href="/downloads/mesh/windows/MESH-Setup.zip"
+                    download="MESH-Setup.zip"
                     className="transition hover:text-white"
                   >
-                    Letter to Miners
+                    Windows 11+
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={DOWNLOADS.cli.darwinX64}
+                    download="grid"
+                    className="transition hover:text-white"
+                  >
+                    GRID CLI binary
+                  </a>
+                </li>
+                <li>
+                  <a href="/#mesh-downloads" className="transition hover:text-white">
+                    All Mesh platforms
                   </a>
                 </li>
               </ul>
@@ -148,7 +164,7 @@ export function Footer() {
             © {new Date().getFullYear()} GRID. Software MIT. Vision docs CC-BY-4.0.
           </p>
           <p className="font-mono text-[0.65rem] tracking-[0.15em] text-white/25 uppercase">
-            Static launch · Phase 1 · No testnet economy
+            Hosted downloads · Phase 1 · No testnet economy
           </p>
         </div>
       </div>

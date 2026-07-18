@@ -1,2 +1,30 @@
 /_next/static/*
   Cache-Control: public, max-age=31536000, immutable
+
+/downloads/*
+  Cache-Control: public, max-age=3600
+  X-Content-Type-Options: nosniff
+
+/downloads/mesh/*.dmg
+  Content-Type: application/x-apple-diskimage
+  Content-Disposition: attachment; filename="MESH.dmg"
+
+/downloads/mesh/*.zip
+  Content-Type: application/zip
+  Content-Disposition: attachment; filename="MESH.app.zip"
+
+/downloads/cli/*
+  Content-Type: application/octet-stream
+  Content-Disposition: attachment; filename="grid"
+
+/downloads/install.sh
+  Content-Type: text/x-shellscript; charset=utf-8
+  Content-Disposition: inline
+
+/og/*
+  Cache-Control: public, max-age=86400
+  Content-Type: image/png
+
+/og-cards/*
+  Cache-Control: public, max-age=86400
+  Content-Type: image/png

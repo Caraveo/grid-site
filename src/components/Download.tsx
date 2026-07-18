@@ -1,28 +1,36 @@
+import { ScrambleText } from "./ScrambleText";
+import {
+  CLI_INSTALL_CURL,
+  CLI_INSTALL_FORCE,
+  DOWNLOADS,
+} from "@/lib/downloads";
+
 const platforms = [
   {
-    id: "macos",
+    id: "macos-intel",
     name: "macOS",
-    arch: "Apple Silicon & Intel",
-    status: "Build via curl",
+    arch: "Intel (x86_64)",
+    status: "Binary ready",
+    href: DOWNLOADS.cli.darwinX64,
+    cta: "Download binary",
+  },
+  {
+    id: "macos-arm",
+    name: "macOS",
+    arch: "Apple Silicon",
+    status: "Coming soon",
+    href: null as string | null,
+    cta: "Soon",
   },
   {
     id: "linux",
     name: "Linux",
     arch: "x86_64 · aarch64",
-    status: "Build via curl",
-  },
-  {
-    id: "windows",
-    name: "Windows",
-    arch: "x86_64",
-    status: "Source soon",
+    status: "Coming soon",
+    href: null as string | null,
+    cta: "Soon",
   },
 ];
-
-const CURL =
-  "curl -fsSL https://raw.githubusercontent.com/Caraveo/grid/master/scripts/install.sh | bash";
-
-import { ScrambleText } from "./ScrambleText";
 
 export function Download() {
   return (
@@ -41,44 +49,66 @@ export function Download() {
             Get <ScrambleText text="GRID" />
           </h2>
           <p className="mx-auto mt-6 section-body text-center">
-            One binary. Useful mining CLI. Install with curl, or build from
-            source. Mainnet path only — no public testnet economy.
+            The node CLI is a single binary for the fabric. Hosted here on
+            grid-compute.com. Looking for the desktop browser?{" "}
+            <a
+              href="#mesh"
+              className="text-white/70 underline-offset-2 hover:underline"
+            >
+              Download Mesh
+            </a>
+            .
           </p>
         </div>
 
-        {/* Primary CTA — curl */}
+        {/* Primary CTA — binary + install script */}
         <div className="mx-auto mt-14 max-w-3xl border border-white/15 bg-white/[0.03] p-8 sm:p-10">
           <div className="flex flex-col items-start justify-between gap-8 sm:flex-row sm:items-center">
             <div>
               <p className="text-[0.7rem] font-semibold tracking-[0.22em] text-white/45 uppercase">
-                Available now
+                Available now · v{DOWNLOADS.cli.version}
               </p>
               <h3 className="mt-2 text-2xl font-semibold tracking-tight">
-                Install with <ScrambleText text="curl" />
+                GRID CLI <span className="text-white/40">binary</span>
               </h3>
               <p className="mt-2 max-w-md text-sm text-white/50">
-                Tries a prebuilt release when published; otherwise builds from
-                source with cargo. Installs to{" "}
-                <span className="font-mono text-white/70">~/.local/bin</span>,
-                verifies Phase&nbsp;1 (<span className="font-mono">grid auth</span>
-                ), and replaces legacy binaries that reused the name{" "}
-                <span className="font-mono">grid</span>.
+                Phase&nbsp;1 node:{" "}
+                <span className="font-mono text-white/70">grid host</span>,{" "}
+                <span className="font-mono text-white/70">node</span>,{" "}
+                <span className="font-mono text-white/70">coord</span>,{" "}
+                <span className="font-mono text-white/70">ember</span>. Installer
+                drops the binary into{" "}
+                <span className="font-mono text-white/70">~/.local/bin</span>.
               </p>
             </div>
-            <a
-              href="https://github.com/Caraveo/grid"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary shrink-0"
-            >
-              GitHub →
-            </a>
+            <div className="flex shrink-0 flex-col gap-3 sm:items-end">
+              <a
+                href={DOWNLOADS.cli.darwinX64}
+                download="grid"
+                className="btn-primary"
+              >
+                Download binary
+              </a>
+              <a
+                href={DOWNLOADS.cli.installSh}
+                download="install.sh"
+                className="btn-ghost text-center"
+              >
+                install.sh
+              </a>
+            </div>
           </div>
 
           <div className="mt-8 overflow-x-auto border border-white/10 bg-black/60 p-5 font-mono text-xs leading-relaxed text-white/70 sm:text-sm">
-            <p className="text-white/35"># install</p>
+            <p className="text-white/35"># install CLI from this site</p>
             <p className="break-all">
-              <span className="text-white/40">$</span> {CURL}
+              <span className="text-white/40">$</span> {CLI_INSTALL_CURL}
+            </p>
+            <p className="mt-4 text-white/35"># or download the binary directly</p>
+            <p className="break-all">
+              <span className="text-white/40">$</span> curl -fsSL
+              https://grid-compute.com{DOWNLOADS.cli.darwinX64} -o ~/.local/bin/grid
+              && chmod +x ~/.local/bin/grid
             </p>
             <p className="mt-4 text-white/35"># verify (must show auth / master)</p>
             <p>
@@ -88,11 +118,9 @@ export function Download() {
             <p>
               <span className="text-white/40">$</span> grid auth --help
             </p>
-            <p className="mt-4 text-white/35"># upgrade / replace legacy CLI</p>
+            <p className="mt-4 text-white/35"># upgrade / replace</p>
             <p className="break-all">
-              <span className="text-white/40">$</span> curl -fsSL
-              https://raw.githubusercontent.com/Caraveo/grid/master/scripts/install.sh
-              | bash -s -- --force
+              <span className="text-white/40">$</span> {CLI_INSTALL_FORCE}
             </p>
             <p className="mt-4 text-white/35"># run the fabric (3 terminals)</p>
             <p>
@@ -121,14 +149,34 @@ export function Download() {
                 </span>
               </div>
               <p className="mt-2 text-sm text-white/40">{p.arch}</p>
+              {p.href ? (
+                <a
+                  href={p.href}
+                  download
+                  className="mt-6 inline-flex text-[0.7rem] font-semibold tracking-[0.16em] text-white/70 uppercase transition hover:text-white"
+                >
+                  {p.cta} →
+                </a>
+              ) : (
+                <p className="mt-6 text-[0.7rem] tracking-[0.16em] text-white/25 uppercase">
+                  {p.cta}
+                </p>
+              )}
             </div>
           ))}
         </div>
 
         <p className="mx-auto mt-10 max-w-lg text-center text-xs leading-relaxed text-white/35">
-          Signed one-click binaries land when GitHub Releases publish{" "}
-          <span className="font-mono">grid-&lt;os&gt;-&lt;arch&gt;</span>{" "}
-          assets. Until then, curl builds from source.
+          Binaries are served from{" "}
+          <span className="font-mono">grid-compute.com/downloads</span>. Need
+          the Mesh browser for Mac, Linux, or Windows?{" "}
+          <a
+            href="#mesh-downloads"
+            className="text-white/55 underline-offset-2 hover:underline"
+          >
+            Download Mesh
+          </a>
+          .
         </p>
       </div>
     </section>

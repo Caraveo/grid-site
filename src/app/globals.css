@@ -1,14 +1,62 @@
 @import "tailwindcss";
 
-:root {
+/* ─── Theme tokens (dark default) ─── */
+:root,
+html.dark {
+  color-scheme: dark;
   --background: #000000;
   --foreground: #ffffff;
+  --fg-strong: #ffffff;
   --muted: #a1a1a1;
   --dim: #6b6b6b;
   --border: rgba(255, 255, 255, 0.12);
   --surface: rgba(255, 255, 255, 0.03);
+  --surface-hover: rgba(255, 255, 255, 0.06);
   --accent: #e8e8e8;
   --glow: rgba(255, 255, 255, 0.08);
+  --panel-hover-border: rgba(255, 255, 255, 0.28);
+  --btn-primary-bg: #ffffff;
+  --btn-primary-fg: #000000;
+  --btn-ghost-border: rgba(255, 255, 255, 0.45);
+  --nav-bg: rgba(0, 0, 0, 0.82);
+  --nav-border: rgba(255, 255, 255, 0.08);
+  --grid-line: rgba(255, 255, 255, 0.03);
+  --hero-glow-a: rgba(255, 255, 255, 0.07);
+  --hero-glow-b: rgba(255, 255, 255, 0.04);
+  --horizon: rgba(0, 0, 0, 1);
+  --selection-bg: rgba(255, 255, 255, 0.2);
+  --selection-fg: #fff;
+  --noise-opacity: 0.035;
+  --ember: #ff6a1a;
+}
+
+/* ─── Light / white mode ─── */
+html.light {
+  color-scheme: light;
+  --background: #f7f7f5;
+  --foreground: #121212;
+  --fg-strong: #000000;
+  --muted: #5a5a5a;
+  --dim: #8a8a8a;
+  --border: rgba(0, 0, 0, 0.1);
+  --surface: rgba(255, 255, 255, 0.72);
+  --surface-hover: rgba(0, 0, 0, 0.04);
+  --accent: #111111;
+  --glow: rgba(0, 0, 0, 0.04);
+  --panel-hover-border: rgba(0, 0, 0, 0.18);
+  --btn-primary-bg: #0a0a0a;
+  --btn-primary-fg: #ffffff;
+  --btn-ghost-border: rgba(0, 0, 0, 0.28);
+  --nav-bg: rgba(247, 247, 245, 0.9);
+  --nav-border: rgba(0, 0, 0, 0.08);
+  --grid-line: rgba(0, 0, 0, 0.06);
+  --hero-glow-a: rgba(0, 0, 0, 0.04);
+  --hero-glow-b: rgba(0, 0, 0, 0.03);
+  --horizon: rgba(247, 247, 245, 1);
+  --selection-bg: rgba(0, 0, 0, 0.12);
+  --selection-fg: #000;
+  --noise-opacity: 0.02;
+  --ember: #e85a12;
 }
 
 @theme inline {
@@ -38,18 +86,19 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 ::selection {
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
+  background: var(--selection-bg);
+  color: var(--selection-fg);
 }
 
-/* ─── Cinematic grid / starfield backdrop ─── */
+/* ─── Cinematic grid backdrop ─── */
 .grid-bg {
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size: 80px 80px;
   mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 75%);
 }
@@ -59,15 +108,15 @@ body {
   position: fixed;
   inset: 0;
   z-index: 50;
-  opacity: 0.035;
+  opacity: var(--noise-opacity);
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 /* ─── Hero glow ─── */
 .hero-glow {
   background:
-    radial-gradient(ellipse 60% 40% at 50% 55%, rgba(255, 255, 255, 0.07) 0%, transparent 70%),
-    radial-gradient(ellipse 40% 30% at 50% 100%, rgba(255, 255, 255, 0.04) 0%, transparent 60%);
+    radial-gradient(ellipse 60% 40% at 50% 55%, var(--hero-glow-a) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 50% 100%, var(--hero-glow-b) 0%, transparent 60%);
 }
 
 /* ─── Fade / reveal animations ─── */
@@ -150,19 +199,21 @@ body {
   justify-content: center;
   gap: 0.5rem;
   padding: 0.9rem 2.25rem;
-  background: #fff;
-  color: #000;
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-fg);
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  border: 1px solid #fff;
-  transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
+  border: 1px solid var(--btn-primary-bg);
+  transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease,
+    border-color 0.25s ease;
 }
 
 .btn-primary:hover {
   background: transparent;
-  color: #fff;
+  color: var(--fg-strong);
+  border-color: var(--fg-strong);
 }
 
 .btn-ghost {
@@ -172,18 +223,18 @@ body {
   gap: 0.5rem;
   padding: 0.9rem 2.25rem;
   background: transparent;
-  color: #fff;
+  color: var(--fg-strong);
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  border: 1px solid rgba(255, 255, 255, 0.45);
+  border: 1px solid var(--btn-ghost-border);
   transition: border-color 0.25s ease, background 0.25s ease;
 }
 
 .btn-ghost:hover {
-  border-color: #fff;
-  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--fg-strong);
+  background: var(--surface-hover);
 }
 
 /* ─── Section helpers ─── */
@@ -200,6 +251,7 @@ body {
   font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1.05;
+  color: var(--fg-strong);
 }
 
 .section-body {
@@ -217,23 +269,16 @@ body {
   transition: border-color 0.3s ease, background 0.3s ease;
 }
 
+.panel:hover {
+  border-color: var(--panel-hover-border);
+  background: var(--surface-hover);
+}
+
 /* ─── Nav ─── */
 .nav-scrolled {
-  background: rgba(0, 0, 0, 0.82);
+  background: var(--nav-bg);
   backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.panel:hover {
-  border-color: rgba(255, 255, 255, 0.28);
-  background: rgba(255, 255, 255, 0.05);
-}
-
-/* ─── Nav scrolled state ─── */
-.nav-scrolled {
-  background: rgba(0, 0, 0, 0.72);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid var(--nav-border);
 }
 
 /* ─── Download platform cards ─── */
@@ -246,7 +291,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, transparent 50%);
+  background: linear-gradient(135deg, var(--surface-hover) 0%, transparent 50%);
   pointer-events: none;
 }
 
@@ -254,8 +299,188 @@ body {
 .horizon {
   background: linear-gradient(
     to top,
-    rgba(0, 0, 0, 1) 0%,
-    rgba(0, 0, 0, 0.6) 40%,
+    var(--horizon) 0%,
+    color-mix(in srgb, var(--horizon) 60%, transparent) 40%,
     transparent 100%
   );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Light mode: remap hardcoded dark Tailwind utilities
+   (site was built with text-white / bg-black throughout)
+   ═══════════════════════════════════════════════════════════ */
+html.light .bg-black {
+  background-color: var(--background) !important;
+}
+html.light .bg-black\/95 {
+  background-color: color-mix(in srgb, var(--background) 95%, transparent) !important;
+}
+html.light .bg-black\/90 {
+  background-color: color-mix(in srgb, var(--background) 90%, transparent) !important;
+}
+html.light .bg-black\/80 {
+  background-color: color-mix(in srgb, var(--background) 80%, transparent) !important;
+}
+html.light .bg-black\/60 {
+  background-color: color-mix(in srgb, var(--background) 60%, #fff) !important;
+}
+
+html.light .text-white {
+  color: var(--fg-strong) !important;
+}
+html.light .text-white\/90 {
+  color: color-mix(in srgb, var(--fg-strong) 90%, transparent) !important;
+}
+html.light .text-white\/85 {
+  color: color-mix(in srgb, var(--fg-strong) 85%, transparent) !important;
+}
+html.light .text-white\/80 {
+  color: color-mix(in srgb, var(--fg-strong) 80%, transparent) !important;
+}
+html.light .text-white\/75 {
+  color: color-mix(in srgb, var(--fg-strong) 75%, transparent) !important;
+}
+html.light .text-white\/70 {
+  color: color-mix(in srgb, var(--fg-strong) 70%, transparent) !important;
+}
+html.light .text-white\/60 {
+  color: color-mix(in srgb, var(--fg-strong) 60%, transparent) !important;
+}
+html.light .text-white\/55 {
+  color: color-mix(in srgb, var(--fg-strong) 55%, transparent) !important;
+}
+html.light .text-white\/50 {
+  color: color-mix(in srgb, var(--fg-strong) 50%, transparent) !important;
+}
+html.light .text-white\/45 {
+  color: color-mix(in srgb, var(--fg-strong) 48%, transparent) !important;
+}
+html.light .text-white\/40 {
+  color: color-mix(in srgb, var(--fg-strong) 42%, transparent) !important;
+}
+html.light .text-white\/35 {
+  color: color-mix(in srgb, var(--fg-strong) 38%, transparent) !important;
+}
+html.light .text-white\/30 {
+  color: color-mix(in srgb, var(--fg-strong) 32%, transparent) !important;
+}
+html.light .text-white\/25 {
+  color: color-mix(in srgb, var(--fg-strong) 28%, transparent) !important;
+}
+
+html.light .border-white,
+html.light .border-white\/50 {
+  border-color: color-mix(in srgb, var(--fg-strong) 50%, transparent) !important;
+}
+html.light .border-white\/40 {
+  border-color: color-mix(in srgb, var(--fg-strong) 35%, transparent) !important;
+}
+html.light .border-white\/30 {
+  border-color: color-mix(in srgb, var(--fg-strong) 25%, transparent) !important;
+}
+html.light .border-white\/25 {
+  border-color: color-mix(in srgb, var(--fg-strong) 20%, transparent) !important;
+}
+html.light .border-white\/20 {
+  border-color: color-mix(in srgb, var(--fg-strong) 16%, transparent) !important;
+}
+html.light .border-white\/15 {
+  border-color: color-mix(in srgb, var(--fg-strong) 12%, transparent) !important;
+}
+html.light .border-white\/12 {
+  border-color: color-mix(in srgb, var(--fg-strong) 11%, transparent) !important;
+}
+html.light .border-white\/10 {
+  border-color: color-mix(in srgb, var(--fg-strong) 10%, transparent) !important;
+}
+html.light .border-white\/8 {
+  border-color: color-mix(in srgb, var(--fg-strong) 8%, transparent) !important;
+}
+
+html.light .bg-white {
+  background-color: var(--fg-strong) !important;
+  color: var(--background) !important;
+}
+html.light .bg-white\/\[0\.06\],
+html.light .bg-white\/\[0\.05\],
+html.light .bg-white\/\[0\.04\],
+html.light .bg-white\/\[0\.03\],
+html.light .bg-white\/\[0\.02\] {
+  background-color: rgba(0, 0, 0, 0.03) !important;
+}
+html.light .hover\:bg-white\/\[0\.06\]:hover,
+html.light .hover\:bg-white\/\[0\.03\]:hover {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+}
+html.light .hover\:bg-white:hover {
+  background-color: var(--fg-strong) !important;
+  color: var(--background) !important;
+}
+html.light .hover\:text-black:hover {
+  color: var(--background) !important;
+}
+html.light .text-black {
+  color: var(--background) !important;
+}
+html.light .hover\:bg-transparent:hover {
+  background-color: transparent !important;
+}
+html.light .hover\:text-white:hover {
+  color: var(--fg-strong) !important;
+}
+html.light .hover\:border-white:hover,
+html.light .hover\:border-white\/60:hover,
+html.light .hover\:border-white\/40:hover,
+html.light .hover\:border-white\/30:hover,
+html.light .hover\:border-white\/25:hover {
+  border-color: color-mix(in srgb, var(--fg-strong) 45%, transparent) !important;
+}
+html.light .placeholder\:text-white\/25::placeholder {
+  color: color-mix(in srgb, var(--fg-strong) 30%, transparent) !important;
+}
+html.light .ring-white\/20 {
+  --tw-ring-color: color-mix(in srgb, var(--fg-strong) 18%, transparent) !important;
+}
+html.light .bg-white\/\[0\.06\] {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+html.light .border-white\/40 {
+  border-color: color-mix(in srgb, var(--fg-strong) 28%, transparent) !important;
+}
+
+/* Solid white UI chips → dark chips in light mode */
+html.light .bg-white.text-black,
+html.light span.bg-white {
+  background-color: var(--fg-strong) !important;
+  color: var(--background) !important;
+}
+
+/* Mesh “Best for you” badge already uses bg-white text-black — inverted above */
+
+/* Soft section dividers */
+html.light .bg-white\/10 {
+  background-color: color-mix(in srgb, var(--fg-strong) 10%, transparent) !important;
+}
+
+/* Ember accent stays warm */
+html.light .text-\[\#ff6a1a\],
+html.light .text-\[\#ff6a1a\]\/90 {
+  color: var(--ember) !important;
+}
+html.light .border-\[\#ff6a1a\]\/25 {
+  border-color: color-mix(in srgb, var(--ember) 30%, transparent) !important;
+}
+html.light .bg-\[\#ff6a1a\]\/\[0\.06\] {
+  background-color: color-mix(in srgb, var(--ember) 8%, transparent) !important;
+}
+
+/* Code / mono blocks on light */
+html.light pre,
+html.light .font-mono.bg-black\/60 {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Dropdown menus */
+html.light .shadow-black\/50 {
+  --tw-shadow-color: rgba(0, 0, 0, 0.12) !important;
 }
