@@ -30,6 +30,10 @@ export function middleware(request: NextRequest) {
     pathname.startsWith("/og") ||
     pathname.startsWith("/file") ||
     pathname === "/favicon.ico" ||
+    pathname === "/favicon.svg" ||
+    pathname === "/favicon-32.png" ||
+    pathname === "/apple-touch-icon.png" ||
+    pathname === "/logo.svg" ||
     pathname === "/robots.txt" ||
     pathname === "/sitemap.xml" ||
     /\.[a-zA-Z0-9]+$/.test(pathname)
