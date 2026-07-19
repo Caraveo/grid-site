@@ -26,14 +26,14 @@ export function MeshPlanetDiagram() {
   return (
     <svg
       viewBox="0 0 320 200"
-      className="h-auto w-full"
+      className="h-auto w-full text-foreground"
       role="img"
       aria-label="Many machines linked as one mesh"
     >
       <defs>
         <radialGradient id="glow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="white" stopOpacity="0.12" />
-          <stop offset="100%" stopColor="white" stopOpacity="0" />
+          <stop offset="0%" stopColor="currentColor" stopOpacity="0.12" />
+          <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
         </radialGradient>
       </defs>
       <circle cx="160" cy="100" r="90" fill="url(#glow)" />
@@ -42,7 +42,8 @@ export function MeshPlanetDiagram() {
         cy="100"
         r="72"
         fill="none"
-        stroke="rgba(255,255,255,0.08)"
+        stroke="currentColor"
+        strokeOpacity="0.12"
         strokeWidth="1"
         strokeDasharray="3 6"
       />
@@ -53,21 +54,23 @@ export function MeshPlanetDiagram() {
           y1={nodes[a]!.y}
           x2={nodes[b]!.x}
           y2={nodes[b]!.y}
-          stroke="rgba(255,255,255,0.22)"
+          stroke="currentColor"
+          strokeOpacity="0.25"
           strokeWidth="1"
         />
       ))}
       {nodes.map((n, i) => (
         <g key={i}>
-          <circle cx={n.x} cy={n.y} r="7" fill="rgba(255,255,255,0.08)" />
-          <circle cx={n.x} cy={n.y} r="3.5" fill="white" />
+          <circle cx={n.x} cy={n.y} r="7" fill="currentColor" fillOpacity="0.1" />
+          <circle cx={n.x} cy={n.y} r="3.5" fill="currentColor" />
         </g>
       ))}
       <text
         x="160"
         y="188"
         textAnchor="middle"
-        fill="rgba(255,255,255,0.35)"
+        fill="currentColor"
+        fillOpacity="0.45"
         fontSize="10"
         fontFamily="ui-monospace, monospace"
         letterSpacing="0.15em"
@@ -84,26 +87,26 @@ export function LayersDiagram() {
       y: 24,
       title: "WORK",
       sub: "Jobs · host · mine · PoR",
-      fill: "rgba(255,255,255,0.04)",
+      className: "fill-foreground/[0.04] stroke-foreground/20",
     },
     {
       y: 78,
       title: "GRID",
       sub: "Meters compute · earn · utility",
-      fill: "rgba(255,255,255,0.07)",
+      className: "fill-foreground/[0.07] stroke-foreground/20",
     },
     {
       y: 132,
       title: "BITCOIN",
       sub: "Transact Security Layer · final value",
-      fill: "rgba(255,255,255,0.1)",
+      className: "fill-foreground/[0.1] stroke-foreground/20",
     },
   ];
 
   return (
     <svg
       viewBox="0 0 360 190"
-      className="h-auto w-full"
+      className="h-auto w-full text-foreground"
       role="img"
       aria-label="Three layers: work, GRID token, Bitcoin security"
     >
@@ -115,13 +118,13 @@ export function LayersDiagram() {
             width="312"
             height="44"
             rx="4"
-            fill={l.fill}
-            stroke="rgba(255,255,255,0.15)"
+            className={l.className}
+            strokeWidth="1"
           />
           <text
             x="44"
             y={l.y + 20}
-            fill="white"
+            fill="currentColor"
             fontSize="13"
             fontWeight="600"
             letterSpacing="0.2em"
@@ -132,7 +135,8 @@ export function LayersDiagram() {
           <text
             x="44"
             y={l.y + 36}
-            fill="rgba(255,255,255,0.45)"
+            fill="currentColor"
+            fillOpacity="0.55"
             fontSize="11"
             fontFamily="ui-monospace, monospace"
           >
@@ -141,7 +145,8 @@ export function LayersDiagram() {
           {i < layers.length - 1 && (
             <path
               d={`M180 ${l.y + 44} L180 ${l.y + 54}`}
-              stroke="rgba(255,255,255,0.25)"
+              stroke="currentColor"
+              strokeOpacity="0.35"
               strokeWidth="1.5"
               markerEnd="url(#arr)"
             />
@@ -157,7 +162,7 @@ export function LayersDiagram() {
           refY="3"
           orient="auto"
         >
-          <path d="M0 0 L6 3 L0 6 Z" fill="rgba(255,255,255,0.35)" />
+          <path d="M0 0 L6 3 L0 6 Z" fill="currentColor" fillOpacity="0.4" />
         </marker>
       </defs>
     </svg>

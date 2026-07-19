@@ -189,33 +189,52 @@ export function NodeGlobe({ genesis, nodes, burstIds, onBurstDone }: Props) {
 
       ctx.clearRect(0, 0, w, h);
 
+      const isLight = document.documentElement.classList.contains("light");
+
+      const colorVignette0 = isLight ? "rgba(0,0,0,0.01)" : "rgba(255,255,255,0.04)";
+      const colorVignette1 = isLight ? "rgba(247,247,245,0)" : "rgba(0,0,0,0)";
+      const colorVignette2 = isLight ? "rgba(247,247,245,0.45)" : "rgba(0,0,0,0.5)";
+
+      const globeStop0 = isLight ? "rgba(255,255,255,0.95)" : "rgba(28,28,32,0.95)";
+      const globeStop1 = isLight ? "rgba(222,222,218,0.98)" : "rgba(0,0,0,0.98)";
+
+      const landColor = isLight ? "0,0,0" : "255,255,255";
+      const graticuleColor = isLight ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.06)";
+      const starColor = isLight ? "rgba(0,0,0,0.25)" : "#fff";
+      const atmosphereColor0 = isLight ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.08)";
+      const atmosphereColor1 = isLight ? "rgba(0,0,0,0.18)" : "rgba(255,255,255,0.18)";
+      const arcColor = isLight ? "rgba(0,0,0,0.14)" : "rgba(255,255,255,0.12)";
+      const packetColor = isLight ? "rgba(0,0,0,0.8)" : "rgba(255,255,255,0.85)";
+
       // soft vignette
       const g = ctx.createRadialGradient(cx, cy, R * 0.2, cx, cy, R * 1.6);
-      g.addColorStop(0, "rgba(255,255,255,0.04)");
-      g.addColorStop(0.55, "rgba(0,0,0,0)");
-      g.addColorStop(1, "rgba(0,0,0,0.5)");
+      g.addColorStop(0, colorVignette0);
+      g.addColorStop(0.55, colorVignette1);
+      g.addColorStop(1, colorVignette2);
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, w, h);
 
-      // stars
-      for (const s of starsRef.current) {
-        const px = (s.x * 0.5 + 0.5) * w;
-        const py = (s.y * 0.5 + 0.5) * h;
-        ctx.globalAlpha = s.b * (0.35 + 0.25 * Math.sin(t * 0.001 + s.z * 10));
-        ctx.fillStyle = "#fff";
-        ctx.fillRect(px, py, 1.2, 1.2);
+      // stars (hide or dim them in light mode for clean backdrop)
+      if (!isLight) {
+        for (const s of starsRef.current) {
+          const px = (s.x * 0.5 + 0.5) * w;
+          const py = (s.y * 0.5 + 0.5) * h;
+          ctx.globalAlpha = s.b * (0.35 + 0.25 * Math.sin(t * 0.001 + s.z * 10));
+          ctx.fillStyle = starColor;
+          ctx.fillRect(px, py, 1.2, 1.2);
+        }
+        ctx.globalAlpha = 1;
       }
-      ctx.globalAlpha = 1;
 
       // atmosphere ring
       ctx.beginPath();
       ctx.arc(cx, cy, R * 1.04, 0, Math.PI * 2);
-      ctx.strokeStyle = "rgba(255,255,255,0.08)";
+      ctx.strokeStyle = atmosphereColor0;
       ctx.lineWidth = 8;
       ctx.stroke();
       ctx.beginPath();
       ctx.arc(cx, cy, R, 0, Math.PI * 2);
-      ctx.strokeStyle = "rgba(255,255,255,0.18)";
+      ctx.strokeStyle = atmosphereColor1;
       ctx.lineWidth = 1.25;
       ctx.stroke();
 
@@ -228,8 +247,8 @@ export function NodeGlobe({ genesis, nodes, burstIds, onBurstDone }: Props) {
         cy,
         R,
       );
-      globe.addColorStop(0, "rgba(28,28,32,0.95)");
-      globe.addColorStop(1, "rgba(0,0,0,0.98)");
+      globe.addColorStop(0, globeStop0);
+      globe.addColorStop(1, globeStop1);
       ctx.beginPath();
       ctx.arc(cx, cy, R, 0, Math.PI * 2);
       ctx.fillStyle = globe;
@@ -241,12 +260,12 @@ export function NodeGlobe({ genesis, nodes, burstIds, onBurstDone }: Props) {
         const p = project(v.x, v.y, v.z, rot, cx, cy, R);
         if (!p.visible) continue;
         const a = 0.12 + 0.35 * ((p.depth + 1) / 2);
-        ctx.fillStyle = `rgba(255,255,255,${a})`;
+        ctx.fillStyle = `rgba(${landColor},${a})`;
         ctx.fillRect(p.sx, p.sy, 1.4, 1.4);
       }
 
       // graticule
-      ctx.strokeStyle = "rgba(255,255,255,0.06)";
+      ctx.strokeStyle = graticuleColor;
       ctx.lineWidth = 1;
       for (let lat = -60; lat <= 60; lat += 30) {
         ctx.beginPath();
@@ -308,7 +327,7 @@ export function NodeGlobe({ genesis, nodes, burstIds, onBurstDone }: Props) {
             pen = true;
           } else ctx.lineTo(p.sx, p.sy);
         }
-        ctx.strokeStyle = "rgba(255,255,255,0.12)";
+        ctx.strokeStyle = arcColor;
         ctx.lineWidth = 1;
         ctx.stroke();
 
@@ -331,7 +350,7 @@ export function NodeGlobe({ genesis, nodes, burstIds, onBurstDone }: Props) {
         if (pk.visible) {
           ctx.beginPath();
           ctx.arc(pk.sx, pk.sy, 2, 0, Math.PI * 2);
-          ctx.fillStyle = "rgba(255,255,255,0.85)";
+          ctx.fillStyle = packetColor;
           ctx.fill();
         }
       }
@@ -354,18 +373,31 @@ export function NodeGlobe({ genesis, nodes, burstIds, onBurstDone }: Props) {
         const breath = 0.5 + 0.5 * Math.sin(t * 0.003 + n.lat!);
         const r = isGen ? 5.5 : 3.2;
 
+        const nodeHalo = isLight
+          ? (isGen
+              ? `rgba(0,0,0,${0.08 + breath * 0.05})`
+              : `rgba(0,0,0,${0.04 + breath * 0.03})`)
+          : (isGen
+              ? `rgba(255,255,255,${0.08 + breath * 0.05})`
+              : `rgba(255,255,255,${0.04 + breath * 0.03})`);
+
+        const nodeDot = isLight
+          ? (isGen ? "#000000" : "rgba(0,0,0,0.9)")
+          : (isGen ? "#ffffff" : "rgba(255,255,255,0.9)");
+
+        const nodeShadow = isLight ? "rgba(0,0,0,0.3)" : "rgba(255,255,255,0.8)";
+        const squareFill = isLight ? "#ffffff" : "#000000";
+
         // halo
         ctx.beginPath();
         ctx.arc(p.sx, p.sy, r * (2.2 + breath * 0.6), 0, Math.PI * 2);
-        ctx.fillStyle = isGen
-          ? `rgba(255,255,255,${0.08 + breath * 0.05})`
-          : `rgba(255,255,255,${0.04 + breath * 0.03})`;
+        ctx.fillStyle = nodeHalo;
         ctx.fill();
 
         ctx.beginPath();
         ctx.arc(p.sx, p.sy, r, 0, Math.PI * 2);
-        ctx.fillStyle = isGen ? "#fff" : "rgba(255,255,255,0.9)";
-        ctx.shadowColor = "rgba(255,255,255,0.8)";
+        ctx.fillStyle = nodeDot;
+        ctx.shadowColor = nodeShadow;
         ctx.shadowBlur = isGen ? 16 : 8;
         ctx.fill();
         ctx.shadowBlur = 0;
@@ -374,7 +406,7 @@ export function NodeGlobe({ genesis, nodes, burstIds, onBurstDone }: Props) {
           ctx.save();
           ctx.translate(p.sx, p.sy);
           ctx.rotate(Math.PI / 4);
-          ctx.fillStyle = "#000";
+          ctx.fillStyle = squareFill;
           ctx.fillRect(-2.2, -2.2, 4.4, 4.4);
           ctx.restore();
         }
@@ -395,13 +427,15 @@ export function NodeGlobe({ genesis, nodes, burstIds, onBurstDone }: Props) {
         const k = age / b.life;
         const ease = 1 - Math.pow(1 - k, 3);
 
+        const burstColorVal = isLight ? "0,0,0" : "255,255,255";
+
         // expanding rings
         for (let ring = 0; ring < 3; ring++) {
           const rk = Math.min(1, Math.max(0, k * 1.35 - ring * 0.12));
           const rad = 8 + ease * (48 + ring * 18);
           ctx.beginPath();
           ctx.arc(p.sx, p.sy, rad, 0, Math.PI * 2);
-          ctx.strokeStyle = `rgba(255,255,255,${(1 - rk) * 0.55})`;
+          ctx.strokeStyle = `rgba(${burstColorVal},${(1 - rk) * 0.55})`;
           ctx.lineWidth = 1.5 - ring * 0.3;
           ctx.stroke();
         }
@@ -411,7 +445,7 @@ export function NodeGlobe({ genesis, nodes, burstIds, onBurstDone }: Props) {
         if (flash > 0) {
           ctx.beginPath();
           ctx.arc(p.sx, p.sy, 4 + flash * 10, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(255,255,255,${flash * 0.9})`;
+          ctx.fillStyle = `rgba(${burstColorVal},${flash * 0.9})`;
           ctx.fill();
         }
 
@@ -421,12 +455,12 @@ export function NodeGlobe({ genesis, nodes, burstIds, onBurstDone }: Props) {
           const label = n?.label ?? "NODE";
           ctx.font =
             "600 10px ui-sans-serif, system-ui, -apple-system, sans-serif";
-          ctx.fillStyle = `rgba(255,255,255,${(1 - k) * 0.9})`;
+          ctx.fillStyle = `rgba(${burstColorVal},${(1 - k) * 0.9})`;
           ctx.textAlign = "center";
           ctx.fillText(label.toUpperCase(), p.sx, p.sy - 18 - ease * 12);
           ctx.font =
             "500 8px ui-monospace, SFMono-Regular, Menlo, monospace";
-          ctx.fillStyle = `rgba(255,255,255,${(1 - k) * 0.55})`;
+          ctx.fillStyle = `rgba(${burstColorVal},${(1 - k) * 0.55})`;
           ctx.fillText("I'M A NODE", p.sx, p.sy - 6 - ease * 12);
         }
       }
@@ -451,14 +485,14 @@ export function NodeGlobe({ genesis, nodes, burstIds, onBurstDone }: Props) {
   return (
     <div
       ref={wrapRef}
-      className="relative w-full overflow-hidden border border-white/10 bg-black"
+      className="relative w-full overflow-hidden panel rounded-2xl"
     >
       <canvas
         ref={canvasRef}
         className="block w-full cursor-grab active:cursor-grabbing"
         aria-label="GRID live node globe"
       />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 bg-gradient-to-t from-black via-black/70 to-transparent px-4 pb-3 pt-10 text-[0.6rem] tracking-[0.16em] text-white/40 uppercase">
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 bg-gradient-to-t from-background via-background/70 to-transparent dark:from-black dark:via-black/70 dark:to-transparent px-4 pb-3 pt-10 text-[0.6rem] tracking-[0.16em] text-muted dark:text-white/40 uppercase">
         <span>Drag to wander</span>
         <span>Presence only</span>
       </div>
