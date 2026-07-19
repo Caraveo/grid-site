@@ -60,35 +60,35 @@ function Card({
     <div
       className={`dl-card panel flex flex-col p-6 sm:p-7 transition ${
         recommended
-          ? "border-white/40 bg-white/[0.06] ring-1 ring-white/20"
-          : "hover:border-white/25"
+          ? "border-foreground/30 bg-foreground/[0.04] dark:border-white/40 dark:bg-white/[0.06] ring-1 ring-foreground/10 dark:ring-white/20"
+          : ""
       }`}
       data-recommended={recommended ? "true" : undefined}
     >
       <div className="flex items-start justify-between gap-3">
-        <div className="flex items-center gap-3 text-white/80">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/12 bg-white/[0.04]">
+        <div className="flex items-center gap-3 text-foreground dark:text-white/80">
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-foreground/[0.03] dark:bg-white/[0.04]">
             <PlatformIcon id={p.id} />
           </span>
           <div>
-            <h3 className="text-lg font-semibold tracking-tight">{p.name}</h3>
-            <p className="text-sm text-white/45">{p.arch}</p>
+            <h3 className="text-lg font-semibold tracking-tight text-foreground">{p.name}</h3>
+            <p className="text-sm text-muted">{p.arch}</p>
           </div>
         </div>
         <span
           className={`rounded-full border px-2.5 py-0.5 text-[0.6rem] tracking-[0.12em] uppercase ${
             recommended
-              ? "border-white/50 bg-white text-black"
+              ? "border-foreground bg-foreground text-background dark:border-white/50 dark:bg-white dark:text-black"
               : p.available
-                ? "border-white/25 text-white/70"
-                : "border-white/10 text-white/30"
+                ? "border-border text-muted"
+                : "border-border/60 text-muted/60"
           }`}
         >
           {recommended ? "Best for you" : p.badge}
         </span>
       </div>
 
-      <p className="mt-4 flex-1 text-sm leading-relaxed text-white/45">{p.note}</p>
+      <p className="mt-4 flex-1 text-sm leading-relaxed text-muted">{p.note}</p>
 
       <div className="mt-6 flex flex-wrap items-center gap-3">
         {p.available && p.primary ? (
@@ -112,7 +112,7 @@ function Card({
           <a
             href={p.secondary.href}
             download={p.secondary.filename}
-            className="text-[0.7rem] font-semibold tracking-[0.14em] text-white/50 uppercase transition hover:text-white"
+            className="text-[0.7rem] font-semibold tracking-[0.14em] text-muted uppercase transition hover:text-foreground"
           >
             {p.secondary.label} →
           </a>

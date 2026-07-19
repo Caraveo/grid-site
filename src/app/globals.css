@@ -20,7 +20,7 @@ html.dark {
   --btn-ghost-border: rgba(255, 255, 255, 0.45);
   --nav-bg: rgba(0, 0, 0, 0.82);
   --nav-border: rgba(255, 255, 255, 0.08);
-  --grid-line: rgba(255, 255, 255, 0.03);
+  --grid-line: rgba(255, 255, 255, 0.16);
   --hero-glow-a: rgba(255, 255, 255, 0.07);
   --hero-glow-b: rgba(255, 255, 255, 0.04);
   --horizon: rgba(0, 0, 0, 1);
@@ -28,6 +28,18 @@ html.dark {
   --selection-fg: #fff;
   --noise-opacity: 0.035;
   --ember: #ff6a1a;
+  --code-bg: #0c0c0c;
+  --code-border: rgba(255, 255, 255, 0.08);
+  --code-text: rgba(255, 255, 255, 0.85);
+  --code-label: rgba(255, 255, 255, 0.4);
+  --code-btn-border: rgba(255, 255, 255, 0.15);
+  --code-btn-text: rgba(255, 255, 255, 0.6);
+  --panel-bg: rgba(255, 255, 255, 0.03);
+  --panel-border: rgba(255, 255, 255, 0.12);
+  --panel-shadow: none;
+  --panel-hover-bg: rgba(255, 255, 255, 0.06);
+  --panel-hover-border: rgba(255, 255, 255, 0.28);
+  --panel-hover-shadow: none;
 }
 
 /* ─── Light / white mode ─── */
@@ -49,7 +61,7 @@ html.light {
   --btn-ghost-border: rgba(0, 0, 0, 0.28);
   --nav-bg: rgba(247, 247, 245, 0.9);
   --nav-border: rgba(0, 0, 0, 0.08);
-  --grid-line: rgba(0, 0, 0, 0.06);
+  --grid-line: rgba(0, 0, 0, 0.11);
   --hero-glow-a: rgba(0, 0, 0, 0.04);
   --hero-glow-b: rgba(0, 0, 0, 0.03);
   --horizon: rgba(247, 247, 245, 1);
@@ -57,6 +69,18 @@ html.light {
   --selection-fg: #000;
   --noise-opacity: 0.02;
   --ember: #e85a12;
+  --code-bg: #ffffff;
+  --code-border: rgba(0, 0, 0, 0.08);
+  --code-text: #121212;
+  --code-label: #5a5a5a;
+  --code-btn-border: rgba(0, 0, 0, 0.1);
+  --code-btn-text: #5a5a5a;
+  --panel-bg: #ffffff;
+  --panel-border: rgba(0, 0, 0, 0.09);
+  --panel-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 6px 16px rgba(0, 0, 0, 0.03);
+  --panel-hover-bg: #ffffff;
+  --panel-hover-border: rgba(0, 0, 0, 0.18);
+  --panel-hover-shadow: 0 2px 6px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.05);
 }
 
 @theme inline {
@@ -263,15 +287,17 @@ body {
 
 /* ─── Card ─── */
 .panel {
-  border: 1px solid var(--border);
-  background: var(--surface);
+  border: 1px solid var(--panel-border);
+  background: var(--panel-bg);
+  box-shadow: var(--panel-shadow);
   backdrop-filter: blur(8px);
-  transition: border-color 0.3s ease, background 0.3s ease;
+  transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .panel:hover {
   border-color: var(--panel-hover-border);
-  background: var(--surface-hover);
+  background: var(--panel-hover-bg);
+  box-shadow: var(--panel-hover-shadow);
 }
 
 /* ─── Nav ─── */

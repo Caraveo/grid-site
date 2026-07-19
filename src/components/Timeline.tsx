@@ -105,7 +105,7 @@ export function Timeline() {
           ].map((item) => (
             <div
               key={item.k}
-              className="bg-black px-6 py-5 text-center sm:text-left"
+              className="panel px-6 py-5 text-center sm:text-left"
             >
               <div className="text-[0.6rem] tracking-[0.22em] text-white/35 uppercase">
                 {item.k}
@@ -141,7 +141,7 @@ export function Timeline() {
                   <div
                     className={`panel h-full p-5 md:p-6 ${
                       isNow
-                        ? "border-white/40 bg-white/[0.06] ring-1 ring-white/20"
+                        ? "border-foreground/20 dark:border-white/40 bg-foreground/[0.02] dark:bg-white/[0.06] ring-1 ring-foreground/5 dark:ring-white/10"
                         : "opacity-80"
                     }`}
                   >
@@ -194,7 +194,7 @@ export function Timeline() {
           </ol>
         </div>
 
-        <div className="mt-16 border border-white/15 bg-gradient-to-b from-white/[0.05] to-transparent px-6 py-10 text-center sm:px-12">
+        <div className="mt-16 panel px-6 py-10 text-center sm:px-12">
           <p className="text-[0.7rem] font-semibold tracking-[0.28em] text-white/50 uppercase">
             Phase 1 is open
           </p>

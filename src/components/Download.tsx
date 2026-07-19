@@ -102,9 +102,9 @@ function CopyBlock({
 }) {
   const [copied, setCopied] = useState(false);
   return (
-    <div className="group relative overflow-hidden rounded-xl border border-white/12 bg-black/70">
-      <div className="flex items-center justify-between border-b border-white/8 px-4 py-2">
-        <span className="font-mono text-[0.6rem] tracking-[0.18em] text-white/35 uppercase">
+    <div className="group relative overflow-hidden rounded-xl border border-[var(--code-border)] bg-[var(--code-bg)] text-[var(--code-text)] shadow-xs">
+      <div className="flex items-center justify-between border-b border-[var(--code-border)] px-4 py-2">
+        <span className="font-mono text-[0.65rem] tracking-[0.18em] text-[var(--code-label)] uppercase">
           {label}
         </span>
         <button
@@ -118,12 +118,12 @@ function CopyBlock({
               /* ignore */
             }
           }}
-          className="rounded-full border border-white/15 px-2.5 py-0.5 font-mono text-[0.6rem] tracking-wider text-white/55 uppercase transition hover:border-white/40 hover:text-white"
+          className="rounded-full border border-[var(--code-btn-border)] hover:border-[var(--code-text)] hover:text-[var(--code-text)] px-2.5 py-0.5 font-mono text-[0.65rem] tracking-wider text-[var(--code-btn-text)] uppercase transition"
         >
           {copied ? "Copied" : "Copy"}
         </button>
       </div>
-      <pre className="overflow-x-auto p-4 font-mono text-[0.78rem] leading-relaxed text-white/80 sm:text-sm">
+      <pre className="overflow-x-auto p-4 font-mono text-[0.78rem] leading-relaxed text-[var(--code-text)] sm:text-sm">
         <code>{code}</code>
       </pre>
     </div>
@@ -162,32 +162,32 @@ export function Download() {
         </div>
 
         {/* Hero install card */}
-        <div className="mx-auto mt-14 max-w-4xl overflow-hidden rounded-2xl border border-white/15 bg-gradient-to-b from-white/[0.06] to-white/[0.02] shadow-2xl shadow-black/40">
-          <div className="border-b border-white/10 px-6 py-5 sm:px-10 sm:py-6">
+        <div className="mx-auto mt-14 max-w-4xl overflow-hidden panel shadow-2xl">
+          <div className="border-b border-border px-6 py-5 sm:px-10 sm:py-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <p className="font-mono text-[0.65rem] tracking-[0.22em] text-emerald-300/80 uppercase">
+                <p className="font-mono text-[0.65rem] tracking-[0.22em] text-emerald-500 font-semibold uppercase">
                   Available · v{DOWNLOADS.cli.version}
                 </p>
-                <h3 className="mt-1 text-2xl font-thin tracking-wide sm:text-3xl">
+                <h3 className="mt-1 text-2xl font-thin tracking-wide sm:text-3xl text-foreground">
                   One-line install
                 </h3>
               </div>
               <a
                 href={DOWNLOADS.cli.installSh}
                 download="install.sh"
-                className="rounded-full border border-white/20 px-4 py-2 font-mono text-[0.65rem] tracking-wider text-white/70 uppercase transition hover:border-white/50 hover:text-white"
+                className="rounded-full border border-border px-4 py-2 font-mono text-[0.65rem] tracking-wider text-muted uppercase transition hover:border-foreground hover:text-foreground"
               >
                 View install.sh
               </a>
             </div>
-            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/50">
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted">
               Detects your machine, pulls the matching binary over{" "}
-              <span className="text-white/75">HTTPS</span>, checks it is a real
+              <span className="text-foreground">HTTPS</span>, checks it is a real
               Phase-1 CLI, installs to{" "}
-              <span className="font-mono text-white/75">~/.local/bin</span>, and
+              <span className="font-mono text-foreground">~/.local/bin</span>, and
               can wire PATH. Does{" "}
-              <span className="text-white/75">not</span> start daemons, touch
+              <span className="text-foreground">not</span> start daemons, touch
               Docker, or read your wallet keys.
             </p>
           </div>
@@ -204,19 +204,19 @@ grid auth --help`}
             />
           </div>
 
-          <div className="grid gap-px border-t border-white/10 bg-white/10 sm:grid-cols-3">
+          <div className="grid gap-px border-t border-border bg-border sm:grid-cols-3">
             {STEPS.map((s) => (
               <div
                 key={s.n}
-                className="bg-black/50 px-5 py-6 sm:px-6"
+                className="bg-foreground/[0.02] dark:bg-black/50 px-5 py-6 sm:px-6"
               >
-                <p className="font-mono text-[0.6rem] tracking-[0.2em] text-white/30">
+                <p className="font-mono text-[0.6rem] tracking-[0.2em] text-muted">
                   {s.n}
                 </p>
-                <h4 className="mt-2 text-sm font-medium tracking-wide text-white/90">
+                <h4 className="mt-2 text-sm font-medium tracking-wide text-foreground">
                   {s.title}
                 </h4>
-                <p className="mt-2 text-xs leading-relaxed text-white/45">
+                <p className="mt-2 text-xs leading-relaxed text-muted">
                   {s.body}
                 </p>
               </div>
@@ -226,41 +226,41 @@ grid auth --help`}
 
         {/* Platform binaries */}
         <div className="mt-10">
-          <p className="text-center font-mono text-[0.65rem] tracking-[0.22em] text-white/35 uppercase">
+          <p className="text-center font-mono text-[0.65rem] tracking-[0.22em] text-muted uppercase">
             Direct binaries · same release
           </p>
           <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {platforms.map((p) => (
               <div
                 key={p.id}
-                className="flex flex-col rounded-2xl border border-white/10 bg-white/[0.02] p-6 transition hover:border-white/20"
+                className="flex flex-col panel p-6"
               >
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <h3 className="text-lg font-semibold">{p.name}</h3>
-                    <p className="mt-1 text-sm text-white/45">{p.arch}</p>
+                    <h3 className="text-lg font-semibold text-foreground">{p.name}</h3>
+                    <p className="mt-1 text-sm text-muted">{p.arch}</p>
                   </div>
                   <span
                     className={`rounded-full border px-2.5 py-0.5 text-[0.6rem] tracking-[0.12em] uppercase ${
                       p.status === "ready"
-                        ? "border-emerald-500/30 text-emerald-200/90"
-                        : "border-white/15 text-white/40"
+                        ? "border-emerald-500/30 text-emerald-500 dark:text-emerald-200/90"
+                        : "border-border text-muted"
                     }`}
                   >
                     {p.status === "ready" ? "Ready" : "Soon"}
                   </span>
                 </div>
-                <p className="mt-3 text-xs text-white/35">{p.note}</p>
+                <p className="mt-3 text-xs text-muted">{p.note}</p>
                 {p.href ? (
                   <a
                     href={p.href}
                     download={p.filename}
-                    className="mt-6 inline-flex items-center gap-1 text-[0.7rem] font-semibold tracking-[0.16em] text-white/80 uppercase transition hover:text-white"
+                    className="mt-6 inline-flex items-center gap-1 text-[0.7rem] font-semibold tracking-[0.16em] text-foreground uppercase transition hover:opacity-80"
                   >
                     Download {p.filename} →
                   </a>
                 ) : (
-                  <p className="mt-6 text-[0.7rem] tracking-[0.16em] text-white/25 uppercase">
+                  <p className="mt-6 text-[0.7rem] tracking-[0.16em] text-muted uppercase">
                     Coming soon
                   </p>
                 )}
@@ -281,7 +281,7 @@ grid auth --help`}
         </div>
 
         {/* What the CLI is */}
-        <div className="mx-auto mt-14 max-w-3xl rounded-2xl border border-white/10 px-6 py-8 sm:px-10">
+        <div className="mx-auto mt-14 max-w-3xl panel px-6 py-8 sm:px-10">
           <p className="font-mono text-[0.65rem] tracking-[0.2em] text-white/35 uppercase">
             What the CLI does
           </p>
