@@ -63,11 +63,11 @@ const platforms: CliPlatform[] = [
 const QUICK_STARTS = [
   {
     os: "macOS",
-    code: "curl -fsSL https://grid-compute.com/downloads/install.sh | bash\nnerdctl info\ngrid init --name my-node --class S",
+    code: "curl -fsSL https://grid-compute.com/downloads/install.sh | bash\ngrid init --name my-node --class S\ngrid solana create\ngrid mine",
   },
   {
     os: "Linux",
-    code: "curl -fsSL https://grid-compute.com/downloads/install.sh | bash\nnerdctl info\ngrid init --name my-node --class S",
+    code: "curl -fsSL https://grid-compute.com/downloads/install.sh | bash\ngrid init --name my-node --class S\ngrid solana create\ngrid mine",
   },
   {
     os: "Windows",
@@ -315,8 +315,9 @@ grid auth --help`}
             After install, run{" "}
             <span className="font-mono text-white/55">grid status</span> for
             local chain size, supply ledger integrity, and key permission
-            checks. Binaries are served only from{" "}
+              checks. Binaries are served only from{" "}
             <span className="font-mono">grid-compute.com/downloads</span>.
+            {" "}Every release includes a detached signature and per-platform SHA-256 checksums.
           </p>
         </div>
       </div>

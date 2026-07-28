@@ -43,6 +43,7 @@ yarn-error.log*
 
 # cloudflare / wrangler
 .wrangler
+state/
 .dev.vars
 
 # typescript

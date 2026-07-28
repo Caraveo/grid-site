@@ -32,6 +32,16 @@ export function Footer() {
                   </a>
                 </li>
                 <li>
+                  <a href="/token?view=1" className="transition hover:text-white">
+                    Token
+                  </a>
+                </li>
+                <li>
+                  <a href="/alloc?view=1" className="transition hover:text-white">
+                    Allocation
+                  </a>
+                </li>
+                <li>
                   <a href="/slud" className="transition hover:text-white">
                     SLUD
                   </a>

@@ -134,7 +134,7 @@ export const DOWNLOADS = {
     windowsX64: "/downloads/cli/grid-windows-x86_64.exe",
     installSh: "/downloads/install.sh",
     installPs: "/downloads/install.ps1",
-    version: "0.2.16",
+    version: "0.2.18",
   },
 };
 

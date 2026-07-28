@@ -35,7 +35,7 @@ FORCE=0
 SYSTEM=0
 UNINSTALL=0
 YES=0
-VERSION_HINT="0.2.16"
+VERSION_HINT="0.2.17"
 
 for arg in "$@"; do
   case "$arg" in
@@ -293,7 +293,10 @@ fi
 asset="$(asset_name)"
 url="${ORIGIN}/downloads/cli/${asset}"
 tmp="$(mktemp "${TMPDIR:-/tmp}/grid-cli.XXXXXX")"
-trap 'rm -f "$tmp"' EXIT
+sums="$(mktemp "${TMPDIR:-/tmp}/grid-sums.XXXXXX")"
+sig="$(mktemp "${TMPDIR:-/tmp}/grid-sig.XXXXXX")"
+pub="$(mktemp "${TMPDIR:-/tmp}/grid-pub.XXXXXX")"
+trap 'rm -f "$tmp" "$sums" "$sig" "$pub"' EXIT
 
 step "Download"
 info "Asset:  $asset"
@@ -310,6 +313,28 @@ if [[ "${bytes:-0}" -lt 1000000 ]]; then
 fi
 ok "Downloaded $(printf '%s' "$bytes" | awk '{printf "%.1f MiB", $1/1024/1024}')"
 chmod +x "$tmp"
+
+step "Verify signed release"
+need_cmd openssl
+curl -fsSL --proto '=https' --tlsv1.2 "${ORIGIN}/downloads/cli/SHA256SUMS" -o "$sums"
+curl -fsSL --proto '=https' --tlsv1.2 "${ORIGIN}/downloads/cli/SHA256SUMS.sig" -o "$sig"
+curl -fsSL --proto '=https' --tlsv1.2 "${ORIGIN}/downloads/cli/release-signing-public.pem" -o "$pub"
+fingerprint="$(openssl pkey -pubin -in "$pub" -outform DER 2>/dev/null | openssl dgst -sha256 | awk '{print $NF}')"
+[[ "$fingerprint" == "4f1d04b12256e848642c6fcde56ed9b95f4917d64c23a8965f5f63f7ace09735" ]] ||
+  die "release signing key fingerprint changed — installation stopped"
+if ! openssl dgst -sha256 -verify "$pub" -signature "$sig" "$sums" >/dev/null 2>&1; then
+  die "release manifest signature is invalid — installation stopped"
+fi
+expected="$(awk -v asset="$asset" '$2 == asset || $2 == "*" asset { print $1 }' "$sums")"
+[[ -n "$expected" ]] || die "release manifest has no checksum for $asset"
+if command -v shasum >/dev/null 2>&1; then
+  actual="$(shasum -a 256 "$tmp" | awk '{print $1}')"
+else
+  need_cmd sha256sum
+  actual="$(sha256sum "$tmp" | awk '{print $1}')"
+fi
+[[ "$actual" == "$expected" ]] || die "binary checksum mismatch — installation stopped"
+ok "Signature and SHA-256 checksum verified"
 
 step "Verify binary"
 if ! is_phase1_binary "$tmp"; then
@@ -355,6 +380,8 @@ ${BOLD}Next steps${RESET}
   ${CYAN}grid status${RESET}                 ${DIM}# node + blockchain size + security check${RESET}
   ${CYAN}grid auth --help${RESET}            ${DIM}# protect operator keys (passkey)${RESET}
   ${CYAN}grid init --name my-node --class S${RESET}
+  ${CYAN}grid solana create${RESET}           ${DIM}# create a devnet GRID reward wallet${RESET}
+  ${CYAN}grid mine${RESET}                    ${DIM}# verified PoR → automatic Solana rewards${RESET}
   ${CYAN}grid node${RESET}                   ${DIM}# host + mine on the fabric${RESET}
   ${CYAN}grid registry${RESET}               ${DIM}# public mesh from grid-compute.com${RESET}
 
