@@ -8,7 +8,7 @@ import { buildMetadata, PAGES } from "@/lib/seo";
 export const metadata: Metadata = buildMetadata(PAGES.wallet);
 
 const releaseBase =
-  "https://github.com/Caraveo/grid/releases/download/wallet-v0.1.0";
+  "https://github.com/Caraveo/grid/releases/download/wallet-v0.1.1";
 
 const downloads = [
   {
@@ -107,7 +107,7 @@ export default function WalletPage() {
 
       <Section id="downloads">
         <div className="mb-12 max-w-2xl">
-          <p className="section-label">Desktop release · v0.1.0 preview</p>
+          <p className="section-label">Desktop release · v0.1.1 preview</p>
           <h2 className="section-title mt-5">Pick your platform.</h2>
           <p className="section-body mt-6">
             These preview builds use local custody. Back up the recovery phrase
