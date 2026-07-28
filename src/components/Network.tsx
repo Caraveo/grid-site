@@ -22,7 +22,7 @@ import { ScrambleText } from "./ScrambleText";
 export function Network() {
   return (
     <section
-      id="network"
+      id="architecture"
       className="relative overflow-hidden border-t border-white/10 px-5 py-28 sm:py-36"
     >
       {/* Soft vignette */}

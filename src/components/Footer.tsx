@@ -174,7 +174,14 @@ export function Footer() {
               </h4>
               <ul className="mt-4 space-y-3 text-sm text-white/60">
                 <li>
-                  <span className="text-white/40">Proof-of-Resource</span>
+                  <a href="/por" className="transition hover:text-white">
+                    Proof-of-Resource
+                  </a>
+                </li>
+                <li>
+                  <a href="/white-paper" className="transition hover:text-white">
+                    White paper
+                  </a>
                 </li>
                 <li>
                   <span className="text-white/40">Bitcoin TSL</span>
@@ -192,12 +199,8 @@ export function Footer() {
             © {new Date().getFullYear()} GRID. Software MIT. Vision docs CC-BY-4.0.
           </p>
 
-          <a
-            href="https://ziateam.com"
-            target="_blank"
-            rel="noopener noreferrer"
+          <span
             className="group relative inline-flex items-center justify-center opacity-55 transition hover:opacity-100"
-            aria-label="From the team that brought you Zia Vision"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -213,7 +216,7 @@ export function Footer() {
             >
               From the team that brought you Zia Vision
             </span>
-          </a>
+          </span>
 
           <p className="font-mono text-[0.65rem] tracking-[0.15em] text-white/25 uppercase">
             Hosted downloads · Phase 1 · No testnet economy

@@ -16,7 +16,8 @@ export interface PublicNode {
   lastSeen?: string;
   /**
    * Coarse coordinates for globe pings only.
-   * Quantized server-side (~0.5°) — never street-level, never derived from request IP.
+   * Cloudflare may derive them from the heartbeat connection, after which they
+   * are quantized server-side (~0.5°). The originating IP is never stored.
    */
   lat?: number;
   lng?: number;

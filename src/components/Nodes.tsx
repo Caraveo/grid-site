@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { NodeGlobe } from "./NodeGlobe";
+import { WorldNodeMap } from "./WorldNodeMap";
 import {
   relativeTime,
   shortId,
@@ -45,15 +45,13 @@ function statusDot(status: PublicNode["status"]) {
   return map[status];
 }
 
-const fallbackGenesis: PublicNode = {
+const initialGenesis: PublicNode = {
   id: "genesis",
   label: "GENESIS",
   class: "L",
-  region: "Origin",
-  status: "online",
+  region: "—",
+  status: "offline",
   role: "genesis",
-  lat: 37.5,
-  lng: -122,
 };
 
 export function Nodes() {
@@ -126,16 +124,17 @@ export function Nodes() {
     return () => clearInterval(id);
   }, [load]);
 
-  const genesis = mesh?.genesis ?? fallbackGenesis;
-  const nodes = mesh?.nodes ?? [fallbackGenesis];
+  const genesis = mesh?.genesis ?? initialGenesis;
+  const nodes = mesh?.nodes ?? [];
   const peers = mesh?.peers ?? [];
-  const stats = mesh?.stats ?? { total: 1, online: 1, peers: 0 };
+  const stats = mesh?.stats ?? { total: 0, online: 0, peers: 0 };
 
   return (
     <section
-      id="nodes"
+      id="network"
       className="relative overflow-hidden border-t border-white/10 px-5 py-28 sm:py-36"
     >
+      <span id="nodes" className="absolute -top-20" aria-hidden="true" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_20%,rgba(255,255,255,0.04)_0%,transparent_60%)]" />
 
       {/* Celebration toasts */}
@@ -198,7 +197,7 @@ export function Nodes() {
 
         <div className="mt-14 grid gap-6 lg:grid-cols-5">
           <div className="lg:col-span-3">
-            <NodeGlobe
+            <WorldNodeMap
               genesis={genesis}
               nodes={nodes}
               burstIds={burstIds}
