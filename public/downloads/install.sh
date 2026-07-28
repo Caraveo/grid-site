@@ -35,7 +35,7 @@ FORCE=0
 SYSTEM=0
 UNINSTALL=0
 YES=0
-VERSION_HINT="0.2.17"
+VERSION_HINT="0.2.18"
 
 for arg in "$@"; do
   case "$arg" in

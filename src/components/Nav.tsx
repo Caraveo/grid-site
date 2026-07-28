@@ -40,6 +40,21 @@ function useMenu(): NavItem[] {
           hintKey: "nav.alloc.hint",
         },
         {
+          href: "/compare",
+          labelKey: "nav.compare",
+          hintKey: "nav.compare.hint",
+        },
+        {
+          href: "/por",
+          labelKey: "nav.por",
+          hintKey: "nav.por.hint",
+        },
+        {
+          href: "/white-paper",
+          labelKey: "nav.whitePaper",
+          hintKey: "nav.whitePaper.hint",
+        },
+        {
           href: "/slud",
           labelKey: "nav.slud",
           hintKey: "nav.slud.hint",
@@ -93,6 +108,11 @@ function useMenu(): NavItem[] {
           href: "/#nodes",
           labelKey: "nav.nodes",
           hintKey: "nav.nodes.hint",
+        },
+        {
+          href: "https://explorer.grid-compute.com",
+          labelKey: "nav.explorer",
+          hintKey: "nav.explorer.hint",
         },
         {
           href: "/mine",

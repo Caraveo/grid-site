@@ -4,7 +4,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const COORDINATOR = "https://coordinator.grid-compute.com";
-const GENESIS = process.env.GENESIS_API_URL || "http://3.231.132.70:9100";
+const GENESIS = process.env.GENESIS_API_URL || "https://genesis.grid-compute.com";
 
 async function publicJson(url: string): Promise<unknown | null> {
   try {
@@ -36,7 +36,7 @@ export async function GET() {
       checkedAt: new Date().toISOString(),
       endpoints: {
         genesisP2p: "genesis.grid-compute.com:9900",
-        genesisTruth: "genesis.grid-compute.com:9100",
+        genesisTruth: "https://genesis.grid-compute.com",
         coordinator: "coordinator.grid-compute.com",
         mesh: "grid-compute.com/api/mesh",
       },

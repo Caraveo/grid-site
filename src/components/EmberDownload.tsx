@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 const RELEASE =
-  "https://github.com/Caraveo/grid-wallet-releases/releases/download/wallet-v0.1.1";
+  "https://github.com/Caraveo/grid-wallet-releases/releases/download/wallet-v0.1.2";
 
 type Download = {
   label: "Get Ember" | "Get Wallet";

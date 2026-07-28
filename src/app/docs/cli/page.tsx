@@ -18,13 +18,8 @@ export default function CliDocsPage() {
       <H2 id="install">Install</H2>
       <CodeBlock
         lang="bash"
-        code={`# From source (developers)
-git clone https://github.com/Caraveo/grid.git
-cd grid
-make install          # → ~/.local/bin/grid
-
-# Or project install script
-curl -fsSL https://raw.githubusercontent.com/Caraveo/grid/master/scripts/install.sh | bash
+        code={`# Official signed installer
+curl -fsSL https://grid-compute.com/downloads/install.sh | bash
 
 grid --version
 grid --help`}

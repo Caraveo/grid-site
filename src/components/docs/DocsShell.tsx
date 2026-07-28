@@ -145,9 +145,9 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
               © {new Date().getFullYear()} GRID ·{" "}
               <a
                 className="underline-offset-2 hover:text-foreground hover:underline"
-                href="https://github.com/Caraveo/grid"
+                href="https://github.com/Caraveo/grid-wallet-releases"
               >
-                github.com/Caraveo/grid
+                verified release files
               </a>
             </p>
           </footer>
