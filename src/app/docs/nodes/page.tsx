@@ -22,17 +22,17 @@ export default function NodesDocsPage() {
     <>
       <H1>Nodes & mesh</H1>
       <Lead>
-        Presence data for the public globe. Coordinates are coarse and
-        opt-in. This plane never carries operator IPs, listen ports, or tunnel
-        URLs.
+        P2P participation and public map presence are related but separate. The
+        P2P process exchanges peer and block data; the public mesh API contains only
+        coarse, opt-in telemetry and never exposes operator IP addresses.
       </Lead>
 
       <Endpoint method="GET" path="/api/mesh">
-        Public peer list + genesis pin. Alias-style surface for globe UIs.
+        Public peer list plus live Genesis health overlay for maps and status UIs.
       </Endpoint>
       <CodeBlock
         lang="bash"
-        code={`curl -sS ${API_BASE}/api/mesh | jq '{phase, stats, peers: .peers[:5]}'`}
+        code={`curl -fsS ${API_BASE}/api/mesh | jq '{phase, stats, genesis, peers: .peers[:5]}'`}
       />
       <CodeBlock
         lang="json"
@@ -42,7 +42,7 @@ export default function NodesDocsPage() {
   "label": "MacNode",
   "class": "S",
   "region": "NA-W",
-  "status": "online",
+  "status": "offline",
   "role": "peer",
   "joinedAt": "2026-07-17T17:04:12.138Z",
   "lastSeen": "2026-07-18T04:14:57.178Z",
@@ -50,6 +50,32 @@ export default function NodesDocsPage() {
   "lng": -122.5
 }`}
       />
+
+      <H2 id="p2p">Run the P2P peer</H2>
+      <CodeBlock
+        lang="bash"
+        code={`# Genesis bootstrap is automatic
+grid peer --name garage --with-bench
+
+# Bind a different local listener
+grid peer --name garage --listen 0.0.0.0:9901
+
+# Add a known peer without removing Genesis
+grid peer --name garage --connect peer.example:9900`}
+      />
+      <P>
+        The P2P protocol performs an authenticated hello, ping/pong RTT measurement,
+        peer gossip, signed-truth refresh, ban enforcement, and block replication.
+        The canonical Genesis endpoint is omitted only with{" "}
+        <code className="font-mono">--no-genesis</code>, which is intended for
+        controlled testing or the Genesis host itself.
+      </P>
+
+      <Note>
+        Public map status is live data. A non-Genesis peer is marked offline when
+        its location heartbeat is more than 60 seconds old. Genesis status comes
+        from an HTTPS health check, not a stale map record.
+      </Note>
 
       <H2 id="ping">Mesh ping (write)</H2>
       <Endpoint method="POST" path="/api/mesh/ping">

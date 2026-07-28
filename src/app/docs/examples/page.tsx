@@ -16,6 +16,19 @@ export default function ExamplesPage() {
         read-only unless noted.
       </Lead>
 
+      <H2 id="explorer">curl — chain and upstream health</H2>
+      <CodeBlock
+        lang="bash"
+        code={`curl -fsS ${API_BASE}/api/explorer \\
+  | jq '{
+      checkedAt,
+      health,
+      chain: .chain | {chainId, height, tipHash, blocks},
+      rewards: .coordinator.rewards,
+      settlement
+    }'`}
+      />
+
       <H2 id="curl">curl — free capacity poller</H2>
       <CodeBlock
         lang="bash"
@@ -26,7 +39,7 @@ API=${API_BASE}
 while true; do
   curl -fsS "$API/api/registry/computes?available=1" \\
     | jq -r '.computes[]? | "\\(.name)\\tslots=\\(.freeSlots)\\t\\(.class)\\t\\(.region // "-")"'
-  sleep 30
+  sleep 3600
 done`}
       />
 

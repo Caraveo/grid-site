@@ -27,7 +27,32 @@ export const DOCS_NAV: DocsNavSection[] = [
       {
         href: "/docs/getting-started",
         label: "Getting started",
-        hint: "First calls in minutes",
+        hint: "Join the pilot network",
+      },
+    ],
+  },
+  {
+    title: "Network",
+    items: [
+      {
+        href: "/docs/network",
+        label: "Architecture & status",
+        hint: "Genesis · coordinator · P2P",
+      },
+      {
+        href: "/docs/por",
+        label: "Proof of Resource",
+        hint: "Verify · score · settle",
+      },
+      {
+        href: "/docs/explorer",
+        label: "Explorer API",
+        hint: "Blocks · settlements · health",
+      },
+      {
+        href: "/docs/wallets",
+        label: "Wallets & Ember",
+        hint: "GRID · Solana devnet",
       },
     ],
   },
@@ -69,7 +94,7 @@ export const DOCS_NAV: DocsNavSection[] = [
   {
     title: "Build",
     items: [
-      { href: "/docs/cli", label: "GRID CLI", hint: "Node · ember · registry" },
+      { href: "/docs/cli", label: "GRID CLI", hint: "Peer · mine · wallet" },
       {
         href: "/docs/examples",
         label: "Code examples",
@@ -84,6 +109,11 @@ export const DOCS_NAV: DocsNavSection[] = [
         href: "/docs/security",
         label: "Data & safety",
         hint: "What is never public",
+      },
+      {
+        href: "https://grid-compute.com/white-paper",
+        label: "White paper",
+        hint: "Architecture · vision · PDF ↗",
       },
     ],
   },

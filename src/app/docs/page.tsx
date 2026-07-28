@@ -14,75 +14,83 @@ import { API_BASE } from "@/lib/docs-nav";
 export default function DocsHomePage() {
   return (
     <>
-      <H1>GRID public API</H1>
+      <H1>GRID network documentation</H1>
       <Lead>
-        Data-only documentation for the planetary compute registry. Discover
-        names, nodes, and free compute slots — without ever receiving private
-        keys, wallet secrets, or host endpoints that would put the network at
-        risk.
+        Operate a peer, mine verified work, inspect signed blocks, manage wallets,
+        or build against the public data plane. These docs describe the running
+        pilot and clearly separate it from the longer-term white-paper vision.
       </Lead>
 
       <Note>
-        <strong className="text-foreground">Base URL:</strong>{" "}
-        <code className="font-mono text-foreground">{API_BASE}</code>
+        <strong className="text-foreground">Current status:</strong> public
+        Genesis-led pilot with P2P block verification. Permissionless block
+        production and decentralized finality are not yet live.
         <br />
-        All public JSON endpoints send{" "}
-        <code className="font-mono">Access-Control-Allow-Origin: *</code> where
-        listed. Writes that mutate the mesh require a shared webhook bearer —
-        never ship that secret in browsers.
+        <strong className="text-foreground">Public API:</strong>{" "}
+        <code className="font-mono text-foreground">{API_BASE}</code>
       </Note>
 
-      <H2 id="what-you-get">What this docs site covers</H2>
+      <H2 id="what-you-get">Start with the system you need</H2>
       <Ul>
         <li>
-          <Link className="text-foreground underline-offset-2 hover:underline" href="/docs/concepts">
-            Concepts
+          <Link className="text-foreground underline-offset-2 hover:underline" href="/docs/network">
+            Network architecture
           </Link>{" "}
-          — nodes, computes, realms, registry.grid
+          — Genesis, coordinator, P2P peers, blocks, and trust boundaries
+        </li>
+        <li>
+          <Link className="text-foreground underline-offset-2 hover:underline" href="/docs/getting-started">
+            Run a node
+          </Link>{" "}
+          — install GRID 0.2.18, initialize keys, join P2P, and mine
+        </li>
+        <li>
+          <Link className="text-foreground underline-offset-2 hover:underline" href="/docs/por">
+            Proof of Resource
+          </Link>{" "}
+          — verified contribution, scoring, allocation, and settlement
+        </li>
+        <li>
+          <Link className="text-foreground underline-offset-2 hover:underline" href="/docs/explorer">
+            Explorer API
+          </Link>{" "}
+          — chain health, blocks, settlements, capacity, and peers
+        </li>
+        <li>
+          <Link className="text-foreground underline-offset-2 hover:underline" href="/docs/wallets">
+            Wallets & Ember
+          </Link>{" "}
+          — native GRID addresses and Solana devnet reward addresses
         </li>
         <li>
           <Link className="text-foreground underline-offset-2 hover:underline" href="/docs/registry">
-            Registry API
+            Registry and compute APIs
           </Link>{" "}
-          — the canonical directory
-        </li>
-        <li>
-          <Link className="text-foreground underline-offset-2 hover:underline" href="/docs/nodes">
-            Nodes & mesh
-          </Link>{" "}
-          — coarse globe presence (location only)
-        </li>
-        <li>
-          <Link className="text-foreground underline-offset-2 hover:underline" href="/docs/computes">
-            Computes
-          </Link>{" "}
-          — public capacity, free slots
-        </li>
-        <li>
-          <Link className="text-foreground underline-offset-2 hover:underline" href="/docs/register">
-            Name registration
-          </Link>{" "}
-          — activate a public name ($5 Cash App)
-        </li>
-        <li>
-          <Link className="text-foreground underline-offset-2 hover:underline" href="/docs/earn">
-            Earn & use cases
-          </Link>{" "}
-          — what operators and builders can ship
+          — names, public capacity, identity, and privacy-preserving pings
         </li>
       </Ul>
 
-      <H2 id="quick-start">30-second call</H2>
+      <H2 id="quick-start">Live network snapshot</H2>
       <CodeBlock
         lang="bash"
         title="curl"
-        code={`curl -sS ${API_BASE}/api/registry | jq '.entries[:3], .computeStats'`}
+        code={`curl -fsS ${API_BASE}/api/explorer \\
+  | jq '{checkedAt, health, chain: .chain | {chainId, height, tipHash}, rewards: .coordinator.rewards}'
+
+curl -fsS ${API_BASE}/api/mesh \\
+  | jq '{stats, genesis, peers}'`}
       />
 
       <H2 id="surface">Public surface map</H2>
       <Table
         headers={["Area", "Read", "Write", "Contains"]}
         rows={[
+          [
+            "Network Explorer",
+            "GET /api/explorer",
+            "—",
+            "Genesis health, blocks, settlements, rewards, mesh",
+          ],
           [
             "Registry directory",
             "GET /api/registry",
@@ -118,8 +126,7 @@ export default function DocsHomePage() {
 
       <H2 id="hard-rules">Hard rules (read this)</H2>
       <P>
-        GRID&apos;s public API is intentionally hostile to abuse and to leaking
-        the data plane that keeps operators safe:
+        Public visibility is deliberately narrower than internal network state:
       </P>
       <Ul>
         <li>
@@ -136,12 +143,16 @@ export default function DocsHomePage() {
         </li>
         <li>
           <strong className="text-foreground">Mesh pings are location-only</strong>{" "}
-          and quantized for the globe. They do not prove capacity or grant dial
-          rights.
+          and quantized for the map. They do not prove capacity or publish dial
+          targets.
         </li>
         <li>
-          <strong className="text-foreground">registry.grid listing requires paid activation</strong>{" "}
+          <strong className="text-foreground">Registry listing requires activation</strong>{" "}
           plus human review. A globe ping alone does not list you.
+        </li>
+        <li>
+          <strong className="text-foreground">Pilot rewards are test accounting</strong>{" "}
+          and are not guaranteed income, market value, or an exchange listing.
         </li>
       </Ul>
 
@@ -150,9 +161,9 @@ export default function DocsHomePage() {
         <Link className="text-foreground underline-offset-2 hover:underline" href="/docs/getting-started">
           Getting started
         </Link>{" "}
-        or jump straight to{" "}
-        <Link className="text-foreground underline-offset-2 hover:underline" href="/docs/registry">
-          Registry
+        or read the{" "}
+        <Link className="text-foreground underline-offset-2 hover:underline" href="/docs/network">
+          network architecture
         </Link>
         .
       </P>

@@ -4,16 +4,16 @@ import { DOCS_SITE_URL } from "@/lib/docs-nav";
 
 export const metadata: Metadata = {
   title: {
-    default: "GRID Docs — Public Registry API",
+    default: "GRID Docs — Network & Public API",
     template: "%s · GRID Docs",
   },
   description:
-    "Public API documentation for GRID: registry, nodes, computes, mesh globe, name registration, and CLI. Data-only — no private keys, no host endpoints.",
+    "Documentation for the GRID pilot network: Genesis, P2P peers, Proof of Resource, mining, wallets, Explorer, registry, and public APIs.",
   metadataBase: new URL(DOCS_SITE_URL),
   openGraph: {
-    title: "GRID Docs — Public Registry API",
+    title: "GRID Docs — Network & Public API",
     description:
-      "Developer docs for the GRID public registry and mesh data plane.",
+      "Operator and developer docs for the GRID useful-compute pilot network.",
     url: DOCS_SITE_URL,
     siteName: "GRID Docs",
     type: "website",

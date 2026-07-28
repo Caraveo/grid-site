@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { CodeBlock } from "@/components/docs/CodeBlock";
 import { H1, H2, Lead, Note, P, Ul } from "@/components/docs/DocsChrome";
-import { API_BASE } from "@/lib/docs-nav";
 
 export const metadata = {
   title: "Getting started",
@@ -13,90 +12,87 @@ export default function GettingStartedPage() {
     <>
       <H1>Getting started</H1>
       <Lead>
-        Two tracks: <strong className="text-foreground">read the network</strong>{" "}
-        (no auth) and <strong className="text-foreground">run a node</strong>{" "}
-        (CLI + optional webhook secret for heartbeats).
+        Install the signed GRID 0.2.18 CLI, create local operator protection,
+        initialize a node, join the canonical Genesis peer, and start the mining
+        track against the public coordinator.
       </Lead>
 
-      <H2 id="read">1. Read the public directory</H2>
+      <Note>
+        This is a pilot. Solana rewards use devnet, GRID balances are experimental,
+        and participation does not guarantee income or market value.
+      </Note>
+
+      <H2 id="install">1. Install and verify</H2>
       <CodeBlock
         lang="bash"
-        code={`# Canonical registry snapshot
-curl -sS ${API_BASE}/api/registry | jq '{entries, computeStats, stats}'
+        code={`curl -fsSL https://grid-compute.com/downloads/install.sh | bash
 
-# Free compute slots only
-curl -sS '${API_BASE}/api/registry/computes?available=1' | jq '.stats'
-
-# Globe peers (coarse location)
-curl -sS ${API_BASE}/api/mesh | jq '.peers'`}
-      />
-
-      <H2 id="js">2. JavaScript (browser or Node)</H2>
-      <CodeBlock
-        lang="js"
-        title="javascript"
-        code={`const res = await fetch("${API_BASE}/api/registry");
-const data = await res.json();
-
-// Active public names
-for (const e of data.entries ?? []) {
-  console.log(e.name, e.kinds, e.computeStatus);
-}
-
-// How many free slots network-wide?
-console.log(data.computeStats);`}
-      />
-
-      <H2 id="operator">3. Operator path (earn + host)</H2>
-      <Ul>
-        <li>
-          Install the{" "}
-          <Link className="text-foreground underline-offset-2 hover:underline" href="/docs/cli">
-            GRID CLI
-          </Link>
-        </li>
-        <li>
-          Pick a name and{" "}
-          <Link className="text-foreground underline-offset-2 hover:underline" href="/docs/register">
-            activate it
-          </Link>{" "}
-          ($5 Cash App → $Caraveo with the exact note)
-        </li>
-        <li>
-          Run an ember: host + mine + compute + registry announce
-        </li>
-        <li>
-          Optionally set globe coordinates and{" "}
-          <code className="font-mono">GRID_WEBHOOK_SECRET</code> for mesh pings
-        </li>
-      </Ul>
-      <CodeBlock
-        lang="bash"
-        code={`# After install
 grid --version
-grid registry                 # pull public directory
-grid ember fire --start       # example realm once activated`}
+# grid 0.2.18`}
       />
 
-      <H2 id="builder">4. Builder path (consume capacity)</H2>
+      <H2 id="identity">2. Protect keys and initialize</H2>
+      <CodeBlock
+        lang="bash"
+        code={`# Choose one operator-key protection method
+grid auth keyphrase
+# Alternatives: grid auth passkey | grid auth password | grid auth combo
+
+grid init --name garage --class S
+grid status
+grid resources
+grid bench --duration 3`}
+      />
+
+      <H2 id="peer">3. Join P2P</H2>
+      <CodeBlock
+        lang="bash"
+        code={`# Keep this terminal running.
+# The canonical Genesis peer is included automatically.
+grid peer --name garage --with-bench`}
+      />
       <P>
-        Poll <code className="font-mono">/api/registry/computes?available=1</code>{" "}
-        to discover free slots, then coordinate job placement off-band or via
-        future job markets. The public API tells you{" "}
-        <em>who has free capacity</em>, not a raw socket to open.
+        The peer connects to <code className="font-mono">genesis.grid-compute.com:9900</code>,
+        validates signed Genesis truth, exchanges peer gossip, and verifies
+        replicated chain blocks. Use <code className="font-mono">--connect</code>{" "}
+        only to add another known peer.
       </P>
 
-      <Note>
-        Never put webhook secrets in front-end bundles. Read endpoints need no
-        secret. Write endpoints use{" "}
-        <code className="font-mono">Authorization: Bearer …</code> from the
-        operator environment only.
-      </Note>
+      <H2 id="mine">4. Configure devnet rewards and mine</H2>
+      <CodeBlock
+        lang="bash"
+        code={`# Optional: create once. Existing keys are never overwritten.
+grid solana create
+grid solana status
+
+# In a second terminal
+grid mine
+
+# Inspect coordinator totals and reward status
+grid stats`}
+      />
+      <P>
+        <code className="font-mono">grid mine</code> polls the public coordinator,
+        executes mine-track work, submits a result commitment, and receives credit
+        only after verification. The coordinator retries when no work is available
+        or an upstream is temporarily unreachable.
+      </P>
+
+      <H2 id="ember">5. Optional: claim and run an Ember realm</H2>
+      <Ul>
+        <li>Claim a local realm identity with <code className="font-mono">grid claim garage</code>.</li>
+        <li>Activate the public registry name if it should be listed.</li>
+        <li>Run <code className="font-mono">grid ember garage --start</code> for host + mine + compute + registry.</li>
+      </Ul>
 
       <P>
         Dive deeper:{" "}
-        <Link className="text-foreground underline-offset-2 hover:underline" href="/docs/registry">
-          Registry API
+        <Link className="text-foreground underline-offset-2 hover:underline" href="/docs/cli">
+          complete CLI reference
+        </Link>{" "}
+        or{" "}
+        <Link className="text-foreground underline-offset-2 hover:underline" href="/docs/por">
+          Proof of Resource
         </Link>
         .
       </P>
