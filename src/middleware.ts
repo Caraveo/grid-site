@@ -9,17 +9,37 @@ import type { NextRequest } from "next/server";
  */
 export function middleware(request: NextRequest) {
   const host = (request.headers.get("host") ?? "").toLowerCase();
+  const isExplorerHost =
+    host === "explorer.grid-compute.com" ||
+    host.startsWith("explorer.grid-compute.com:") ||
+    host === "explorer.localhost" ||
+    host.startsWith("explorer.localhost:");
   const isDocsHost =
     host === "docs.grid-compute.com" ||
     host.startsWith("docs.grid-compute.com:") ||
     host === "docs.localhost" ||
     host.startsWith("docs.localhost:");
 
+  const { pathname } = request.nextUrl;
+
+  if (isExplorerHost) {
+    if (
+      pathname.startsWith("/explorer") ||
+      pathname.startsWith("/api") ||
+      pathname.startsWith("/_next") ||
+      pathname.startsWith("/downloads") ||
+      /\.[a-zA-Z0-9]+$/.test(pathname)
+    ) {
+      return NextResponse.next();
+    }
+    const url = request.nextUrl.clone();
+    url.pathname = pathname === "/" ? "/explorer" : `/explorer${pathname}`;
+    return NextResponse.rewrite(url);
+  }
+
   if (!isDocsHost) {
     return NextResponse.next();
   }
-
-  const { pathname } = request.nextUrl;
 
   // Pass through framework / public assets / API
   if (
