@@ -165,6 +165,6 @@ export async function GET() {
       "no IPs, hostnames, nested objects",
       `max body ${MAX_BODY_BYTES} bytes`,
     ],
-    auth: "Bearer GRID_WEBHOOK_SECRET or X-Grid-Secret",
+    auth: "Bearer GRID_WEBHOOK_SECRET, X-Grid-Secret, or private service binding",
   });
 }
