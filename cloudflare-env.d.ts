@@ -11,6 +11,8 @@ interface CloudflareEnv {
   MESH_KV: KVNamespace;
   /** Webhook shared secret for POST /api/mesh/ping */
   GRID_WEBHOOK_SECRET?: string;
+  /** Private coordinator-to-site mesh heartbeat secret. */
+  MESH_SERVICE_SECRET?: string;
   GRID_PHASE?: string;
   GENESIS_LAT?: string;
   GENESIS_LNG?: string;

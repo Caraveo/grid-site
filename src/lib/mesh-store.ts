@@ -426,6 +426,7 @@ function timingSafeEqualString(a: string, b: string): boolean {
 
 export function verifyWebhookSecret(req: Request): boolean {
   const expected = envStr("GRID_WEBHOOK_SECRET");
+  const expectedService = envStr("MESH_SERVICE_SECRET");
   // Local dev: allow open if secret not set. Production must set the secret.
   if (!expected) {
     return envStr("NODE_ENV") !== "production";
@@ -433,8 +434,16 @@ export function verifyWebhookSecret(req: Request): boolean {
   const auth = req.headers.get("authorization") ?? "";
   const bearer = auth.startsWith("Bearer ") ? auth.slice(7).trim() : "";
   const header = (req.headers.get("x-grid-secret") ?? "").trim();
+  const serviceHeader = (req.headers.get("x-grid-service-secret") ?? "").trim();
   if (bearer && timingSafeEqualString(bearer, expected)) return true;
   if (header && timingSafeEqualString(header, expected)) return true;
+  if (
+    expectedService &&
+    serviceHeader &&
+    timingSafeEqualString(serviceHeader, expectedService)
+  ) {
+    return true;
+  }
   return false;
 }
 
