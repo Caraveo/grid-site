@@ -8,7 +8,7 @@ import { buildMetadata, PAGES } from "@/lib/seo";
 export const metadata: Metadata = buildMetadata(PAGES.wallet);
 
 const releaseBase =
-  "https://github.com/Caraveo/grid/releases/download/wallet-v0.1.1";
+  "https://github.com/Caraveo/grid-wallet-releases/releases/download/wallet-v0.1.1";
 
 const downloads = [
   {
