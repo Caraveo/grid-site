@@ -1,0 +1,30 @@
+{
+  "name": "GRID",
+  "symbol": "GRID",
+  "description": "GRID is the utility token for verified useful compute on the GRID network.",
+  "image": "https://grid-compute.com/token/grid-icon-white.png?v=2",
+  "external_url": "https://grid-compute.com",
+  "attributes": [
+    {
+      "trait_type": "Category",
+      "value": "Compute utility"
+    },
+    {
+      "trait_type": "Network",
+      "value": "GRID"
+    },
+    {
+      "trait_type": "Settlement rail",
+      "value": "Solana"
+    }
+  ],
+  "properties": {
+    "category": "image",
+    "files": [
+      {
+        "uri": "https://grid-compute.com/token/grid-icon-white.png?v=2",
+        "type": "image/png"
+      }
+    ]
+  }
+}

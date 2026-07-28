@@ -30,6 +30,16 @@ function useMenu(): NavItem[] {
           hintKey: "nav.explain.hint",
         },
         {
+          href: "/token?view=1",
+          labelKey: "nav.token",
+          hintKey: "nav.token.hint",
+        },
+        {
+          href: "/alloc?view=1",
+          labelKey: "nav.alloc",
+          hintKey: "nav.alloc.hint",
+        },
+        {
           href: "/slud",
           labelKey: "nav.slud",
           hintKey: "nav.slud.hint",
@@ -85,7 +95,7 @@ function useMenu(): NavItem[] {
           hintKey: "nav.nodes.hint",
         },
         {
-          href: "/#miners",
+          href: "/mine",
           labelKey: "nav.miners",
           hintKey: "nav.miners.hint",
         },
@@ -125,7 +135,7 @@ function useMenu(): NavItem[] {
           hintKey: "nav.cli.hint",
         },
         {
-          href: "/#wallets",
+          href: "/wallet",
           labelKey: "nav.wallets",
           hintKey: "nav.wallets.hint",
         },

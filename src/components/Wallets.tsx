@@ -1,27 +1,28 @@
+import Link from "next/link";
+import { ScrambleText } from "./ScrambleText";
+
 const surfaces = [
   {
-    title: "Software",
-    body: "Desktop wallet for miners — run nodes, see earn, export keys, GRID → BTC.",
-    phase: "P2",
+    title: "macOS",
+    body: "Native SwiftUI wallet with system, light, and dark themes.",
+    phase: "LIVE",
   },
   {
-    title: "Mobile",
-    body: "Watch balances and alerts on the go. Later: sign and cash out to Bitcoin.",
-    phase: "P3–P4",
+    title: "Windows",
+    body: "Desktop wallet for GRID balances, rewards, transfers, and custody.",
+    phase: "LIVE",
   },
   {
-    title: "Web",
-    body: "Buyer portal for jobs and invoices. Connect a wallet — no seed in the browser.",
-    phase: "P2–P3",
+    title: "Linux",
+    body: "AppImage and Debian packages backed by the native GRID wallet core.",
+    phase: "LIVE",
   },
   {
-    title: "Services",
-    body: "Fleet APIs, payroll to BTC, SSO, audit. Optional custody for teams who need it.",
-    phase: "P3+",
+    title: "GRID → SOL → BTC",
+    body: "GRID management and Solana devnet rewards now; Bitcoin consolidation is the next audited gate.",
+    phase: "ROADMAP",
   },
 ];
-
-import { ScrambleText } from "./ScrambleText";
 
 export function Wallets() {
   return (
@@ -40,10 +41,12 @@ export function Wallets() {
             Exit on <ScrambleText text="Bitcoin." />
           </h2>
           <p className="section-body mt-6">
-            CLI first. Then software, mobile, web, and services — same identity
-            story, non-custodial by default, Bitcoin as the Transact Security
-            Layer for hard settlement.
+            Native desktop apps use the same encrypted vault, recovery phrase,
+            grid0 address, and transaction workflow as the GRID command line.
           </p>
+          <Link href="/wallet" className="btn-primary mt-8">
+            Download GRID Wallet
+          </Link>
         </div>
 
         <div className="mt-14 grid gap-px bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
@@ -56,7 +59,7 @@ export function Wallets() {
                 <h3 className="text-lg font-semibold tracking-tight">
                   <ScrambleText text={s.title} />
                 </h3>
-                <span className="font-mono text-[0.6rem] tracking-[0.14em] text-white/35 uppercase">
+                <span className="font-mono text-[0.6rem] tracking-[0.14em] text-cyan-200/55 uppercase">
                   {s.phase}
                 </span>
               </div>

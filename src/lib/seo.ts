@@ -132,6 +132,56 @@ export const PAGES = {
       "useful mining",
     ],
   },
+  token: {
+    title: "Token — GRID → SOL → BTC",
+    description:
+      "GRID meters useful compute, Solana provides the public transfer rail, and Bitcoin remains the final Transact Security Layer.",
+    path: "/token",
+    label: "TOKEN",
+    ogImage: "/downloads/og/card-03.png",
+    keywords: [
+      "GRID token",
+      "Solana",
+      "SOL",
+      "Bitcoin",
+      "utility token",
+      "distributed compute",
+      "settlement layer",
+    ],
+  },
+  alloc: {
+    title: "Allocation — Every GRID Counted",
+    description:
+      "The complete planned allocation of GRID: 5B for verified compute mining and 5B across disclosed treasury, founder, contributor, community, liquidity, security, and reserve buckets.",
+    path: "/alloc",
+    label: "ALLOCATION",
+    ogImage: "/downloads/og/card-03.png",
+    keywords: [
+      "GRID allocation",
+      "GRID tokenomics",
+      "compute mining",
+      "founder vesting",
+      "treasury",
+      "Solana",
+    ],
+  },
+  wallet: {
+    title: "GRID Wallet — macOS, Windows & Linux",
+    description:
+      "Download the native GRID Wallet for macOS, Windows, or Linux. Manage GRID, claim mining rewards, and configure Solana settlement from an encrypted local vault.",
+    path: "/wallet",
+    label: "WALLET",
+    ogImage: "/downloads/og/card-01.png",
+    keywords: [
+      "GRID Wallet",
+      "GRID desktop wallet",
+      "macOS wallet",
+      "Windows wallet",
+      "Linux wallet",
+      "Solana rewards",
+      "GRID mining",
+    ],
+  },
   slud: {
     title: "SLUD — Spam. Scam. Slop. | GRID",
     description:
