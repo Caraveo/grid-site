@@ -3,7 +3,8 @@ import { H1, H2, Lead, Note, P, Ul } from "@/components/docs/DocsChrome";
 
 export const metadata = {
   title: "GRID CLI",
-  description: "Install and use the GRID CLI with the public registry.",
+  description:
+    "Install GRID 0.2.18 and operate peers, mining, useful compute, wallets, and the public registry.",
 };
 
 export default function CliDocsPage() {
@@ -11,8 +12,9 @@ export default function CliDocsPage() {
     <>
       <H1>GRID CLI</H1>
       <Lead>
-        The CLI is the primary operator surface: run nodes, mine useful work,
-        host computes, and talk to the public registry at grid-compute.com.
+        GRID 0.2.18 is the primary operator surface: join the P2P fabric, mine
+        verified work, host computes, inspect resources, manage wallets, and talk
+        to the public registry.
       </Lead>
 
       <H2 id="install">Install</H2>
@@ -22,7 +24,86 @@ export default function CliDocsPage() {
 curl -fsSL https://grid-compute.com/downloads/install.sh | bash
 
 grid --version
-grid --help`}
+grid --help
+
+# Current expected release:
+# grid 0.2.18`}
+      />
+
+      <H2 id="init">Initialize operator state</H2>
+      <CodeBlock
+        lang="bash"
+        code={`# Choose one key-protection method
+grid auth keyphrase
+# or: grid auth passkey | password | combo
+
+grid init --name garage --class S
+grid status`}
+      />
+      <P>
+        State defaults to <code className="font-mono">~/.grid</code>. Override it
+        with <code className="font-mono">--config-dir</code> or{" "}
+        <code className="font-mono">GRID_CONFIG_DIR</code> when running isolated
+        test nodes.
+      </P>
+
+      <H2 id="peer">Join P2P</H2>
+      <CodeBlock
+        lang="bash"
+        code={`# Canonical Genesis is included automatically
+grid peer --name garage --with-bench
+
+# Optional explicit peer
+grid peer --name garage --connect peer.example:9900`}
+      />
+
+      <H2 id="mine">Mine and host</H2>
+      <CodeBlock
+        lang="bash"
+        code={`# Mine-track Proof-of-Resource work
+grid mine
+
+# Host-track useful container work
+grid host
+
+# Run host + mine together
+grid node
+# alias:
+grid start
+
+# Coordinator and reward totals
+grid stats`}
+      />
+      <P>
+        These commands default to{" "}
+        <code className="font-mono">https://coordinator.grid-compute.com</code>.
+        A node is credited only after the coordinator verifies its result and
+        creates a settlement receipt.
+      </P>
+
+      <H2 id="resources">Resources and benchmark</H2>
+      <CodeBlock
+        lang="bash"
+        code={`grid resources
+grid bench --duration 3
+grid bench --duration 3 --json
+grid status`}
+      />
+
+      <H2 id="wallets">Wallet commands</H2>
+      <CodeBlock
+        lang="bash"
+        code={`# Native GRID chain wallet
+grid wallet init
+grid wallet status
+grid wallet receive
+grid wallet claim
+grid wallet history --limit 20
+
+# Solana devnet reward wallet
+grid solana create
+grid solana status
+grid solana import YOUR_EXISTING_ADDRESS`}
       />
 
       <H2 id="registry">Talk to the registry</H2>
@@ -37,8 +118,8 @@ GRID_SITE_URL=https://grid-compute.com grid registry`}
 
       <H2 id="ember">Run an ember</H2>
       <P>
-        After your name is <code className="font-mono">active</code> on the
-        registry, start the full local stack:
+        After claiming a realm and activating its public registry name, start the
+        full realm stack:
       </P>
       <CodeBlock
         lang="bash"
@@ -46,7 +127,7 @@ GRID_SITE_URL=https://grid-compute.com grid registry`}
 
 # Tracks typically include:
 #   host   — useful work
-#   mine   — PoR security earn
+#   mine   — verified PoR work
 #   compute — named capacity (e.g. fire)
 #   registry — announce + globe ping`}
       />
@@ -55,7 +136,10 @@ GRID_SITE_URL=https://grid-compute.com grid registry`}
       <CodeBlock
         lang="bash"
         title="~/.grid/env"
-        code={`GRID_SITE_URL=https://grid-compute.com
+        code={`GRID_COORDINATOR=https://coordinator.grid-compute.com
+GRID_REGISTRY_URL=https://grid-compute.com
+GRID_GENESIS=https://genesis.grid-compute.com
+GRID_SITE_URL=https://grid-compute.com
 GRID_WEBHOOK_SECRET=…          # mesh + compute announce
 GRID_GLOBE_LAT=37.7            # optional opt-in globe
 GRID_GLOBE_LNG=-122.4
@@ -76,13 +160,22 @@ globe_lng = -122.4
 globe_region = "NA-W"`}
       />
 
-      <H2 id="common">Common commands</H2>
+      <H2 id="common">Command map</H2>
       <Ul>
         <li>
           <code className="font-mono">grid status</code> — local node health
         </li>
         <li>
           <code className="font-mono">grid registry</code> — public directory
+        </li>
+        <li>
+          <code className="font-mono">grid peer</code> — P2P replication and peer gossip
+        </li>
+        <li>
+          <code className="font-mono">grid mine</code> — mine-track verified work
+        </li>
+        <li>
+          <code className="font-mono">grid stats</code> — coordinator and reward totals
         </li>
         <li>
           <code className="font-mono">grid ember &lt;name&gt; --start</code> — full realm stack
@@ -93,14 +186,15 @@ globe_region = "NA-W"`}
       </Ul>
 
       <Note>
-        Binaries and releases also appear on{" "}
+        Official binaries also appear on{" "}
         <a
           className="text-foreground underline-offset-2 hover:underline"
           href="https://grid-compute.com"
         >
           grid-compute.com
         </a>{" "}
-        download sections. Prefer checksums from official release channels.
+        download sections. Verify the signed manifest and SHA-256 checksum before
+        running a download.
       </Note>
     </>
   );

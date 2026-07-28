@@ -11,16 +11,41 @@ export default function ConceptsPage() {
     <>
       <H1>Concepts</H1>
       <Lead>
-        Shared vocabulary for the public registry and mesh. Everything below is
-        safe to discuss on the open web — nothing here grants privileged access
-        to another operator&apos;s machine.
+        Shared vocabulary for the compute network, settlement chain, public
+        registry, and mesh. Public descriptions never grant privileged access to
+        another operator&apos;s machine.
       </Lead>
+
+      <H2 id="genesis">Genesis</H2>
+      <P>
+        The current <strong className="text-foreground">Genesis node</strong> is
+        the pilot bootstrap, signed-truth authority, and block producer. Peers know
+        its canonical hostname and public key, then independently verify the blocks
+        they receive. Genesis-led does not mean permissionless finality; that remains
+        roadmap work.
+      </P>
+
+      <H2 id="coordinator">Coordinator</H2>
+      <P>
+        The <strong className="text-foreground">coordinator</strong> accepts jobs,
+        assigns them to eligible nodes, records intent and result commitments, and
+        emits a settlement receipt only after verification. It does not publish
+        operator private keys or trust a node&apos;s claimed result without checking it.
+      </P>
+
+      <H2 id="block">Settlement block</H2>
+      <P>
+        A block links to the previous block, commits a state root, includes verified
+        settlement inputs and allocations, and is signed by the current leader.
+        Replicas replay allocation math rather than trusting a coordinator-supplied
+        number.
+      </P>
 
       <H2 id="node">Node</H2>
       <P>
         A <strong className="text-foreground">node</strong> is a machine running
         the GRID stack (CLI / ember). Nodes can host useful work, mine Proof of
-        Resource (PoR) for security, and announce capacity. Publicly you see an
+        Resource (PoR), verify P2P blocks, and announce capacity. Publicly you see an
         opaque <code className="font-mono text-foreground">nodeId</code>, a
         human label, class (<code className="font-mono">S|M|L</code>), region
         code, and optional coarse coordinates for the globe.
@@ -61,8 +86,15 @@ export default function ConceptsPage() {
       <H2 id="mesh">Mesh globe</H2>
       <P>
         The mesh API powers the cinematic globe on the site. Peers may opt in to
-        a location-only ping (coarse lat/lng). This is marketing / presence
-        data, not a routing table.
+        a location-only ping (coarse lat/lng). The map is public presence telemetry,
+        not the P2P routing table, and it never publishes raw IP addresses.
+      </P>
+
+      <H2 id="por">Proof of Resource</H2>
+      <P>
+        PoR scores verified contribution using compute, uptime, efficiency, fidelity,
+        and bounded reputation. It currently controls reward allocation; it does not
+        yet elect permissionless block producers.
       </P>
 
       <H2 id="ember">Ember</H2>

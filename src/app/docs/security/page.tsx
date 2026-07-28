@@ -18,6 +18,8 @@ export default function SecurityDocsPage() {
 
       <H2 id="public">Always public (safe)</H2>
       <Ul>
+        <li>Chain ID, height, block hashes, state roots, and leader public key</li>
+        <li>Verified settlement counts and aggregate reward statistics</li>
         <li>Activated names and their kinds (node / compute)</li>
         <li>Capacity ads: free slots, status, image labels, class, region</li>
         <li>Coarse globe coordinates (opt-in)</li>
@@ -37,6 +39,9 @@ export default function SecurityDocsPage() {
           ["Webhook secrets", "Spam mesh + fake capacity"],
           ["Raw MAC / forensic dumps", "Compliance-sensitive; not a public signal"],
           ["Bitcoin wallet mnemonics or WIF", "Theft of funds"],
+          ["GRID recovery phrases / wallet encryption material", "Wallet takeover"],
+          ["Solana reward keypair JSON", "Control of the devnet reward address"],
+          ["Genesis signing and recovery private keys", "Forge network authority"],
           ["Unreviewed registration PII", "Abuse and spam targeting"],
         ]}
       />
@@ -56,6 +61,24 @@ export default function SecurityDocsPage() {
         <code className="font-mono">GET /api/registry/entity?ca=1</code>. If
         verification fails, ignore the badge. Revoked or inactive statuses must
         clear any elevated trust UI.
+      </P>
+
+      <H2 id="chain">Chain verification boundary</H2>
+      <Ul>
+        <li>Trust the configured Genesis public key, never a key supplied by an untrusted peer.</li>
+        <li>Verify each block signature, previous hash, state root, and chain ID.</li>
+        <li>Replay settlement allocation from committed inputs.</li>
+        <li>Reject stale signed-truth epochs and peers on a verified ban list.</li>
+        <li>Do not describe Genesis-led production as decentralized finality.</li>
+      </Ul>
+
+      <H2 id="wallet">Wallet safety</H2>
+      <P>
+        The website never needs a recovery phrase. Ember and the CLI keep wallet
+        material on the operator&apos;s machine. The Solana reward key at{" "}
+        <code className="font-mono">~/.grid/keys/solana-reward.json</code> is
+        created with restrictive permissions and is never overwritten by{" "}
+        <code className="font-mono">grid solana create</code>.
       </P>
 
       <Note>

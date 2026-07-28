@@ -56,7 +56,8 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   useEffect(() => {
-    setOpen(false);
+    const id = window.setTimeout(() => setOpen(false), 0);
+    return () => window.clearTimeout(id);
   }, [pathname]);
 
   return (
@@ -77,7 +78,7 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
               <span className="font-semibold tracking-tight">GRID Docs</span>
             </Link>
             <span className="hidden rounded-full border border-border px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-dim sm:inline">
-              Public API
+              Pilot network
             </span>
           </div>
           <div className="flex items-center gap-3">
@@ -132,8 +133,8 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
           <article className="prose-docs mx-auto max-w-3xl">{children}</article>
           <footer className="mx-auto mt-16 max-w-3xl border-t border-border pt-8 text-sm text-dim">
             <p>
-              Public data plane only. No operator secrets, no host endpoints, no
-              private keys. Base URL:{" "}
+              Public documentation only. No operator secrets, recovery material,
+              or private keys. API base:{" "}
               <a
                 className="text-muted underline-offset-2 hover:text-foreground hover:underline"
                 href="https://grid-compute.com"
@@ -142,13 +143,29 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
               </a>
             </p>
             <p className="mt-2">
-              © {new Date().getFullYear()} GRID ·{" "}
               <a
                 className="underline-offset-2 hover:text-foreground hover:underline"
-                href="https://github.com/Caraveo/grid-wallet-releases"
+                href="https://explorer.grid-compute.com"
               >
-                verified release files
+                Explorer
               </a>
+              {" · "}
+              <a
+                className="underline-offset-2 hover:text-foreground hover:underline"
+                href="https://grid-compute.com/por"
+              >
+                Proof of Resource
+              </a>
+              {" · "}
+              <a
+                className="underline-offset-2 hover:text-foreground hover:underline"
+                href="https://grid-compute.com/white-paper"
+              >
+                White paper
+              </a>
+            </p>
+            <p className="mt-2">
+              © {new Date().getFullYear()} GRID · Pilot software and documentation
             </p>
           </footer>
         </main>
