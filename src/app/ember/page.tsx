@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
 import { ScrambleText } from "@/components/ScrambleText";
+import { EmberDownload } from "@/components/EmberDownload";
 
 export const metadata: Metadata = {
-  title: "Ember — Coming Soon | GRID",
-  description: "Ember is coming soon.",
-  robots: { index: false, follow: true },
+  title: "Ember | The GRID wallet",
+  description: "Download Ember, the native wallet for GRID, Solana rewards, and the path to Bitcoin settlement.",
 };
 
 export default function EmberPage() {
@@ -22,8 +22,13 @@ export default function EmberPage() {
             <ScrambleText text="Ember" />
           </p>
           <h1 className="mt-5 text-[clamp(2.75rem,9vw,5.5rem)] font-semibold leading-none tracking-[-0.04em]">
-            Coming soon.
+            Hold the spark.
           </h1>
+          <p className="mx-auto mt-7 max-w-xl text-lg leading-relaxed text-muted">
+            One native wallet for GRID custody, Solana mining rewards, and the
+            audited path toward Bitcoin settlement.
+          </p>
+          <EmberDownload />
         </section>
       </main>
       <Footer />
