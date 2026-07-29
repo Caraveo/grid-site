@@ -26,6 +26,7 @@
 # misc
 .DS_Store
 *.pem
+!public/downloads/cli/release-signing-public.pem
 
 # debug
 npm-debug.log*

@@ -129,16 +129,16 @@ export const DOWNLOADS = {
   },
   cli: {
     darwinX64:
-      "/downloads/cli/grid-darwin-x86_64?rev=20260729-v0219-p2pnode",
+      "/downloads/cli/grid-darwin-x86_64?rev=20260729-v0220-engine",
     darwinArm64:
-      "/downloads/cli/grid-darwin-aarch64?rev=20260729-v0219-p2pnode",
+      "/downloads/cli/grid-darwin-aarch64?rev=20260729-v0220-engine",
     linuxX64:
-      "/downloads/cli/grid-linux-x86_64?rev=20260729-v0219-p2pnode" as string | null,
+      "/downloads/cli/grid-linux-x86_64?rev=20260729-v0220-engine" as string | null,
     windowsX64:
-      "/downloads/cli/grid-windows-x86_64.exe?rev=20260729-v0219-p2pnode",
+      "/downloads/cli/grid-windows-x86_64.exe?rev=20260729-v0220-engine",
     installSh: "/downloads/install.sh",
     installPs: "/downloads/install.ps1",
-    version: "0.2.18",
+    version: "0.2.20",
   },
 };
 

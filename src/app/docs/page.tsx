@@ -42,7 +42,7 @@ export default function DocsHomePage() {
           <Link className="text-foreground underline-offset-2 hover:underline" href="/docs/getting-started">
             Run a node
           </Link>{" "}
-          — install GRID 0.2.18, initialize keys, join P2P, and mine
+          — install GRID 0.2.20, initialize keys, join P2P, and mine
         </li>
         <li>
           <Link className="text-foreground underline-offset-2 hover:underline" href="/docs/por">

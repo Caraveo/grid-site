@@ -12,7 +12,7 @@ export default function GettingStartedPage() {
     <>
       <H1>Getting started</H1>
       <Lead>
-        Install the signed GRID 0.2.18 CLI, create local operator protection,
+        Install the signed GRID 0.2.20 CLI, create local operator protection,
         initialize a node, join the canonical Genesis peer, and start the mining
         track against the public coordinator.
       </Lead>
@@ -28,7 +28,7 @@ export default function GettingStartedPage() {
         code={`curl -fsSL https://grid-compute.com/downloads/install.sh | bash
 
 grid --version
-# grid 0.2.18`}
+# grid 0.2.20`}
       />
 
       <H2 id="identity">2. Protect keys and initialize</H2>
