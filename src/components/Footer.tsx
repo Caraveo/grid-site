@@ -24,7 +24,7 @@ export function Footer({ siteOrigin }: { siteOrigin?: string } = {}) {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 sm:gap-16">
+          <div className="grid grid-cols-2 gap-10 sm:grid-cols-4 sm:gap-12">
             <div>
               <h4 className="text-[0.65rem] font-semibold tracking-[0.2em] text-white/35 uppercase">
                 Product
@@ -192,6 +192,23 @@ export function Footer({ siteOrigin }: { siteOrigin?: string } = {}) {
                 </li>
                 <li>
                   <span className="text-white/40">MIT License</span>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-[0.65rem] font-semibold tracking-[0.2em] text-white/35 uppercase">
+                Community
+              </h4>
+              <ul className="mt-4 space-y-3 text-sm text-white/60">
+                <li>
+                  <a
+                    href="https://discord.gg/nVs7NBCuqZ"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="transition hover:text-white"
+                  >
+                    Join Discord
+                  </a>
                 </li>
               </ul>
             </div>

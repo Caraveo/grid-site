@@ -7,7 +7,7 @@
 
 Cinematic launch site for **[GRID](https://github.com/caraveo/grid)** — useful mining for a planetary compute network.
 
-**Production:** [https://grid-compute.com](https://grid-compute.com) · **Platform:** Cloudflare Workers (OpenNext)
+**Production:** [https://grid-compute.com](https://grid-compute.com) · **Community:** [Discord](https://discord.gg/nVs7NBCuqZ) · **Platform:** Cloudflare Workers (OpenNext)
 
 SpaceX-inspired, download-first. Next.js App Router + Tailwind. Marketing pages are static-friendly; `/api/mesh/*` is dynamic for the public globe.
 

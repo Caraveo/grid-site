@@ -328,6 +328,14 @@ export function Nav({ siteOrigin }: { siteOrigin?: string } = {}) {
             {t("nav.ember")}
           </a>
           <a
+            href="https://discord.gg/nVs7NBCuqZ"
+            target="_blank"
+            rel="noreferrer"
+            className="hidden border border-[#5865F2]/60 px-4 py-2 text-[0.65rem] font-semibold tracking-[0.18em] text-[#c6cbff] uppercase transition hover:border-[#8f98ff] hover:text-white xl:inline-flex"
+          >
+            Discord
+          </a>
+          <a
             href={siteHref("/registry", siteOrigin)}
             className="inline-flex border border-white/50 bg-white px-4 py-2 text-[0.65rem] font-semibold tracking-[0.18em] text-black uppercase transition hover:bg-transparent hover:text-white"
           >
@@ -446,6 +454,17 @@ export function Nav({ siteOrigin }: { siteOrigin?: string } = {}) {
                 className="btn-ghost w-full"
               >
                 {t("nav.ember")}
+              </a>
+            </li>
+            <li className="pt-2">
+              <a
+                href="https://discord.gg/nVs7NBCuqZ"
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => setOpen(false)}
+                className="btn-ghost w-full border-[#5865F2]/60 text-[#c6cbff] hover:border-[#8f98ff] hover:text-white"
+              >
+                Join Discord
               </a>
             </li>
             <li className="pt-2">
