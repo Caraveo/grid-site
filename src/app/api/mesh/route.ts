@@ -6,7 +6,9 @@ export const dynamic = "force-dynamic";
 
 const REGISTRY = "https://grid-compute.com";
 const GENESIS = process.env.GENESIS_API_URL || "https://genesis.grid-compute.com";
-const ONLINE_MS = 60_000;
+// Nodes publish their privacy-preserving globe heartbeat every five minutes.
+// Keep a small delivery margin so a node does not disappear between pulses.
+const ONLINE_MS = 6 * 60_000;
 
 function genesisGeography() {
   const lat = Number(process.env.GENESIS_LAT);
@@ -40,12 +42,17 @@ export async function GET() {
   const now = Date.now();
   const peers = mesh.peers.map((node) => {
     const seen = node.lastSeen ? Date.parse(node.lastSeen) : 0;
+    // A valid, recent signed heartbeat is the liveness signal.  Do not let a
+    // stale advisory status field override that proof: an old client can carry
+    // `offline` while it is actively posting heartbeats.
+    const isLive = Number.isFinite(seen) && now - seen <= ONLINE_MS;
     return {
       ...node,
-      status:
-        Number.isFinite(seen) && now - seen <= ONLINE_MS
-          ? node.status
-          : ("offline" as const),
+      status: isLive
+        ? node.status === "offline"
+          ? ("online" as const)
+          : node.status
+        : ("offline" as const),
     };
   });
   const genesis = {
