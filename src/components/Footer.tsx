@@ -36,6 +36,11 @@ export function Footer({ siteOrigin }: { siteOrigin?: string } = {}) {
                   </a>
                 </li>
                 <li>
+                  <a href={siteHref("/news", siteOrigin)} className="transition hover:text-white">
+                    News
+                  </a>
+                </li>
+                <li>
                   <a href={siteHref("/token?view=1", siteOrigin)} className="transition hover:text-white">
                     Token
                   </a>
