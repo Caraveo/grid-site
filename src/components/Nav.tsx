@@ -271,6 +271,10 @@ function DesktopDropdown({
       : item.children.length > 4
         ? "grid-cols-2 w-[500px]"
         : "grid-cols-1 min-w-[250px]";
+  const panelPositionClass =
+    item.children.length > 9
+      ? "fixed top-16 left-1/2 -translate-x-1/2 pt-3 lg:top-20"
+      : "absolute top-full left-1/2 -translate-x-1/2 pt-3";
 
   return (
     <li
@@ -309,7 +313,7 @@ function DesktopDropdown({
       </button>
 
       {open && (
-        <div className="absolute top-full left-1/2 z-50 pt-3 -translate-x-1/2">
+        <div className={`z-50 ${panelPositionClass}`}>
           <div
             className={`grid gap-px border border-white/12 bg-white/10 p-px shadow-2xl shadow-black/50 backdrop-blur-xl ${columnClass}`}
           >
