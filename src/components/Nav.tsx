@@ -34,6 +34,11 @@ function useMenu(): NavItem[] {
           hintKey: "nav.explain.hint",
         },
         {
+          href: "/news",
+          labelKey: "nav.news",
+          hintKey: "nav.news.hint",
+        },
+        {
           href: "/token?view=1",
           labelKey: "nav.token",
           hintKey: "nav.token.hint",
