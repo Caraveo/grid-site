@@ -21,6 +21,7 @@
     { "pattern": "www.grid-compute.com", "custom_domain": true },
     { "pattern": "docs.grid-compute.com", "custom_domain": true },
     { "pattern": "explorer.grid-compute.com", "custom_domain": true },
+    { "pattern": "engine.grid-compute.com", "custom_domain": true },
   ],
   "services": [
     {
