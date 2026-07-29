@@ -98,7 +98,7 @@ export default function ExplainPage() {
               </p>
               <p className="mt-6 section-body text-base sm:text-lg">
                 Not puzzle mining that only burns power. Real jobs: render,
-                transform, run allowlisted containers. Prove you did the work.
+                transform, run listed containers. Prove you did the work.
                 Get paid in GRID.
               </p>
             </div>
