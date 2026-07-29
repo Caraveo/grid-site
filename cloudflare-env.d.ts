@@ -7,12 +7,12 @@
 interface CloudflareEnv {
   ASSETS?: Fetcher;
   WORKER_SELF_REFERENCE?: Service;
+  /** Private service binding to Ed25519 heartbeat verification. */
+  MESH_AUTH?: {
+    fetch(input: Request): Promise<Response>;
+  };
   /** Durable mesh store (location-only peer pings). */
   MESH_KV: KVNamespace;
-  /** Webhook shared secret for POST /api/mesh/ping */
-  GRID_WEBHOOK_SECRET?: string;
-  /** Private coordinator-to-site mesh heartbeat secret. */
-  MESH_SERVICE_SECRET?: string;
   GRID_PHASE?: string;
   GENESIS_LAT?: string;
   GENESIS_LNG?: string;

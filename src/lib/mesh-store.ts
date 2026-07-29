@@ -25,6 +25,7 @@ import {
 } from "./sanitize";
 
 const KV_KEY = "mesh-store-v1";
+const SIGNED_NODE_KEY_PREFIX = "mesh-node-v2:";
 const PING_TTL_MS = 1000 * 60 * 60 * 24 * 14; // 14 days
 const RECENT_PING_MS = 1000 * 45; // celebrate / ring for 45s
 const MAX_PEERS = 500;
@@ -61,6 +62,15 @@ let fsMemory: MeshStoreFile | null = null;
 type MeshKv = {
   get(key: string, type?: "text"): Promise<string | null>;
   put(key: string, value: string): Promise<void>;
+  list?(options?: {
+    prefix?: string;
+    limit?: number;
+    cursor?: string;
+  }): Promise<{
+    keys: Array<{ name: string }>;
+    list_complete: boolean;
+    cursor?: string;
+  }>;
 };
 
 async function getMeshKv(): Promise<MeshKv | null> {
@@ -340,9 +350,16 @@ export async function upsertPing(input: PingInput): Promise<PingResult> {
 }
 
 export async function getPublicMesh() {
-  const { store } = await ensureLoaded();
+  const { store, kv } = await ensureLoaded();
   const now = Date.now();
-  const peers = Object.values(store.peers)
+  const signedPeers = await loadSignedPeers(kv);
+  const mergedPeers = new Map(
+    Object.values(store.peers).map((peer) => [peer.id, peer]),
+  );
+  for (const peer of signedPeers) {
+    mergedPeers.set(peer.id, peer);
+  }
+  const peers = Array.from(mergedPeers.values())
     .map((p) => scrubStoredPeer(p))
     .filter((p): p is StoredPing => p != null)
     .sort(
@@ -373,7 +390,10 @@ export async function getPublicMesh() {
     phase:
       String(store.phase ?? "1").replace(/[^0-9a-zA-Z._-]/g, "").slice(0, 8) ||
       "1",
-    updatedAt: store.updatedAt,
+    updatedAt:
+      peers[0]?.lastSeen && peers[0].lastSeen > store.updatedAt
+        ? peers[0].lastSeen
+        : store.updatedAt,
     genesis: publicView(store.genesis),
     nodes,
     peers: peers.map((p) => publicView(p)),
@@ -384,6 +404,34 @@ export async function getPublicMesh() {
       peers: peers.length,
     },
   };
+}
+
+async function loadSignedPeers(kv: MeshKv | null): Promise<StoredPing[]> {
+  if (!kv?.list) return [];
+  const peers: StoredPing[] = [];
+  let cursor: string | undefined;
+  do {
+    const page = await kv.list({
+      prefix: SIGNED_NODE_KEY_PREFIX,
+      limit: 500,
+      cursor,
+    });
+    const rawPeers = await Promise.all(
+      page.keys.map((key) => kv.get(key.name, "text")),
+    );
+    for (const raw of rawPeers) {
+      if (!raw || raw.length > 8_192) continue;
+      try {
+        const parsed = JSON.parse(raw) as StoredPing;
+        const peer = scrubStoredPeer(parsed);
+        if (peer) peers.push(peer);
+      } catch {
+        // Ignore malformed/expired KV entries without poisoning the registry.
+      }
+    }
+    cursor = page.list_complete ? undefined : page.cursor;
+  } while (cursor && peers.length < MAX_PEERS);
+  return peers.slice(0, MAX_PEERS);
 }
 
 function publicView(n: StoredPing): PublicNode {

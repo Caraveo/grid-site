@@ -36,6 +36,7 @@ SYSTEM=0
 UNINSTALL=0
 YES=0
 VERSION_HINT="0.2.18"
+ASSET_REV="20260729-v0219-p2pnode"
 
 for arg in "$@"; do
   case "$arg" in
@@ -70,7 +71,7 @@ for arg in "$@"; do
     grid status          # node + blockchain size + security check
     grid auth --help     # passkey / operator protection
     grid init --name my-node --class S
-    grid node            # host + mine
+    grid node            # P2P peer + host + mine
 
   Docs:  https://docs.grid-compute.com
   Site:  ${ORIGIN}
@@ -291,7 +292,7 @@ if [[ "$FORCE" -eq 0 ]]; then
 fi
 
 asset="$(asset_name)"
-url="${ORIGIN}/downloads/cli/${asset}"
+url="${ORIGIN}/downloads/cli/${asset}?rev=${ASSET_REV}"
 tmp="$(mktemp "${TMPDIR:-/tmp}/grid-cli.XXXXXX")"
 sums="$(mktemp "${TMPDIR:-/tmp}/grid-sums.XXXXXX")"
 sig="$(mktemp "${TMPDIR:-/tmp}/grid-sig.XXXXXX")"
@@ -316,9 +317,9 @@ chmod +x "$tmp"
 
 step "Verify signed release"
 need_cmd openssl
-curl -fsSL --proto '=https' --tlsv1.2 "${ORIGIN}/downloads/cli/SHA256SUMS" -o "$sums"
-curl -fsSL --proto '=https' --tlsv1.2 "${ORIGIN}/downloads/cli/SHA256SUMS.sig" -o "$sig"
-curl -fsSL --proto '=https' --tlsv1.2 "${ORIGIN}/downloads/cli/release-signing-public.pem" -o "$pub"
+curl -fsSL --proto '=https' --tlsv1.2 "${ORIGIN}/downloads/cli/SHA256SUMS?rev=${ASSET_REV}" -o "$sums"
+curl -fsSL --proto '=https' --tlsv1.2 "${ORIGIN}/downloads/cli/SHA256SUMS.sig?rev=${ASSET_REV}" -o "$sig"
+curl -fsSL --proto '=https' --tlsv1.2 "${ORIGIN}/downloads/cli/release-signing-public.pem?rev=${ASSET_REV}" -o "$pub"
 fingerprint="$(openssl pkey -pubin -in "$pub" -outform DER 2>/dev/null | openssl dgst -sha256 | awk '{print $NF}')"
 [[ "$fingerprint" == "4f1d04b12256e848642c6fcde56ed9b95f4917d64c23a8965f5f63f7ace09735" ]] ||
   die "release signing key fingerprint changed — installation stopped"
@@ -382,7 +383,7 @@ ${BOLD}Next steps${RESET}
   ${CYAN}grid init --name my-node --class S${RESET}
   ${CYAN}grid solana create${RESET}           ${DIM}# create a devnet GRID reward wallet${RESET}
   ${CYAN}grid mine${RESET}                    ${DIM}# verified PoR → automatic Solana rewards${RESET}
-  ${CYAN}grid node${RESET}                   ${DIM}# host + mine on the fabric${RESET}
+  ${CYAN}grid node${RESET}                   ${DIM}# P2P peer + host + mine${RESET}
   ${CYAN}grid registry${RESET}               ${DIM}# public mesh from grid-compute.com${RESET}
 
 ${BOLD}Upgrade later${RESET}

@@ -2,7 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "grid-site",
   "main": ".open-next/worker.js",
-  "compatibility_date": "2026-07-17",
+  "compatibility_date": "2026-07-28",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "workers_dev": true,
   "preview_urls": true,
@@ -27,6 +27,10 @@
       "binding": "WORKER_SELF_REFERENCE",
       "service": "grid-site",
     },
+    {
+      "binding": "MESH_AUTH",
+      "service": "grid-mesh-auth",
+    },
   ],
   // Durable mesh peer store (location-only globe pings).
   "kv_namespaces": [
@@ -45,6 +49,5 @@
     "GENESIS_API_URL": "https://genesis.grid-compute.com",
   },
   // Secrets (never commit):
-  //   npx wrangler secret put GRID_WEBHOOK_SECRET
   //   npx wrangler secret put GRID_ADMIN_SECRET   # min 16 chars, admin dashboard
 }

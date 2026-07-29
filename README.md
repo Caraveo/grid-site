@@ -73,7 +73,8 @@ npm run deploy
 | `@opennextjs/cloudflare` | Next.js → Workers adapter |
 | `wrangler.jsonc` | Worker name, routes, KV, vars |
 | `MESH_KV` | Durable mesh peer store (auto-provisioned if `id` omitted) |
-| `GRID_WEBHOOK_SECRET` | Auth for `POST /api/mesh/ping` |
+| `GRID_WEBHOOK_SECRET` | Server-side auth for compute announce writes |
+| `MESH_AUTH` | Private service binding to the signed heartbeat Worker |
 | Custom routes | `grid-compute.com` + `www.grid-compute.com` |
 
 If custom-domain routes fail (zone not on this account yet), remove the `routes` array from `wrangler.jsonc`, deploy to `*.workers.dev`, then attach **grid-compute.com** in the Cloudflare dashboard (Workers → grid-site → Settings → Domains).
@@ -102,7 +103,6 @@ Miners (GRID CLI):
 ```bash
 # ~/.grid/env
 # GRID_SITE_URL defaults to https://grid-compute.com
-GRID_WEBHOOK_SECRET=...   # same as Worker secret
 GRID_GLOBE_LAT=37.7
 GRID_GLOBE_LNG=-122.4
 GRID_GLOBE_REGION=NA-W
@@ -122,31 +122,26 @@ grid registry             # list public peers from this site
 | `GET /api/registry/computes` | Compute capacity (`?available=1` for free slots only) |
 | `POST /api/registry/computes` | Host announce / heartbeat (auth in prod) |
 | `GET /api/mesh` | Globe peers UI |
-| `POST /api/mesh/ping` | Location-only node pulse (auth required in prod) |
+| `POST /api/mesh/ping` | Ed25519-signed, location-only node pulse |
 | `GET /registry` | Public node registration (Cash App → `$Caraveo`) |
 | `GET /admin` | **Operator dashboard** (not linked in nav; secret auth) |
 
-**Auth (production):** `Authorization: Bearer $GRID_WEBHOOK_SECRET` or header `X-Grid-Secret`.
+Compute-directory writes use `Authorization: Bearer $GRID_WEBHOOK_SECRET`
+or `X-Grid-Secret`. Public globe pulses do not share an operator secret:
+each node signs its own heartbeat using a dedicated Ed25519 key.
 
 ```bash
-curl -s -X POST https://grid-compute.com/api/mesh/ping \
-  -H 'content-type: application/json' \
-  -H "authorization: Bearer $GRID_WEBHOOK_SECRET" \
-  -d '{
-    "nodeId": "node_a1b2c3d4",
-    "label": "garage",
-    "class": "S",
-    "region": "NA-W",
-    "status": "online",
-    "lat": 37.7,
-    "lng": -122.4
-  }'
+# The CLI creates ~/.grid/keys/mesh-heartbeat.key automatically.
+grid init --name garage --class S
+grid node
 ```
 
 - Coords quantized ~0.5° before storage  
-- Allowlist keys only; strips IPs / HTML / nested junk  
+- Ed25519 signature, timestamp, nonce, replay rejection, and per-node rate limit
+- Node ID derived from SHA-256(public key); no caller-selected identity
+- Allowlist keys only; rejects IPs / HTML / nested junk
 - **Store:** Cloudflare **KV** (`MESH_KV`) in production; `data/mesh-store.json` when KV is unavailable (local Node)  
-- UI: globe + **“I'M A NODE”** join pings  
+- UI: real-Earth globe + **“I'M A NODE”** join pings; only live nodes plotted
 
 ---
 

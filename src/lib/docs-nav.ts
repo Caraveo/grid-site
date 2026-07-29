@@ -87,7 +87,7 @@ export const DOCS_NAV: DocsNavSection[] = [
       {
         href: "/docs/auth",
         label: "Auth for writes",
-        hint: "Webhook bearer",
+        hint: "Node signatures · operator auth",
       },
     ],
   },

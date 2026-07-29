@@ -7,10 +7,11 @@ $binDir = if ($env:GRID_INSTALL_DIR) { $env:GRID_INSTALL_DIR } else { Join-Path 
 $target = Join-Path $binDir "grid.exe"
 $tmp = Join-Path ([System.IO.Path]::GetTempPath()) "grid-windows-x86_64.exe"
 $sums = Join-Path ([System.IO.Path]::GetTempPath()) "GRID-SHA256SUMS"
+$assetRev = "20260729-v0219-p2pnode"
 
 New-Item -ItemType Directory -Force -Path $binDir | Out-Null
-Invoke-WebRequest -UseBasicParsing "$origin/downloads/cli/grid-windows-x86_64.exe" -OutFile $tmp
-Invoke-WebRequest -UseBasicParsing "$origin/downloads/cli/SHA256SUMS" -OutFile $sums
+Invoke-WebRequest -UseBasicParsing "$origin/downloads/cli/grid-windows-x86_64.exe?rev=$assetRev" -OutFile $tmp
+Invoke-WebRequest -UseBasicParsing "$origin/downloads/cli/SHA256SUMS?rev=$assetRev" -OutFile $sums
 $line = Get-Content $sums | Where-Object { $_ -match "grid-windows-x86_64\.exe$" } | Select-Object -First 1
 if (-not $line) {
   Remove-Item -Force $tmp -ErrorAction SilentlyContinue
