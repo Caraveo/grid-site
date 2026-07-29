@@ -19,6 +19,11 @@ export function middleware(request: NextRequest) {
     host.startsWith("docs.grid-compute.com:") ||
     host === "docs.localhost" ||
     host.startsWith("docs.localhost:");
+  const isEngineHost =
+    host === "engine.grid-compute.com" ||
+    host.startsWith("engine.grid-compute.com:") ||
+    host === "engine.localhost" ||
+    host.startsWith("engine.localhost:");
 
   const { pathname } = request.nextUrl;
 
@@ -34,6 +39,19 @@ export function middleware(request: NextRequest) {
     }
     const url = request.nextUrl.clone();
     url.pathname = pathname === "/" ? "/explorer" : `/explorer${pathname}`;
+    return NextResponse.rewrite(url);
+  }
+
+  if (isEngineHost) {
+    if (
+      pathname.startsWith("/engine") ||
+      pathname.startsWith("/api") ||
+      pathname.startsWith("/_next") ||
+      pathname.startsWith("/downloads") ||
+      /\.[a-zA-Z0-9]+$/.test(pathname)
+    ) return NextResponse.next();
+    const url = request.nextUrl.clone();
+    url.pathname = pathname === "/" ? "/engine" : `/engine${pathname}`;
     return NextResponse.rewrite(url);
   }
 
