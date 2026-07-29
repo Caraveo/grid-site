@@ -31,6 +31,14 @@ export function Footer({ siteOrigin }: { siteOrigin?: string } = {}) {
               </h4>
               <ul className="mt-4 space-y-3 text-sm text-white/60">
                 <li>
+                  <a
+                    href={siteHref("/otg", siteOrigin)}
+                    className="transition hover:text-white"
+                  >
+                    OTG27
+                  </a>
+                </li>
+                <li>
                   <a href={siteHref("/explain", siteOrigin)} className="transition hover:text-white">
                     Explain
                   </a>

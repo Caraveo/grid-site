@@ -235,6 +235,22 @@ export const PAGES = {
       "$Caraveo",
     ],
   },
+  otg27: {
+    title: "OTG27 — Meet us on the GRID",
+    description:
+      "GRID’s first annual in-person community gathering. Talks, technical labs, live network sessions, and the people building planetary compute — December 15, 2027.",
+    path: "/otg",
+    label: "OTG27",
+    ogImage: "/og-otg27.png",
+    keywords: [
+      "OTG27",
+      "GRID community",
+      "GRID blockchain event",
+      "distributed compute conference",
+      "blockchain developers",
+      "GRID",
+    ],
+  },
   admin: {
     title: "Admin — GRID registry",
     description: "GRID registry administration.",

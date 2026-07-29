@@ -11,6 +11,7 @@ type NavChild = {
   href: string;
   labelKey: MessageKey;
   hintKey?: MessageKey;
+  icon: string;
 };
 
 type NavItem = {
@@ -32,71 +33,85 @@ function useMenu(): NavItem[] {
           href: "/explain",
           labelKey: "nav.explain",
           hintKey: "nav.explain.hint",
+          icon: "◎",
         },
         {
           href: "/news",
           labelKey: "nav.news",
           hintKey: "nav.news.hint",
+          icon: "⌁",
         },
         {
           href: "/token?view=1",
           labelKey: "nav.token",
           hintKey: "nav.token.hint",
+          icon: "◉",
         },
         {
           href: "/alloc?view=1",
           labelKey: "nav.alloc",
           hintKey: "nav.alloc.hint",
+          icon: "◒",
         },
         {
           href: "/compare",
           labelKey: "nav.compare",
           hintKey: "nav.compare.hint",
+          icon: "⇄",
         },
         {
           href: "/por",
           labelKey: "nav.por",
           hintKey: "nav.por.hint",
+          icon: "◇",
         },
         {
           href: "/white-paper",
           labelKey: "nav.whitePaper",
           hintKey: "nav.whitePaper.hint",
+          icon: "▤",
         },
         {
           href: "/slud",
           labelKey: "nav.slud",
           hintKey: "nav.slud.hint",
+          icon: "⊘",
         },
         {
           href: "https://docs.grid-compute.com",
           labelKey: "nav.docs",
           hintKey: "nav.docs.hint",
+          icon: "⌘",
         },
         {
           href: "/ember",
           labelKey: "nav.emberItem",
           hintKey: "nav.ember.hint",
+          icon: "✦",
         },
         {
           href: "/#mission",
           labelKey: "nav.mission",
           hintKey: "nav.mission.hint",
+          icon: "↑",
         },
         {
           href: "/#network",
           labelKey: "nav.networkItem",
           hintKey: "nav.network.hint",
+          icon: "⌗",
         },
         {
           href: "/#security",
           labelKey: "nav.security",
           hintKey: "nav.security.hint",
+          icon: "◆",
         },
         {
           href: "/#timeline",
           labelKey: "nav.phases",
           hintKey: "nav.phases.hint",
+          icon: "→",
         },
       ],
     },
@@ -107,41 +122,49 @@ function useMenu(): NavItem[] {
           href: "/#mesh-downloads",
           labelKey: "nav.mesh",
           hintKey: "nav.mesh.hint",
+          icon: "⌁",
         },
         {
           href: "/#mesh",
           labelKey: "nav.aboutMesh",
           hintKey: "nav.aboutMesh.hint",
+          icon: "◫",
         },
         {
           href: "/#nodes",
           labelKey: "nav.nodes",
           hintKey: "nav.nodes.hint",
+          icon: "⌬",
         },
         {
           href: "https://explorer.grid-compute.com",
           labelKey: "nav.explorer",
           hintKey: "nav.explorer.hint",
+          icon: "⊕",
         },
         {
           href: "/mine",
           labelKey: "nav.miners",
           hintKey: "nav.miners.hint",
+          icon: "⛏",
         },
         {
           href: "/registry",
           labelKey: "nav.registryItem",
           hintKey: "nav.registry.hint",
+          icon: "⌖",
         },
         {
           href: "/ember",
           labelKey: "nav.emberFull",
           hintKey: "nav.emberFull.hint",
+          icon: "✦",
         },
         {
           href: "/engine",
           labelKey: "nav.engine",
           hintKey: "nav.engine.hint",
+          icon: "▣",
         },
       ],
     },
@@ -152,42 +175,53 @@ function useMenu(): NavItem[] {
           href: "/quick",
           labelKey: "nav.quick",
           hintKey: "nav.quick.hint",
+          icon: "⚡",
         },
         {
           href: "/registry",
           labelKey: "nav.register",
           hintKey: "nav.register.hint",
+          icon: "+",
         },
         {
           href: "/ember",
           labelKey: "nav.runEmber",
           hintKey: "nav.runEmber.hint",
+          icon: "✦",
         },
         {
           href: "/#mesh-downloads",
           labelKey: "nav.meshApp",
           hintKey: "nav.meshApp.hint",
+          icon: "◫",
         },
         {
           href: "/#download",
           labelKey: "nav.cli",
           hintKey: "nav.cli.hint",
+          icon: ">_",
         },
         {
           href: "/wallet",
           labelKey: "nav.wallets",
           hintKey: "nav.wallets.hint",
+          icon: "▰",
         },
         {
           href: "/explain",
           labelKey: "nav.how",
           hintKey: "nav.how.hint",
+          icon: "?",
         },
       ],
     },
     {
       labelKey: "nav.shop",
       href: "/shop",
+    },
+    {
+      labelKey: "nav.otg27",
+      href: "/otg",
     },
   ];
 }
@@ -231,6 +265,13 @@ function DesktopDropdown({
     );
   }
 
+  const columnClass =
+    item.children.length > 9
+      ? "grid-cols-3 w-[720px]"
+      : item.children.length > 4
+        ? "grid-cols-2 w-[500px]"
+        : "grid-cols-1 min-w-[250px]";
+
   return (
     <li
       ref={ref}
@@ -269,22 +310,32 @@ function DesktopDropdown({
 
       {open && (
         <div className="absolute top-full left-1/2 z-50 pt-3 -translate-x-1/2">
-          <div className="min-w-[240px] border border-white/12 bg-black/95 py-2 shadow-2xl shadow-black/50 backdrop-blur-xl">
+          <div
+            className={`grid gap-px border border-white/12 bg-white/10 p-px shadow-2xl shadow-black/50 backdrop-blur-xl ${columnClass}`}
+          >
             {item.children.map((c) => (
               <a
                 key={c.href + c.labelKey}
                 href={siteHref(c.href, siteOrigin)}
-                className="block px-4 py-2.5 transition hover:bg-white/[0.06]"
+                className="group/item flex min-h-[64px] items-start gap-3 bg-black/95 px-3.5 py-3 transition hover:bg-[#111]"
                 onClick={() => setOpen(false)}
               >
-                <span className="block text-[0.72rem] font-medium tracking-[0.16em] text-white/90 uppercase">
-                  {t(c.labelKey)}
+                <span
+                  aria-hidden
+                  className="mt-px flex h-7 w-7 shrink-0 items-center justify-center border border-white/12 font-mono text-[0.68rem] text-white/45 transition group-hover/item:border-white/30 group-hover/item:text-white"
+                >
+                  {c.icon}
                 </span>
-                {c.hintKey && (
-                  <span className="mt-0.5 block text-[0.7rem] text-white/35">
-                    {t(c.hintKey)}
+                <span className="min-w-0">
+                  <span className="block text-[0.68rem] font-medium tracking-[0.14em] text-white/90 uppercase">
+                    {t(c.labelKey)}
                   </span>
-                )}
+                  {c.hintKey && (
+                    <span className="mt-0.5 block truncate text-[0.66rem] text-white/35">
+                      {t(c.hintKey)}
+                    </span>
+                  )}
+                </span>
               </a>
             ))}
           </div>
@@ -423,16 +474,24 @@ export function Nav({ siteOrigin }: { siteOrigin?: string } = {}) {
                             <a
                               href={siteHref(c.href, siteOrigin)}
                               onClick={() => setOpen(false)}
-                              className="block py-2.5"
+                              className="flex items-start gap-3 py-2.5"
                             >
-                              <span className="block text-[0.8rem] tracking-[0.14em] text-white/85 uppercase">
-                                {t(c.labelKey)}
+                              <span
+                                aria-hidden
+                                className="flex h-7 w-7 shrink-0 items-center justify-center border border-white/12 font-mono text-[0.65rem] text-white/45"
+                              >
+                                {c.icon}
                               </span>
-                              {c.hintKey && (
-                                <span className="mt-0.5 block text-xs text-white/35">
-                                  {t(c.hintKey)}
+                              <span>
+                                <span className="block text-[0.8rem] tracking-[0.14em] text-white/85 uppercase">
+                                  {t(c.labelKey)}
                                 </span>
-                              )}
+                                {c.hintKey && (
+                                  <span className="mt-0.5 block text-xs text-white/35">
+                                    {t(c.hintKey)}
+                                  </span>
+                                )}
+                              </span>
                             </a>
                           </li>
                         ))}

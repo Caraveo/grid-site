@@ -300,6 +300,153 @@ body {
   box-shadow: var(--panel-hover-shadow);
 }
 
+/* ─── OTG27 annual community event ─── */
+.otg-page {
+  --otg-signal: #9cff57;
+  background:
+    radial-gradient(circle at 88% 8%, rgba(156, 255, 87, 0.06), transparent 22rem),
+    #050505;
+}
+
+.otg-hero {
+  background:
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.05), #050505 96%),
+    radial-gradient(circle at 74% 45%, rgba(156, 255, 87, 0.08), transparent 25%);
+}
+
+.otg-grid {
+  opacity: 0.32;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: clamp(42px, 6vw, 88px) clamp(42px, 6vw, 88px);
+  mask-image: linear-gradient(to bottom, transparent, black 18%, black 82%, transparent);
+}
+
+.otg-orb {
+  right: 8vw;
+  top: 21%;
+  width: min(34vw, 32rem);
+  aspect-ratio: 1;
+  border: 1px solid rgba(156, 255, 87, 0.35);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 4rem rgba(156, 255, 87, 0.015),
+    0 0 0 8rem rgba(156, 255, 87, 0.01),
+    inset 0 0 5rem rgba(156, 255, 87, 0.04);
+}
+
+.otg-orb::before,
+.otg-orb::after {
+  content: "";
+  position: absolute;
+  background: rgba(156, 255, 87, 0.3);
+}
+
+.otg-orb::before {
+  left: 50%;
+  top: -18%;
+  width: 1px;
+  height: 136%;
+}
+
+.otg-orb::after {
+  left: -18%;
+  top: 50%;
+  width: 136%;
+  height: 1px;
+}
+
+.otg-display {
+  display: flex;
+  align-items: flex-start;
+  font-size: clamp(7rem, 24vw, 22rem);
+  font-weight: 650;
+  line-height: 0.68;
+  letter-spacing: -0.095em;
+}
+
+.otg-display .otg-27 {
+  color: var(--otg-signal);
+  font-weight: 250;
+}
+
+.otg-kicker {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--otg-signal);
+}
+
+.otg-btn-signal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.1rem;
+  padding: 0.85rem 1.75rem;
+  border: 1px solid var(--otg-signal);
+  background: var(--otg-signal);
+  color: #071003;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: 180ms ease;
+}
+
+.otg-btn-signal:hover {
+  background: transparent;
+  color: var(--otg-signal);
+  box-shadow: 0 0 2rem rgba(156, 255, 87, 0.12);
+}
+
+.otg-agenda-row {
+  transition: padding 180ms ease, background 180ms ease;
+}
+
+.otg-agenda-row:hover {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.otg-ticket-featured {
+  box-shadow: inset 0 3px 0 var(--otg-signal);
+}
+
+.otg-field-label {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.42);
+  text-transform: uppercase;
+}
+
+.otg-field {
+  width: 100%;
+  margin-top: 0.4rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0.75rem;
+  color: white;
+  font-size: 0.875rem;
+  outline: none;
+}
+
+.otg-field:focus {
+  border-color: rgba(156, 255, 87, 0.7);
+}
+
+@media (max-width: 640px) {
+  .otg-orb {
+    right: -26vw;
+    top: 25%;
+    width: 72vw;
+    opacity: 0.65;
+  }
+}
+
 /* ─── Nav ─── */
 .nav-scrolled {
   background: var(--nav-bg);
