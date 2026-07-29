@@ -89,7 +89,7 @@ const STEPS = [
   {
     n: "03",
     title: "Join the fabric",
-    body: "grid init · grid node to host + mine, or grid registry to browse public mesh capacity on grid-compute.com.",
+    body: "grid init · grid node for P2P + host + mine, or grid peer for a non-mining blockchain node.",
   },
 ];
 
@@ -287,8 +287,8 @@ grid auth --help`}
           </p>
           <ul className="mt-4 grid gap-3 text-sm text-white/55 sm:grid-cols-2">
             <li>
-              <span className="font-mono text-white/80">grid node</span> — host
-              + mine on one box
+              <span className="font-mono text-white/80">grid node</span> — P2P
+              + host + mine on one box
             </li>
             <li>
               <span className="font-mono text-white/80">grid host / mine</span> —

@@ -12,6 +12,9 @@
     "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
     "cf-build": "opennextjs-cloudflare build",
+    "mesh-auth:typecheck": "tsc --project workers/mesh-auth/tsconfig.json",
+    "mesh-auth:test": "node --test workers/mesh-auth/src/protocol.test.ts",
+    "mesh-auth:deploy": "wrangler deploy --config workers/mesh-auth/wrangler.jsonc",
     "og:generate": "node scripts/generate-og.mjs",
     "prebuild": "node scripts/generate-og.mjs"
   },
@@ -19,16 +22,22 @@
     "@opennextjs/cloudflare": "^1.20.1",
     "@simplewebauthn/browser": "^13.3.0",
     "@simplewebauthn/server": "^13.3.2",
+    "d3-geo": "^3.1.1",
     "next": "16.2.10",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "tweetnacl": "^1.0.3"
+    "topojson-client": "^3.1.0",
+    "tweetnacl": "^1.0.3",
+    "world-atlas": "^2.0.2"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260728.1",
     "@tailwindcss/postcss": "^4",
+    "@types/d3-geo": "^3.1.0",
     "@types/node": "^26.1.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/topojson-client": "^3.1.5",
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
     "tailwindcss": "^4",

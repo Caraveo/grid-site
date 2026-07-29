@@ -66,7 +66,7 @@ grid mine
 # Host-track useful container work
 grid host
 
-# Run host + mine together
+# Run encrypted P2P + host + mine together
 grid node
 # alias:
 grid start
@@ -80,6 +80,13 @@ grid stats`}
         A node is credited only after the coordinator verifies its result and
         creates a settlement receipt.
       </P>
+
+      <Note>
+        <code className="font-mono">grid node</code> is the all-in-one command:
+        encrypted P2P replication + host + mine. Use{" "}
+        <code className="font-mono">grid peer</code> instead when you want to
+        verify and replicate the blockchain without mining.
+      </Note>
 
       <H2 id="resources">Resources and benchmark</H2>
       <CodeBlock
@@ -140,11 +147,29 @@ GRID_SITE_URL=https://grid-compute.com grid registry`}
 GRID_REGISTRY_URL=https://grid-compute.com
 GRID_GENESIS=https://genesis.grid-compute.com
 GRID_SITE_URL=https://grid-compute.com
-GRID_WEBHOOK_SECRET=…          # mesh + compute announce
 GRID_GLOBE_LAT=37.7            # optional opt-in globe
 GRID_GLOBE_LNG=-122.4
 GRID_GLOBE_REGION=NA-W`}
       />
+      <P>
+        Public globe heartbeats do not use a shared secret. The CLI creates a
+        dedicated Ed25519 key under <code className="font-mono">~/.grid/keys</code>{" "}
+        and signs each pulse automatically.
+      </P>
+
+      <H2 id="mainnet">Check the production gate</H2>
+      <CodeBlock
+        lang="bash"
+        code={`grid mainnet
+grid mainnet --json
+grid mainnet --migrate-storage`}
+      />
+      <P>
+        This is intentionally fail-closed. A valid replicated chain is not enough:
+        decentralized mainnet requires enforced quorum certificates, at least four
+        independent validators, treasury consensus state, append-only indexed block
+        storage with tested backups, and an external audit.
+      </P>
 
       <H2 id="config">Node config sketch</H2>
       <CodeBlock
@@ -164,6 +189,9 @@ globe_region = "NA-W"`}
       <Ul>
         <li>
           <code className="font-mono">grid status</code> — local node health
+        </li>
+        <li>
+          <code className="font-mono">grid mainnet</code> — decentralized launch gate
         </li>
         <li>
           <code className="font-mono">grid registry</code> — public directory

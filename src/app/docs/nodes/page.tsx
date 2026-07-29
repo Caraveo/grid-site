@@ -70,6 +70,14 @@ grid peer --name garage --connect peer.example:9900`}
         <code className="font-mono">--no-genesis</code>, which is intended for
         controlled testing or the Genesis host itself.
       </P>
+      <CodeBlock
+        lang="bash"
+        code={`# All-in-one node: P2P peer + host + mine
+grid node
+
+# Optional P2P overrides
+grid node --p2p-listen 0.0.0.0:9901 --p2p-connect peer.example:9900`}
+      />
 
       <Note>
         Public map status is live data. A non-Genesis peer is marked offline when
@@ -79,8 +87,8 @@ grid peer --name garage --connect peer.example:9900`}
 
       <H2 id="ping">Mesh ping (write)</H2>
       <Endpoint method="POST" path="/api/mesh/ping">
-        Location-only heartbeat. Requires webhook auth in production. Body is
-        allowlisted — nested objects and banned keys are dropped.
+        Ed25519-signed, location-only heartbeat. The body is strictly
+        allowlisted and replay-protected.
       </Endpoint>
       <Endpoint method="GET" path="/api/mesh/ping">
         Machine-readable schema: accepted fields, filters, auth header name.
@@ -90,28 +98,22 @@ grid peer --name garage --connect peer.example:9900`}
       <Table
         headers={["Field", "Required", "Notes"]}
         rows={[
-          ["nodeId", "yes", "[a-zA-Z0-9_-]{2,64}"],
-          ["lat / lng", "yes", "WGS84 floats (quantized server-side)"],
-          ["label", "no", "Alnum + limited punctuation; no HTML"],
-          ["class", "no", "S | M | L"],
-          ["region", "no", "A-Z0-9_- only"],
-          ["status", "no", "online | syncing | idle | offline"],
+          ["version", "yes", "Protocol version 1"],
+          ["publicKey", "yes", "32-byte lowercase Ed25519 public key"],
+          ["issuedAtMs / nonce", "yes", "Fresh timestamp + 16 random bytes"],
+          ["latE4 / lngE4", "yes", "WGS84 × 10,000; quantized publicly"],
+          ["label / class / region / status", "yes", "Strictly validated"],
+          ["signature", "yes", "64-byte Ed25519 signature over canonical body"],
         ]}
       />
       <CodeBlock
         lang="bash"
-        code={`curl -sS -X POST ${API_BASE}/api/mesh/ping \\
-  -H 'content-type: application/json' \\
-  -H "authorization: Bearer $GRID_WEBHOOK_SECRET" \\
-  -d '{
-    "nodeId": "node_a1b2c3d4",
-    "label": "garage",
-    "class": "S",
-    "region": "NA-W",
-    "status": "online",
-    "lat": 37.7,
-    "lng": -122.4
-  }'`}
+        code={`# The CLI owns canonical serialization, nonces, and signatures.
+GRID_GLOBE_LAT=37.7
+GRID_GLOBE_LNG=-122.4
+GRID_GLOBE_REGION=NA-W
+grid init --name garage --class S
+grid node`}
       />
 
       <H2 id="filters">Server filters</H2>
@@ -131,15 +133,13 @@ grid peer --name garage --connect peer.example:9900`}
 
       <H2 id="cli">CLI</H2>
       <P>
-        When <code className="font-mono">~/.grid/env</code> has{" "}
-        <code className="font-mono">GRID_WEBHOOK_SECRET</code> and globe
-        lat/lng, the node may fire-and-forget pings on start / heartbeat.
+        With opt-in globe coordinates set, the node signs pings automatically.
+        Its private heartbeat key never leaves the machine.
       </P>
       <CodeBlock
         lang="bash"
         code={`# ~/.grid/env (operator machine only)
 GRID_SITE_URL=https://grid-compute.com
-GRID_WEBHOOK_SECRET=…   # same secret as Worker
 GRID_GLOBE_LAT=37.7
 GRID_GLOBE_LNG=-122.4
 GRID_GLOBE_REGION=NA-W`}

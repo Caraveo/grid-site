@@ -119,9 +119,12 @@ export function Nodes() {
   );
 
   useEffect(() => {
-    load();
+    const initial = window.setTimeout(() => void load(), 0);
     const id = setInterval(() => load(true), POLL_MS);
-    return () => clearInterval(id);
+    return () => {
+      window.clearTimeout(initial);
+      clearInterval(id);
+    };
   }, [load]);
 
   const genesis = mesh?.genesis ?? initialGenesis;

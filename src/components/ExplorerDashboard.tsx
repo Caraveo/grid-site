@@ -1,18 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-
-type Node = {
-  id: string;
-  label: string;
-  class: string;
-  region: string;
-  status: string;
-  role: string;
-  lastSeen?: string;
-  lat?: number;
-  lng?: number;
-};
+import { WorldNodeMap } from "./WorldNodeMap";
+import type { PublicNode } from "@/lib/network";
 
 type Block = {
   height: number;
@@ -81,7 +71,7 @@ type ExplorerData = {
   mesh: {
     phase: string;
     updatedAt: string;
-    nodes: Node[];
+    nodes: PublicNode[];
     stats: { total: number; online: number; peers: number };
   };
 };
@@ -107,40 +97,6 @@ function StatusDot({ live }: { live: boolean }) {
         live ? "bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,.8)]" : "bg-red-400"
       }`}
     />
-  );
-}
-
-function WorldMapBackdrop() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 1000 500"
-      preserveAspectRatio="none"
-      className="absolute inset-0 size-full"
-    >
-      <g className="stroke-border" fill="none" strokeWidth="1">
-        {[125, 250, 375, 500, 625, 750, 875].map((x) => (
-          <line key={`lng-${x}`} x1={x} y1="0" x2={x} y2="500" />
-        ))}
-        {[100, 200, 300, 400].map((y) => (
-          <line key={`lat-${y}`} x1="0" y1={y} x2="1000" y2={y} />
-        ))}
-      </g>
-      <g
-        className="fill-foreground/8 stroke-foreground/20"
-        strokeWidth="2"
-        strokeLinejoin="round"
-      >
-        <path d="M62 109 105 67 183 49 248 67 278 105 247 127 216 121 199 149 166 166 151 206 118 207 95 177 70 166 45 137Z" />
-        <path d="M224 195 258 218 279 266 267 315 241 377 215 426 193 388 181 333 162 277 180 227Z" />
-        <path d="M447 91 489 67 547 76 572 103 548 125 507 119 489 142 453 133 425 113Z" />
-        <path d="M463 146 516 148 555 181 570 236 551 303 515 370 474 335 454 278 432 214Z" />
-        <path d="M553 108 625 73 707 68 774 86 843 109 892 149 855 176 799 168 758 198 701 181 661 210 611 190 568 154Z" />
-        <path d="M702 189 738 202 764 239 746 270 710 257 681 221Z" />
-        <path d="M815 310 864 292 922 316 944 356 916 388 855 381 806 350Z" />
-        <path d="M505 430 568 421 631 433 603 454 532 457Z" />
-      </g>
-    </svg>
   );
 }
 
@@ -191,8 +147,23 @@ export function ExplorerDashboard() {
   const sampleTime = data ? Date.parse(data.checkedAt) : 0;
   const activeNodes = nodes.filter((node) => {
     if (node.role === "genesis") return data?.health.genesis;
-    return node.lastSeen ? sampleTime - Date.parse(node.lastSeen) < 60_000 : false;
+    return (
+      (node.status === "online" || node.status === "syncing") &&
+      Boolean(
+        node.lastSeen && sampleTime - Date.parse(node.lastSeen) < 60_000,
+      )
+    );
   });
+  const mapGenesis =
+    nodes.find((node) => node.role === "genesis") ??
+    ({
+      id: "genesis",
+      label: "GENESIS",
+      class: "L",
+      region: "US-EAST-1",
+      status: data?.health.genesis ? "online" : "offline",
+      role: "genesis",
+    } satisfies PublicNode);
   const jobs = data?.coordinator?.jobs;
   const rewards = data?.coordinator?.rewards;
   const chainId = data?.chain?.chainId ?? data?.genesis?.chain?.id;
@@ -264,7 +235,6 @@ export function ExplorerDashboard() {
                 ["Leader public key", chainLeader],
                 ["Tip hash", chainTipHash],
                 ["Last signed block", data?.settlement?.lastBlockAt ? age(data.settlement.lastBlockAt, sampleTime) : "genesis only"],
-                ["Recovery policy", data?.chain ? `${data.chain.recoveryKeys}-key recovery set` : "2-key recovery set"],
               ].map(([label, value]) => (
                 <div key={label} className="grid gap-1 sm:grid-cols-[10rem_1fr]">
                   <dt className="text-muted">{label}</dt>
@@ -327,33 +297,12 @@ export function ExplorerDashboard() {
             {activeNodes.length} live now · {nodes.length} visible
           </p>
         </div>
-        <div className="mt-4 panel relative h-72 overflow-hidden bg-[radial-gradient(circle_at_center,var(--surface-hover),transparent_72%)] sm:h-96">
-          <WorldMapBackdrop />
-          <div className="absolute left-4 top-3 rounded-full border border-border bg-background/75 px-3 py-1 font-mono text-[0.58rem] tracking-wider text-muted uppercase backdrop-blur">
-            Approximate network geography
-          </div>
-          {nodes.filter((node) => Number.isFinite(node.lat) && Number.isFinite(node.lng)).map((node) => {
-            const left = ((Number(node.lng) + 180) / 360) * 100;
-            const top = ((90 - Number(node.lat)) / 180) * 100;
-            const live = activeNodes.some((active) => active.id === node.id);
-            return (
-              <div
-                key={node.id}
-                title={`${node.label} · ${node.region}`}
-                className="absolute -translate-x-1/2 -translate-y-1/2"
-                style={{ left: `${left}%`, top: `${top}%` }}
-              >
-                <span className={`block size-3 rounded-full border-2 border-background shadow-lg ${live ? "bg-emerald-400" : "bg-dim"}`} />
-                {node.role === "genesis" ? <span className="absolute inset-0 -m-2 animate-ping rounded-full border border-emerald-400/50" /> : null}
-                <span className="absolute left-4 top-1/2 hidden -translate-y-1/2 whitespace-nowrap rounded border border-border bg-background/85 px-2 py-1 font-mono text-[0.56rem] text-muted backdrop-blur sm:block">
-                  {node.label} · {node.region}
-                </span>
-              </div>
-            );
-          })}
-          <p className="absolute bottom-3 left-4 font-mono text-[0.6rem] text-dim">
-            Cloudflare-derived coordinates are quantized server-side · public IDs only · IP addresses are never stored or exposed
-          </p>
+        <div className="mt-4">
+          <WorldNodeMap
+            genesis={mapGenesis}
+            nodes={activeNodes}
+            burstIds={[]}
+          />
         </div>
         <div className="mt-4 panel overflow-hidden">
           <div className="grid grid-cols-[1fr_auto_auto] gap-4 border-b border-border px-5 py-3 font-mono text-[0.6rem] tracking-wider text-dim uppercase sm:grid-cols-[1.2fr_.7fr_.5fr_.5fr]">

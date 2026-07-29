@@ -19,6 +19,10 @@ type NavItem = {
   children?: NavChild[];
 };
 
+function siteHref(href: string, siteOrigin?: string) {
+  return siteOrigin && href.startsWith("/") ? `${siteOrigin}${href}` : href;
+}
+
 function useMenu(): NavItem[] {
   return [
     {
@@ -173,7 +177,13 @@ function useMenu(): NavItem[] {
   ];
 }
 
-function DesktopDropdown({ item }: { item: NavItem }) {
+function DesktopDropdown({
+  item,
+  siteOrigin,
+}: {
+  item: NavItem;
+  siteOrigin?: string;
+}) {
   const { t } = useLocale();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLLIElement>(null);
@@ -197,7 +207,7 @@ function DesktopDropdown({ item }: { item: NavItem }) {
     return (
       <li>
         <a
-          href={item.href ?? "#"}
+          href={siteHref(item.href ?? "#", siteOrigin)}
           className="text-[0.7rem] font-medium tracking-[0.2em] text-white/70 uppercase transition hover:text-white"
         >
           {t(item.labelKey)}
@@ -248,7 +258,7 @@ function DesktopDropdown({ item }: { item: NavItem }) {
             {item.children.map((c) => (
               <a
                 key={c.href + c.labelKey}
-                href={c.href}
+                href={siteHref(c.href, siteOrigin)}
                 className="block px-4 py-2.5 transition hover:bg-white/[0.06]"
                 onClick={() => setOpen(false)}
               >
@@ -269,7 +279,7 @@ function DesktopDropdown({ item }: { item: NavItem }) {
   );
 }
 
-export function Nav() {
+export function Nav({ siteOrigin }: { siteOrigin?: string } = {}) {
   const { t } = useLocale();
   const menu = useMenu();
   const [scrolled, setScrolled] = useState(false);
@@ -290,14 +300,21 @@ export function Nav() {
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8 lg:h-20 lg:px-10">
-        <a href="/" className="group flex items-center gap-2.5 text-white">
+        <a
+          href={siteHref("/", siteOrigin)}
+          className="group flex items-center gap-2.5 text-white"
+        >
           <Logo className="h-7 w-7" />
           <span className="text-sm font-semibold tracking-[0.35em]">GRID</span>
         </a>
 
         <ul className="hidden items-center gap-8 lg:gap-10 md:flex">
           {menu.map((item) => (
-            <DesktopDropdown key={item.labelKey} item={item} />
+            <DesktopDropdown
+              key={item.labelKey}
+              item={item}
+              siteOrigin={siteOrigin}
+            />
           ))}
         </ul>
 
@@ -305,19 +322,19 @@ export function Nav() {
           <LanguageSwitcher />
           <ThemeToggle />
           <a
-            href="/ember"
+            href={siteHref("/ember", siteOrigin)}
             className="hidden border border-white/25 px-4 py-2 text-[0.65rem] font-semibold tracking-[0.18em] uppercase transition hover:border-white/60 hover:text-white sm:inline-flex"
           >
             {t("nav.ember")}
           </a>
           <a
-            href="/registry"
+            href={siteHref("/registry", siteOrigin)}
             className="inline-flex border border-white/50 bg-white px-4 py-2 text-[0.65rem] font-semibold tracking-[0.18em] text-black uppercase transition hover:bg-transparent hover:text-white"
           >
             {t("nav.registry")}
           </a>
           <a
-            href="/#download"
+            href={siteHref("/#download", siteOrigin)}
             className="hidden border border-white/50 px-4 py-2 text-[0.65rem] font-semibold tracking-[0.18em] uppercase transition hover:border-white hover:bg-white hover:text-black sm:inline-flex"
           >
             {t("nav.getGrid")}
@@ -381,7 +398,7 @@ export function Nav() {
                         {item.children.map((c) => (
                           <li key={c.href + c.labelKey}>
                             <a
-                              href={c.href}
+                              href={siteHref(c.href, siteOrigin)}
                               onClick={() => setOpen(false)}
                               className="block py-2.5"
                             >
@@ -401,7 +418,7 @@ export function Nav() {
                   </>
                 ) : (
                   <a
-                    href={item.href ?? "#"}
+                    href={siteHref(item.href ?? "#", siteOrigin)}
                     onClick={() => setOpen(false)}
                     className="block py-3 text-sm tracking-[0.18em] text-white/80 uppercase"
                   >
@@ -424,7 +441,7 @@ export function Nav() {
             </li>
             <li className="pt-2">
               <a
-                href="/ember"
+                href={siteHref("/ember", siteOrigin)}
                 onClick={() => setOpen(false)}
                 className="btn-ghost w-full"
               >
@@ -433,7 +450,7 @@ export function Nav() {
             </li>
             <li className="pt-2">
               <a
-                href="/registry"
+                href={siteHref("/registry", siteOrigin)}
                 onClick={() => setOpen(false)}
                 className="btn-primary w-full"
               >
@@ -442,7 +459,7 @@ export function Nav() {
             </li>
             <li className="pt-2 pb-2">
               <a
-                href="/#download"
+                href={siteHref("/#download", siteOrigin)}
                 onClick={() => setOpen(false)}
                 className="btn-ghost w-full"
               >

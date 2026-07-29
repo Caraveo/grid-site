@@ -1,7 +1,11 @@
 import { Logo } from "./Logo";
 import { DOWNLOADS } from "@/lib/downloads";
 
-export function Footer() {
+function siteHref(href: string, siteOrigin?: string) {
+  return siteOrigin && href.startsWith("/") ? `${siteOrigin}${href}` : href;
+}
+
+export function Footer({ siteOrigin }: { siteOrigin?: string } = {}) {
   return (
     <footer className="border-t border-white/10 px-5 py-16 sm:py-20">
       <div className="mx-auto max-w-7xl">
@@ -27,22 +31,22 @@ export function Footer() {
               </h4>
               <ul className="mt-4 space-y-3 text-sm text-white/60">
                 <li>
-                  <a href="/explain" className="transition hover:text-white">
+                  <a href={siteHref("/explain", siteOrigin)} className="transition hover:text-white">
                     Explain
                   </a>
                 </li>
                 <li>
-                  <a href="/token?view=1" className="transition hover:text-white">
+                  <a href={siteHref("/token?view=1", siteOrigin)} className="transition hover:text-white">
                     Token
                   </a>
                 </li>
                 <li>
-                  <a href="/alloc?view=1" className="transition hover:text-white">
+                  <a href={siteHref("/alloc?view=1", siteOrigin)} className="transition hover:text-white">
                     Allocation
                   </a>
                 </li>
                 <li>
-                  <a href="/slud" className="transition hover:text-white">
+                  <a href={siteHref("/slud", siteOrigin)} className="transition hover:text-white">
                     SLUD
                   </a>
                 </li>
@@ -55,57 +59,57 @@ export function Footer() {
                   </a>
                 </li>
                 <li>
-                  <a href="/ember" className="transition hover:text-white">
+                  <a href={siteHref("/ember", siteOrigin)} className="transition hover:text-white">
                     Ember
                   </a>
                 </li>
                 <li>
-                  <a href="/registry" className="transition hover:text-white">
+                  <a href={siteHref("/registry", siteOrigin)} className="transition hover:text-white">
                     Registry
                   </a>
                 </li>
                 <li>
-                  <a href="/#mesh" className="transition hover:text-white">
+                  <a href={siteHref("/#mesh", siteOrigin)} className="transition hover:text-white">
                     MESH
                   </a>
                 </li>
                 <li>
-                  <a href="/#mission" className="transition hover:text-white">
+                  <a href={siteHref("/#mission", siteOrigin)} className="transition hover:text-white">
                     Mission
                   </a>
                 </li>
                 <li>
-                  <a href="/#network" className="transition hover:text-white">
+                  <a href={siteHref("/#network", siteOrigin)} className="transition hover:text-white">
                     Network
                   </a>
                 </li>
                 <li>
-                  <a href="/#nodes" className="transition hover:text-white">
+                  <a href={siteHref("/#nodes", siteOrigin)} className="transition hover:text-white">
                     Nodes
                   </a>
                 </li>
                 <li>
-                  <a href="/#wallets" className="transition hover:text-white">
+                  <a href={siteHref("/#wallets", siteOrigin)} className="transition hover:text-white">
                     Wallets
                   </a>
                 </li>
                 <li>
-                  <a href="/#security" className="transition hover:text-white">
+                  <a href={siteHref("/#security", siteOrigin)} className="transition hover:text-white">
                     Security
                   </a>
                 </li>
                 <li>
-                  <a href="/#timeline" className="transition hover:text-white">
+                  <a href={siteHref("/#timeline", siteOrigin)} className="transition hover:text-white">
                     Phases
                   </a>
                 </li>
                 <li>
-                  <a href="/#download" className="transition hover:text-white">
+                  <a href={siteHref("/#download", siteOrigin)} className="transition hover:text-white">
                     Download
                   </a>
                 </li>
                 <li>
-                  <a href="/shop" className="transition hover:text-white">
+                  <a href={siteHref("/shop", siteOrigin)} className="transition hover:text-white">
                     Shop
                   </a>
                 </li>
@@ -118,7 +122,7 @@ export function Footer() {
               <ul className="mt-4 space-y-3 text-sm text-white/60">
                 <li>
                   <a
-                    href="/downloads/mesh/mac-intel/MESH.dmg"
+                    href={siteHref("/downloads/mesh/mac-intel/MESH.dmg", siteOrigin)}
                     download="MESH-mac-intel.dmg"
                     className="transition hover:text-white"
                   >
@@ -127,7 +131,7 @@ export function Footer() {
                 </li>
                 <li>
                   <a
-                    href="/downloads/mesh/mac-arm/MESH.dmg"
+                    href={siteHref("/downloads/mesh/mac-arm/MESH.dmg", siteOrigin)}
                     download="MESH-mac-arm.dmg"
                     className="transition hover:text-white"
                   >
@@ -136,7 +140,7 @@ export function Footer() {
                 </li>
                 <li>
                   <a
-                    href="/downloads/mesh/linux/MESH.AppImage"
+                    href={siteHref("/downloads/mesh/linux/MESH.AppImage", siteOrigin)}
                     download="MESH-linux.AppImage"
                     className="transition hover:text-white"
                   >
@@ -145,7 +149,7 @@ export function Footer() {
                 </li>
                 <li>
                   <a
-                    href="/downloads/mesh/windows/MESH-Setup.zip"
+                    href={siteHref("/downloads/mesh/windows/MESH-Setup.zip", siteOrigin)}
                     download="MESH-Setup.zip"
                     className="transition hover:text-white"
                   >
@@ -154,7 +158,7 @@ export function Footer() {
                 </li>
                 <li>
                   <a
-                    href={DOWNLOADS.cli.darwinX64}
+                    href={siteHref(DOWNLOADS.cli.darwinX64, siteOrigin)}
                     download="grid"
                     className="transition hover:text-white"
                   >
@@ -162,7 +166,7 @@ export function Footer() {
                   </a>
                 </li>
                 <li>
-                  <a href="/#mesh-downloads" className="transition hover:text-white">
+                  <a href={siteHref("/#mesh-downloads", siteOrigin)} className="transition hover:text-white">
                     All Mesh platforms
                   </a>
                 </li>
@@ -174,12 +178,12 @@ export function Footer() {
               </h4>
               <ul className="mt-4 space-y-3 text-sm text-white/60">
                 <li>
-                  <a href="/por" className="transition hover:text-white">
+                  <a href={siteHref("/por", siteOrigin)} className="transition hover:text-white">
                     Proof-of-Resource
                   </a>
                 </li>
                 <li>
-                  <a href="/white-paper" className="transition hover:text-white">
+                  <a href={siteHref("/white-paper", siteOrigin)} className="transition hover:text-white">
                     White paper
                   </a>
                 </li>

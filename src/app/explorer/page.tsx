@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function ExplorerPage() {
   return (
     <main className="min-h-screen bg-background">
-      <Nav />
+      <Nav siteOrigin="https://grid-compute.com" />
       <section className="px-5 pb-24 pt-32 sm:pt-40">
         <div className="mx-auto max-w-7xl">
           <p className="section-label">GRID network explorer</p>
@@ -36,7 +36,7 @@ export default function ExplorerPage() {
           </div>
         </div>
       </section>
-      <Footer />
+      <Footer siteOrigin="https://grid-compute.com" />
     </main>
   );
 }

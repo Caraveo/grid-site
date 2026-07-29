@@ -4,7 +4,7 @@ import { H1, H2, Lead, Note, P, Table, Ul } from "@/components/docs/DocsChrome";
 export const metadata = {
   title: "Auth for writes",
   description:
-    "Webhook bearer authentication for GRID mesh and compute announce APIs.",
+    "Signed node heartbeats and operator authentication for GRID write APIs.",
 };
 
 export default function AuthDocsPage() {
@@ -12,12 +12,31 @@ export default function AuthDocsPage() {
     <>
       <H1>Auth for writes</H1>
       <Lead>
-        Read endpoints are public. Write endpoints that affect the mesh or
-        capacity directory require a shared webhook secret configured on the
-        operator machine and on the registry Worker.
+        Read endpoints are public. Globe heartbeats use per-node Ed25519
+        identity; privileged capacity-directory writes use an operator webhook
+        secret.
       </Lead>
 
-      <H2 id="header">How to authenticate</H2>
+      <H2 id="heartbeat">Public node heartbeats</H2>
+      <P>
+        The GRID CLI creates a dedicated private key at{" "}
+        <code className="font-mono">~/.grid/keys/mesh-heartbeat.key</code>. It
+        signs every location pulse with a timestamp and random nonce. The server
+        derives the node ID from the public key, verifies the signature, and
+        rejects replayed or stale messages atomically.
+      </P>
+      <CodeBlock
+        lang="bash"
+        code={`# No shared globe secret is required.
+GRID_GLOBE_LAT=37.7
+GRID_GLOBE_LNG=-122.4
+GRID_GLOBE_REGION=NA-W
+
+grid init --name garage --class S
+grid node`}
+      />
+
+      <H2 id="header">Operator write authentication</H2>
       <Table
         headers={["Mechanism", "Example"]}
         rows={[
@@ -29,16 +48,17 @@ export default function AuthDocsPage() {
         lang="bash"
         code={`export GRID_WEBHOOK_SECRET='…'   # never commit
 
-curl -sS -X POST https://grid-compute.com/api/mesh/ping \\
+curl -sS -X POST https://grid-compute.com/api/registry/computes \\
   -H 'content-type: application/json' \\
   -H "authorization: Bearer $GRID_WEBHOOK_SECRET" \\
-  -d '{"nodeId":"node_demo","lat":37.7,"lng":-122.4,"class":"S"}'`}
+  -d @announce.json`}
       />
 
       <H2 id="which">Which routes need it</H2>
       <Ul>
         <li>
-          <code className="font-mono">POST /api/mesh/ping</code>
+          <code className="font-mono">POST /api/mesh/ping</code> — node
+          signature, not bearer auth
         </li>
         <li>
           <code className="font-mono">POST /api/registry/computes</code>
@@ -54,7 +74,7 @@ curl -sS -X POST https://grid-compute.com/api/mesh/ping \\
       <Ul>
         <li>Store the secret in <code className="font-mono">~/.grid/env</code> (mode 600)</li>
         <li>Never embed it in Mesh, websites, or mobile apps</li>
-        <li>Rotate by updating the Worker secret and all nodes together</li>
+        <li>Rotate the webhook secret for privileged compute writers together</li>
         <li>Treat it as an ingress gate, not a user identity system</li>
       </Ul>
 

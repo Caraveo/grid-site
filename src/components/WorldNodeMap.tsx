@@ -1,6 +1,16 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import {
+  geoDistance,
+  geoGraticule10,
+  geoOrthographic,
+  geoPath,
+  type GeoProjection,
+} from "d3-geo";
+import { feature } from "topojson-client";
+import type { GeometryObject, Topology } from "topojson-specification";
+import landTopology from "world-atlas/land-110m.json";
 import type { PublicNode } from "@/lib/network";
 
 type Props = {
@@ -10,93 +20,331 @@ type Props = {
   onBurstDone?: (id: string) => void;
 };
 
-function WorldMapBackdrop() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 1000 500"
-      preserveAspectRatio="none"
-      className="absolute inset-0 size-full"
-    >
-      <g className="stroke-white/10" fill="none" strokeWidth="1">
-        {[125, 250, 375, 500, 625, 750, 875].map((x) => (
-          <line key={`lng-${x}`} x1={x} y1="0" x2={x} y2="500" />
-        ))}
-        {[100, 200, 300, 400].map((y) => (
-          <line key={`lat-${y}`} x1="0" y1={y} x2="1000" y2={y} />
-        ))}
-      </g>
-      <g
-        className="fill-white/[0.055] stroke-white/20"
-        strokeWidth="2"
-        strokeLinejoin="round"
-      >
-        <path d="M62 109 105 67 183 49 248 67 278 105 247 127 216 121 199 149 166 166 151 206 118 207 95 177 70 166 45 137Z" />
-        <path d="M224 195 258 218 279 266 267 315 241 377 215 426 193 388 181 333 162 277 180 227Z" />
-        <path d="M447 91 489 67 547 76 572 103 548 125 507 119 489 142 453 133 425 113Z" />
-        <path d="M463 146 516 148 555 181 570 236 551 303 515 370 474 335 454 278 432 214Z" />
-        <path d="M553 108 625 73 707 68 774 86 843 109 892 149 855 176 799 168 758 198 701 181 661 210 611 190 568 154Z" />
-        <path d="M702 189 738 202 764 239 746 270 710 257 681 221Z" />
-        <path d="M815 310 864 292 922 316 944 356 916 388 855 381 806 350Z" />
-        <path d="M505 430 568 421 631 433 603 454 532 457Z" />
-      </g>
-    </svg>
-  );
+type Burst = {
+  id: string;
+  born: number;
+};
+
+const topology = landTopology as unknown as Topology<{
+  land: GeometryObject;
+}>;
+const LAND = feature(topology, topology.objects.land);
+const GRATICULE = geoGraticule10();
+const SPHERE = { type: "Sphere" } as const;
+const LIVE_STATUSES = new Set<PublicNode["status"]>(["online", "syncing"]);
+
+function hasCoordinates(
+  node: PublicNode,
+): node is PublicNode & { lat: number; lng: number } {
+  return Number.isFinite(node.lat) && Number.isFinite(node.lng);
 }
 
-export function WorldNodeMap({ genesis, nodes, burstIds, onBurstDone }: Props) {
-  useEffect(() => {
-    if (!burstIds.length || !onBurstDone) return;
-    const timers = burstIds.map((id) =>
-      window.setTimeout(() => onBurstDone(id), 2_800),
-    );
-    return () => timers.forEach((timer) => window.clearTimeout(timer));
-  }, [burstIds, onBurstDone]);
+function visibleFrom(
+  node: PublicNode & { lat: number; lng: number },
+  rotation: [number, number],
+) {
+  const center: [number, number] = [-rotation[0], -rotation[1]];
+  return geoDistance([node.lng, node.lat], center) < Math.PI / 2;
+}
 
-  const plotted = nodes.filter(
-    (node) => Number.isFinite(node.lat) && Number.isFinite(node.lng),
-  );
+function drawGeo(
+  ctx: CanvasRenderingContext2D,
+  projection: GeoProjection,
+  object: Parameters<ReturnType<typeof geoPath>>[0],
+) {
+  ctx.beginPath();
+  geoPath(projection, ctx)(object);
+}
+
+export function WorldNodeMap({
+  genesis,
+  nodes,
+  burstIds,
+  onBurstDone,
+}: Props) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const nodesRef = useRef(nodes);
+  const genesisRef = useRef(genesis);
+  const burstsRef = useRef<Burst[]>([]);
+  const onBurstDoneRef = useRef(onBurstDone);
+
+  useEffect(() => {
+    nodesRef.current = nodes;
+    genesisRef.current = genesis;
+    onBurstDoneRef.current = onBurstDone;
+  }, [genesis, nodes, onBurstDone]);
+
+  useEffect(() => {
+    const now = performance.now();
+    for (const id of burstIds) {
+      if (burstsRef.current.some((burst) => burst.id === id)) continue;
+      burstsRef.current.push({ id, born: now });
+    }
+  }, [burstIds]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const wrap = wrapRef.current;
+    const ctx = canvas?.getContext("2d");
+    if (!canvas || !wrap || !ctx) return;
+
+    const projection = geoOrthographic()
+      .clipAngle(90)
+      .precision(0.3)
+      .rotate([104, -24, 0]);
+
+    let frameId = 0;
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
+    let dragging = false;
+    let resumeRotationAt = 0;
+    let pointerX = 0;
+    let pointerY = 0;
+    let rotation: [number, number] = [104, -24];
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    const resize = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = wrap.clientWidth;
+      height = Math.max(350, Math.min(500, width * 0.72));
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      projection
+        .translate([width / 2, height / 2 - 4])
+        .scale(Math.min(width, height) * 0.4);
+    };
+
+    const onPointerDown = (event: PointerEvent) => {
+      dragging = true;
+      pointerX = event.clientX;
+      pointerY = event.clientY;
+      canvas.setPointerCapture(event.pointerId);
+    };
+    const onPointerMove = (event: PointerEvent) => {
+      if (!dragging) return;
+      rotation = [
+        rotation[0] + (event.clientX - pointerX) * 0.34,
+        Math.max(
+          -70,
+          Math.min(70, rotation[1] - (event.clientY - pointerY) * 0.28),
+        ),
+      ];
+      pointerX = event.clientX;
+      pointerY = event.clientY;
+    };
+    const onPointerUp = () => {
+      dragging = false;
+      resumeRotationAt = performance.now() + 2_000;
+    };
+
+    resize();
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(wrap);
+    canvas.addEventListener("pointerdown", onPointerDown);
+    canvas.addEventListener("pointermove", onPointerMove);
+    canvas.addEventListener("pointerup", onPointerUp);
+    canvas.addEventListener("pointercancel", onPointerUp);
+
+    const draw = (now: number) => {
+      if (!dragging && !reduceMotion && now >= resumeRotationAt) {
+        rotation = [rotation[0] + 0.055, rotation[1]];
+      }
+      projection.rotate([rotation[0], rotation[1], 0]);
+      ctx.clearRect(0, 0, width, height);
+
+      const light = document.documentElement.classList.contains("light");
+      const centerX = width / 2;
+      const centerY = height / 2 - 4;
+      const radius = Math.min(width, height) * 0.4;
+
+      const background = ctx.createRadialGradient(
+        centerX,
+        centerY,
+        radius * 0.1,
+        centerX,
+        centerY,
+        radius * 1.48,
+      );
+      background.addColorStop(
+        0,
+        light ? "rgba(0,0,0,0.025)" : "rgba(255,255,255,0.045)",
+      );
+      background.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = background;
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.save();
+      ctx.shadowColor = light
+        ? "rgba(0,0,0,0.16)"
+        : "rgba(123,220,255,0.24)";
+      ctx.shadowBlur = 28;
+      drawGeo(ctx, projection, SPHERE);
+      const ocean = ctx.createRadialGradient(
+        centerX - radius * 0.28,
+        centerY - radius * 0.32,
+        radius * 0.08,
+        centerX,
+        centerY,
+        radius,
+      );
+      ocean.addColorStop(0, light ? "#f9fbfc" : "#14242d");
+      ocean.addColorStop(0.65, light ? "#dce6e9" : "#071116");
+      ocean.addColorStop(1, light ? "#bcc9cd" : "#020607");
+      ctx.fillStyle = ocean;
+      ctx.fill();
+      ctx.restore();
+
+      drawGeo(ctx, projection, GRATICULE);
+      ctx.strokeStyle = light
+        ? "rgba(0,0,0,0.10)"
+        : "rgba(198,231,240,0.11)";
+      ctx.lineWidth = 0.7;
+      ctx.stroke();
+
+      drawGeo(ctx, projection, LAND);
+      ctx.fillStyle = light ? "#aebbb5" : "#20352f";
+      ctx.fill();
+      ctx.strokeStyle = light
+        ? "rgba(38,62,50,0.55)"
+        : "rgba(157,218,190,0.58)";
+      ctx.lineWidth = 0.85;
+      ctx.stroke();
+
+      drawGeo(ctx, projection, SPHERE);
+      ctx.strokeStyle = light
+        ? "rgba(0,0,0,0.34)"
+        : "rgba(178,231,242,0.62)";
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+
+      const allNodes = [genesisRef.current, ...nodesRef.current];
+      const seen = new Set<string>();
+      const liveNodes = allNodes.filter((node) => {
+        if (seen.has(node.id)) return false;
+        seen.add(node.id);
+        return LIVE_STATUSES.has(node.status) && hasCoordinates(node);
+      }) as Array<PublicNode & { lat: number; lng: number }>;
+
+      for (const node of liveNodes) {
+        if (!visibleFrom(node, rotation)) continue;
+        const point = projection([node.lng, node.lat]);
+        if (!point) continue;
+        const [x, y] = point;
+        const genesisNode =
+          node.role === "genesis" || node.id === genesisRef.current.id;
+        const pulse = 0.5 + Math.sin(now * 0.003 + node.lat) * 0.5;
+        const radius = genesisNode ? 5.5 : 4;
+
+        ctx.beginPath();
+        ctx.arc(x, y, radius * (2.1 + pulse * 0.65), 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(52, 211, 153, ${0.08 + pulse * 0.08})`;
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.fillStyle = genesisNode ? "#ffffff" : "#34d399";
+        ctx.shadowColor = genesisNode ? "#ffffff" : "#34d399";
+        ctx.shadowBlur = genesisNode ? 16 : 10;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        ctx.font =
+          "600 9px ui-monospace, SFMono-Regular, Menlo, monospace";
+        ctx.textAlign = "center";
+        ctx.fillStyle = light
+          ? "rgba(0,0,0,0.68)"
+          : "rgba(255,255,255,0.72)";
+        ctx.fillText(
+          `${node.label.toUpperCase()} · ${node.region}`,
+          x,
+          y - 12,
+        );
+      }
+
+      const activeBursts: Burst[] = [];
+      for (const burst of burstsRef.current) {
+        const age = now - burst.born;
+        if (age >= 2_800) {
+          onBurstDoneRef.current?.(burst.id);
+          continue;
+        }
+        const node = liveNodes.find((candidate) => candidate.id === burst.id);
+        if (!node || !visibleFrom(node, rotation)) {
+          activeBursts.push(burst);
+          continue;
+        }
+        const point = projection([node.lng, node.lat]);
+        if (!point) continue;
+        activeBursts.push(burst);
+        const progress = age / 2_800;
+        ctx.beginPath();
+        ctx.arc(
+          point[0],
+          point[1],
+          10 + 55 * (1 - Math.pow(1 - progress, 3)),
+          0,
+          Math.PI * 2,
+        );
+        ctx.strokeStyle = `rgba(52, 211, 153, ${0.7 * (1 - progress)})`;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      }
+      burstsRef.current = activeBursts;
+
+      if (!liveNodes.length) {
+        ctx.textAlign = "center";
+        ctx.font = "500 13px ui-sans-serif, system-ui, sans-serif";
+        ctx.fillStyle = light
+          ? "rgba(0,0,0,0.42)"
+          : "rgba(255,255,255,0.42)";
+        ctx.fillText(
+          "Awaiting live node coordinates…",
+          centerX,
+          centerY + radius + 32,
+        );
+      }
+
+      frameId = requestAnimationFrame(draw);
+    };
+
+    frameId = requestAnimationFrame(draw);
+    return () => {
+      cancelAnimationFrame(frameId);
+      resizeObserver.disconnect();
+      canvas.removeEventListener("pointerdown", onPointerDown);
+      canvas.removeEventListener("pointermove", onPointerMove);
+      canvas.removeEventListener("pointerup", onPointerUp);
+      canvas.removeEventListener("pointercancel", onPointerUp);
+    };
+  }, []);
 
   return (
-    <div className="panel relative h-[340px] overflow-hidden bg-[radial-gradient(circle_at_center,rgba(255,255,255,.06),transparent_72%)] sm:h-[470px]">
-      <WorldMapBackdrop />
-      <div className="absolute left-4 top-4 rounded-full border border-white/15 bg-black/70 px-3 py-1 font-mono text-[0.58rem] tracking-[0.16em] text-white/50 uppercase backdrop-blur">
-        Live coarse geography
+    <div
+      ref={wrapRef}
+      className="panel relative min-h-[350px] overflow-hidden bg-[radial-gradient(circle_at_center,rgba(61,154,179,.08),transparent_70%)] sm:min-h-[470px]"
+    >
+      <canvas
+        ref={canvasRef}
+        role="img"
+        aria-label="Rotating Earth showing only live GRID nodes at privacy-rounded locations"
+        className="block w-full cursor-grab touch-none active:cursor-grabbing"
+      />
+      <div className="pointer-events-none absolute left-4 top-4 rounded-full border border-emerald-300/20 bg-black/65 px-3 py-1 font-mono text-[0.58rem] tracking-[0.16em] text-emerald-200/70 uppercase backdrop-blur">
+        Live nodes only · Real Earth
       </div>
-      {plotted.map((node) => {
-        const left = ((Number(node.lng) + 180) / 360) * 100;
-        const top = ((90 - Number(node.lat)) / 180) * 100;
-        const online = node.status === "online";
-        const bursting = burstIds.includes(node.id);
-        return (
-          <div
-            key={node.id}
-            className="absolute -translate-x-1/2 -translate-y-1/2"
-            style={{ left: `${left}%`, top: `${top}%` }}
-            title={`${node.label} · ${node.region} · ${node.status}`}
-          >
-            <span
-              className={`block size-3 rounded-full border-2 border-black shadow-lg ${
-                online ? "bg-emerald-400" : "bg-white/20"
-              }`}
-            />
-            {(node.id === genesis.id || bursting) && online ? (
-              <span className="absolute inset-0 -m-2 animate-ping rounded-full border border-emerald-400/60" />
-            ) : null}
-            <span className="absolute left-4 top-1/2 hidden -translate-y-1/2 whitespace-nowrap rounded border border-white/10 bg-black/80 px-2 py-1 font-mono text-[0.56rem] text-white/55 backdrop-blur sm:block">
-              {node.label} · {node.region}
-            </span>
-          </div>
-        );
-      })}
-      {!plotted.length ? (
-        <p className="absolute inset-0 grid place-items-center text-sm text-white/35">
-          Awaiting live node coordinates…
-        </p>
-      ) : null}
-      <p className="absolute bottom-3 left-4 right-4 font-mono text-[0.58rem] leading-relaxed text-white/30">
-        Cloudflare-derived coordinates are rounded before display · public node IDs only · IP addresses are never stored
-      </p>
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 bg-gradient-to-t from-black/80 via-black/35 to-transparent px-4 pb-3 pt-12 font-mono text-[0.55rem] leading-relaxed tracking-[0.08em] text-white/42">
+        <span>
+          Privacy-rounded geography · IP addresses are never displayed
+        </span>
+        <span className="shrink-0 uppercase">Drag to rotate</span>
+      </div>
     </div>
   );
 }

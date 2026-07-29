@@ -1,151 +1,89 @@
 import { NextResponse } from "next/server";
-import {
-  MAX_BODY_BYTES,
-  MeshError,
-  upsertPing,
-  verifyWebhookSecret,
-} from "@/lib/mesh-store";
-import { filterPingBody, sanitizeNodeId } from "@/lib/sanitize";
+import { MAX_BODY_BYTES } from "../../../../../workers/mesh-auth/src/protocol";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+type MeshAuthService = {
+  fetch(input: Request): Promise<Response>;
+};
+
+async function meshAuthService(): Promise<MeshAuthService | null> {
+  try {
+    const { getCloudflareContext } = await import("@opennextjs/cloudflare");
+    const { env } = await getCloudflareContext({ async: true });
+    return (env as CloudflareEnv).MESH_AUTH ?? null;
+  } catch {
+    return null;
+  }
+}
+
+function error(message: string, status: number) {
+  return NextResponse.json(
+    { ok: false, error: message },
+    {
+      status,
+      headers: {
+        "Cache-Control": "no-store",
+        "X-Content-Type-Options": "nosniff",
+      },
+    },
+  );
+}
+
 /**
  * POST /api/mesh/ping
  *
- * Location-only node heartbeat for the public globe.
- * All string fields are allowlist-filtered (no HTML/script/IP injection).
+ * Public entry point for signed, location-only node heartbeats. The private
+ * Cloudflare service binding verifies Ed25519 identity and uses one Durable
+ * Object per node for atomic replay protection.
  */
 export async function POST(req: Request) {
-  if (!verifyWebhookSecret(req)) {
-    return NextResponse.json(
-      { ok: false, error: "unauthorized" },
-      { status: 401 },
-    );
-  }
-
   const contentType = req.headers.get("content-type") ?? "";
   if (!contentType.toLowerCase().includes("application/json")) {
-    return NextResponse.json(
-      { ok: false, error: "content-type must be application/json" },
-      { status: 415 },
-    );
+    return error("content-type must be application/json", 415);
   }
 
   const contentLength = Number(req.headers.get("content-length") ?? "0");
   if (contentLength > MAX_BODY_BYTES) {
-    return NextResponse.json(
-      { ok: false, error: "payload too large" },
-      { status: 413 },
-    );
+    return error("payload too large", 413);
   }
 
-  let rawText: string;
+  let raw: string;
   try {
-    rawText = await req.text();
+    raw = await req.text();
   } catch {
-    return NextResponse.json(
-      { ok: false, error: "invalid body" },
-      { status: 400 },
-    );
+    return error("invalid body", 400);
+  }
+  if (new TextEncoder().encode(raw).byteLength > MAX_BODY_BYTES) {
+    return error("payload too large", 413);
   }
 
-  if (rawText.length > MAX_BODY_BYTES) {
-    return NextResponse.json(
-      { ok: false, error: "payload too large" },
-      { status: 413 },
-    );
+  const service = await meshAuthService();
+  if (!service) {
+    return error("mesh heartbeat authority unavailable", 503);
   }
-
-  let parsed: unknown;
-  try {
-    parsed = JSON.parse(rawText);
-  } catch {
-    return NextResponse.json(
-      { ok: false, error: "invalid JSON" },
-      { status: 400 },
-    );
-  }
-
-  if (
-    parsed === null ||
-    typeof parsed !== "object" ||
-    Array.isArray(parsed)
-  ) {
-    return NextResponse.json(
-      { ok: false, error: "body must be a JSON object" },
-      { status: 400 },
-    );
-  }
-
-  // Allowlist keys only; drop nested objects / banned keys
-  const body = filterPingBody(parsed as Record<string, unknown>);
-
-  const nodeIdRaw = body.nodeId ?? body.id;
-  if (sanitizeNodeId(nodeIdRaw) == null) {
-    return NextResponse.json(
-      { ok: false, error: "invalid nodeId" },
-      { status: 400 },
-    );
-  }
-
-  // Accept lat/lng or latitude/longitude aliases
-  const lat = body.lat ?? body.latitude;
-  const lng = body.lng ?? body.longitude;
-
-  // status alias: signal
-  const status = body.status ?? body.signal;
-  // label alias: name
-  const label = body.label ?? body.name;
 
   try {
-    const result = await upsertPing({
-      nodeId: String(nodeIdRaw),
-      label: label != null ? String(label) : undefined,
-      class: body.class != null ? String(body.class) : undefined,
-      region: body.region != null ? String(body.region) : undefined,
-      status: status != null ? String(status) : undefined,
-      lat: Number(lat),
-      lng: Number(lng),
+    const response = await service.fetch(
+      new Request("https://mesh-auth.internal/v1/heartbeat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: raw,
+      }),
+    );
+    return new NextResponse(response.body, {
+      status: response.status,
+      headers: {
+        "Content-Type":
+          response.headers.get("content-type") ?? "application/json",
+        "Cache-Control": "no-store",
+        "X-Content-Type-Options": "nosniff",
+      },
     });
-
-    return NextResponse.json(
-      {
-        ok: true,
-        isNew: result.isNew,
-        message: result.message,
-        node: {
-          id: result.node.id,
-          label: result.node.label,
-          class: result.node.class,
-          region: result.node.region,
-          status: result.node.status,
-          lat: result.node.lat,
-          lng: result.node.lng,
-          lastSeen: result.node.lastSeen,
-          pingCount: result.node.pingCount,
-        },
-      },
-      {
-        status: result.isNew ? 201 : 200,
-        headers: {
-          "Cache-Control": "no-store",
-          "X-Content-Type-Options": "nosniff",
-        },
-      },
-    );
-  } catch (e) {
-    if (e instanceof MeshError) {
-      return NextResponse.json(
-        { ok: false, error: e.message },
-        { status: e.status },
-      );
-    }
-    console.error("[mesh/ping]", e);
-    return NextResponse.json(
-      { ok: false, error: "internal error" },
-      { status: 500 },
-    );
+  } catch (cause) {
+    console.error("[mesh/ping] heartbeat service failed", cause);
+    return error("mesh heartbeat authority unavailable", 503);
   }
 }
 
@@ -153,18 +91,15 @@ export async function GET() {
   return NextResponse.json({
     ok: true,
     endpoint: "POST /api/mesh/ping",
-    purpose: "Location-only node pings for the public GRID globe",
-    accepts: ["nodeId", "lat", "lng", "label?", "class?", "region?", "status?"],
-    filters: [
-      "allowlist keys only",
-      "label: alnum + limited punctuation, no HTML/script",
-      "status/signal: online|syncing|idle|offline",
-      "class: S|M|L",
-      "region: A-Z0-9_- only",
-      "nodeId: [a-zA-Z0-9_-]{2,64}",
-      "no IPs, hostnames, nested objects",
-      `max body ${MAX_BODY_BYTES} bytes`,
+    purpose: "Signed location-only heartbeats for the public GRID globe",
+    protocol: "GRID-MESH-HEARTBEAT-V1",
+    identity: "Ed25519 public key; node id is derived from SHA-256(public key)",
+    replayProtection: "per-node Durable Object with SQLite nonce storage",
+    privacy: [
+      "no IPs, ports, hostnames, wallets, or coordinator URLs are accepted",
+      "coordinates are quantized to 0.5 degrees before public storage",
+      "private signing keys never leave the node",
     ],
-    auth: "Bearer GRID_WEBHOOK_SECRET, X-Grid-Secret, or private service binding",
+    maxBodyBytes: MAX_BODY_BYTES,
   });
 }

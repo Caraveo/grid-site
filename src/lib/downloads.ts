@@ -128,10 +128,14 @@ export const DOWNLOADS = {
     platforms: MESH_DOWNLOADS,
   },
   cli: {
-    darwinX64: "/downloads/cli/grid-darwin-x86_64",
-    darwinArm64: "/downloads/cli/grid-darwin-aarch64",
-    linuxX64: "/downloads/cli/grid-linux-x86_64" as string | null,
-    windowsX64: "/downloads/cli/grid-windows-x86_64.exe",
+    darwinX64:
+      "/downloads/cli/grid-darwin-x86_64?rev=20260729-v0219-p2pnode",
+    darwinArm64:
+      "/downloads/cli/grid-darwin-aarch64?rev=20260729-v0219-p2pnode",
+    linuxX64:
+      "/downloads/cli/grid-linux-x86_64?rev=20260729-v0219-p2pnode" as string | null,
+    windowsX64:
+      "/downloads/cli/grid-windows-x86_64.exe?rev=20260729-v0219-p2pnode",
     installSh: "/downloads/install.sh",
     installPs: "/downloads/install.ps1",
     version: "0.2.18",

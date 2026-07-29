@@ -121,6 +121,46 @@ grid peer --name garage --connect peer.example:9900`}
         The default listener is <code className="font-mono">0.0.0.0:9900</code>.
         Make that port reachable only if you intend to accept inbound peers. A
         node can still dial Genesis and participate behind ordinary outbound NAT.
+        <code className="font-mono">grid peer</code> is the peer-only mode.
+        Use <code className="font-mono">grid node</code> for the all-in-one
+        process: encrypted P2P replication + host + mine.
+      </P>
+
+      <H2 id="heartbeat">Signed public presence</H2>
+      <P>
+        A location-enabled node creates a dedicated Ed25519 heartbeat identity
+        with restrictive local permissions. Every pulse signs its timestamp,
+        random nonce, coarse map coordinates, class, region, and status. The
+        receiving Worker derives the public node id from the public key and uses
+        one SQLite-backed Durable Object per node to reject replay atomically.
+        Coordinates are rounded to 0.5° before public storage; IP addresses,
+        ports, hostnames, wallets, and private keys are not stored.
+      </P>
+      <CodeBlock
+        lang="bash"
+        code={`export GRID_GLOBE_LAT=39.5      # use a coarse nearby-city location
+export GRID_GLOBE_LNG=-105.0
+export GRID_GLOBE_REGION=NA-W
+grid node`}
+      />
+
+      <H2 id="mainnet-gate">Decentralized mainnet gate</H2>
+      <CodeBlock
+        lang="bash"
+        code={`grid mainnet
+grid mainnet --json
+
+# One-time blocks.json migration; legacy file is retained read-only
+grid mainnet --migrate-storage`}
+      />
+      <P>
+        The gate is fail-closed. It remains red while Genesis is the only
+        finalizing signer, fewer than four independent validators exist, quorum
+        certificates are not enforced by block validation, treasury consensus
+        state is absent, append-only block persistence is not active, or an external
+        security review is outstanding. GRID has 3-of-4 validator-certificate
+        verification primitives now; proposal, vote, finalization, leader-failover
+        transport, and indexed storage remain the production milestone.
       </P>
 
       <H3 id="local">Local and custom networks</H3>

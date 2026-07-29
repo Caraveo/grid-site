@@ -1,0 +1,36 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "grid-mesh-auth",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-07-28",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "preview_urls": false,
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true,
+    },
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "NODE_HEARTBEATS",
+        "class_name": "NodeHeartbeat",
+      },
+    ],
+  },
+  "exports": {
+    "NodeHeartbeat": {
+      "type": "durable-object",
+      "storage": "sqlite",
+    },
+  },
+  "kv_namespaces": [
+    {
+      "binding": "MESH_KV",
+      "id": "5208b9e52eb14933bdee027cb124c3f7",
+    },
+  ],
+}

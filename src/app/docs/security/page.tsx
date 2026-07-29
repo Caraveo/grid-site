@@ -36,7 +36,8 @@ export default function SecurityDocsPage() {
           ["Cloudflare tunnel / reverse-proxy URLs", "Bypasses operator intent"],
           ["Operator private keys / vault DEKs", "Full account takeover"],
           ["CA private seed", "Forge network certificates"],
-          ["Webhook secrets", "Spam mesh + fake capacity"],
+          ["Capacity/admin service secrets", "Spam capacity or mutate protected services"],
+          ["Node heartbeat private keys", "Forge that node's public-presence signature"],
           ["Raw MAC / forensic dumps", "Compliance-sensitive; not a public signal"],
           ["Bitcoin wallet mnemonics or WIF", "Theft of funds"],
           ["GRID recovery phrases / wallet encryption material", "Wallet takeover"],
@@ -70,6 +71,16 @@ export default function SecurityDocsPage() {
         <li>Replay settlement allocation from committed inputs.</li>
         <li>Reject stale signed-truth epochs and peers on a verified ban list.</li>
         <li>Do not describe Genesis-led production as decentralized finality.</li>
+      </Ul>
+
+      <H2 id="heartbeat">Heartbeat integrity</H2>
+      <Ul>
+        <li>Each node signs public-presence data with a dedicated Ed25519 key.</li>
+        <li>The node id is derived from the public key; arbitrary ids cannot be claimed.</li>
+        <li>Timestamps have a five-minute acceptance window.</li>
+        <li>Random nonces are stored atomically per node and cannot be replayed.</li>
+        <li>Map coordinates are rounded to 0.5° before public KV storage.</li>
+        <li>No shared public mesh secret is distributed to node operators.</li>
       </Ul>
 
       <H2 id="wallet">Wallet safety</H2>
