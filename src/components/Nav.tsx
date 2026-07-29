@@ -133,11 +133,21 @@ function useMenu(): NavItem[] {
           labelKey: "nav.emberFull",
           hintKey: "nav.emberFull.hint",
         },
+        {
+          href: "/engine",
+          labelKey: "nav.engine",
+          hintKey: "nav.engine.hint",
+        },
       ],
     },
     {
       labelKey: "nav.getStarted",
       children: [
+        {
+          href: "/quick",
+          labelKey: "nav.quick",
+          hintKey: "nav.quick.hint",
+        },
         {
           href: "/registry",
           labelKey: "nav.register",
