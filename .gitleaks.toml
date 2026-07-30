@@ -1,0 +1,10 @@
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Known non-secret Cloudflare KV record names"
+regexTarget = "match"
+regexes = [
+  '''KV_KEY\s*=\s*"otg27-ticket-orders-v1"''',
+  '''KV_KEY\s*=\s*"gp-compliance-v1"''',
+]
