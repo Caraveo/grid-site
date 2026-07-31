@@ -86,9 +86,9 @@ export default function ChipPage() {
           <div className="relative z-10">
             <p className="section-label">CHIP · Computational Hybrid Instrument Protocol</p>
             <h1 className="mt-6 text-[clamp(4rem,12vw,10rem)] font-semibold leading-[0.82] tracking-[-0.065em] text-foreground">
-              Chip off the
+              <span className="text-cyan-300">CHIP</span> the
               <br />
-              old <span className="text-cyan-300">Block.</span>
+              old BLOCK.
             </h1>
             <ScrambleText
               text="TOKEN UTILITY. BLOCKCHAIN TRUTH. COMPUTE FIRST."
