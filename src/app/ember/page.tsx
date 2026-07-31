@@ -1,13 +1,11 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
 import { ScrambleText } from "@/components/ScrambleText";
 import { EmberDownload } from "@/components/EmberDownload";
 
-export const metadata: Metadata = {
-  title: "Ember | The GRID wallet",
-  description: "Download Ember, the native wallet for GRID, Solana rewards, and the path to Bitcoin settlement.",
-};
+export const metadata: Metadata = metadataFor("/ember");
 
 export default function EmberPage() {
   return (

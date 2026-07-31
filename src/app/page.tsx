@@ -1,3 +1,4 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/Hero";
@@ -13,7 +14,7 @@ import { Download } from "@/components/Download";
 import { Footer } from "@/components/Footer";
 import { buildMetadata, PAGES } from "@/lib/seo";
 
-export const metadata: Metadata = buildMetadata(PAGES.home);
+export const metadata: Metadata = metadataFor("/");
 
 export default function Home() {
   return (

@@ -1,10 +1,8 @@
+import type { Metadata } from "next";
+import { metadataFor } from "@/lib/seo";
 import { H1, H2, Lead, Note, P, Table, Ul } from "@/components/docs/DocsChrome";
 
-export const metadata = {
-  title: "Data & safety",
-  description:
-    "What the GRID public API exposes and what it will never return.",
-};
+export const metadata: Metadata = metadataFor("/docs/security");
 
 export default function SecurityDocsPage() {
   return (

@@ -1,13 +1,10 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
 
-export const metadata: Metadata = {
-  title: "GRID News | Dispatches from the open compute network",
-  description:
-    "Announcements, field notes, and essays from GRID on open infrastructure, useful compute, and community-verifiable systems.",
-};
+export const metadata: Metadata = metadataFor("/news");
 
 const stories = [
   {

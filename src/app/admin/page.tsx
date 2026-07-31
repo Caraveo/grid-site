@@ -1,11 +1,9 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import { AdminDashboard } from "@/components/AdminDashboard";
 import { buildMetadata, PAGES } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  ...buildMetadata(PAGES.admin),
-  robots: { index: false, follow: false, nocache: true },
-};
+export const metadata: Metadata = metadataFor("/admin");
 
 export default function AdminPage() {
   return (

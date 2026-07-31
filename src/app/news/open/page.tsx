@@ -1,13 +1,10 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
 
-export const metadata: Metadata = {
-  title: "We’re Going Open | GRID News",
-  description:
-    "GRID is committing its infrastructure, protocols, and core code to the open so the systems coordinating compute and value can be inspected and improved by everyone.",
-};
+export const metadata: Metadata = metadataFor("/news/open");
 
 const published = "July 29, 2026";
 

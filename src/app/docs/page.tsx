@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { metadataFor } from "@/lib/seo";
 import Link from "next/link";
 import {
   H1,
@@ -10,6 +12,8 @@ import {
 } from "@/components/docs/DocsChrome";
 import { CodeBlock } from "@/components/docs/CodeBlock";
 import { API_BASE } from "@/lib/docs-nav";
+
+export const metadata: Metadata = metadataFor("/docs");
 
 export default function DocsHomePage() {
   return (

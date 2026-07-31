@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { metadataFor } from "@/lib/seo";
 import { CodeBlock } from "@/components/docs/CodeBlock";
 import {
   Endpoint,
@@ -11,11 +13,7 @@ import {
 } from "@/components/docs/DocsChrome";
 import { API_BASE } from "@/lib/docs-nav";
 
-export const metadata = {
-  title: "Name registration",
-  description:
-    "Activate a public GRID name via Cash App and the registration API.",
-};
+export const metadata: Metadata = metadataFor("/docs/register");
 
 export default function RegisterDocsPage() {
   return (

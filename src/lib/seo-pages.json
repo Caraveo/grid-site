@@ -1,0 +1,273 @@
+[
+  {
+    "path": "/",
+    "label": "GRID",
+    "title": "GRID — Useful Mining. Planetary Compute.",
+    "description": "Run a node, perform useful work, and earn GRID on a planetary compute network built from machines everywhere."
+  },
+  {
+    "path": "/admin",
+    "label": "ADMIN",
+    "title": "GRID Registry Admin",
+    "description": "Private administration for the GRID registry.",
+    "noIndex": true
+  },
+  {
+    "path": "/alloc",
+    "label": "ALLOCATION",
+    "title": "GRID Allocation — Every GRID Counted",
+    "description": "Explore GRID’s disclosed allocation across verified compute mining, treasury, contributors, community, liquidity, security, and reserves."
+  },
+  {
+    "path": "/ark",
+    "label": "ARK",
+    "title": "ARK — Native GRID Wallet",
+    "description": "ARK is the locally signed native GRID wallet for macOS, Windows, and Linux."
+  },
+  {
+    "path": "/chip",
+    "label": "CHIP",
+    "title": "What Is a CHIP? — GRID",
+    "description": "Learn how GRID’s Computational Hybrid Instrument Protocol combines compute utility, portable token rails, and coin settlement."
+  },
+  {
+    "path": "/compare",
+    "label": "COMPARE",
+    "title": "GRID vs Bitcoin, Ethereum, Solana & Dogecoin",
+    "description": "Compare GRID’s useful-compute network model with major blockchain architectures, assets, and settlement systems."
+  },
+  {
+    "path": "/contribute",
+    "label": "CONTRIBUTE",
+    "title": "Contribute — Build GRID With Us",
+    "description": "Contribute code, documentation, design, research, organizing, and education to the open GRID network."
+  },
+  {
+    "path": "/docs",
+    "label": "DOCS",
+    "title": "GRID Docs — Network & Public API",
+    "description": "Operate a peer, mine verified work, inspect signed blocks, manage wallets, and build against GRID’s public data plane."
+  },
+  {
+    "path": "/docs/auth",
+    "label": "DOCS · AUTH",
+    "title": "Authentication for GRID API Writes",
+    "description": "Understand signatures, authorization, and safe authenticated write operations in the GRID public API."
+  },
+  {
+    "path": "/docs/cli",
+    "label": "DOCS · CLI",
+    "title": "GRID CLI Documentation",
+    "description": "Install and use the GRID command-line interface to operate nodes, inspect status, manage wallets, and join the network."
+  },
+  {
+    "path": "/docs/computes",
+    "label": "DOCS · COMPUTES",
+    "title": "GRID Computes API",
+    "description": "Query compute capacity, capabilities, and public machine records through the GRID Computes API."
+  },
+  {
+    "path": "/docs/concepts",
+    "label": "DOCS · CONCEPTS",
+    "title": "GRID Network Concepts",
+    "description": "Learn the core concepts behind GRID nodes, peers, compute work, signed history, names, wallets, and settlement."
+  },
+  {
+    "path": "/docs/earn",
+    "label": "DOCS · EARN",
+    "title": "GRID Mining, Rewards & Use Cases",
+    "description": "Understand how useful work is verified, how mining receipts are scored, and how GRID rewards are earned."
+  },
+  {
+    "path": "/docs/examples",
+    "label": "DOCS · EXAMPLES",
+    "title": "GRID API Code Examples",
+    "description": "Use practical curl, JavaScript, and Python examples to build with the GRID public API."
+  },
+  {
+    "path": "/docs/explorer",
+    "label": "DOCS · EXPLORER",
+    "title": "GRID Explorer API",
+    "description": "Read live network telemetry, signed blocks, peers, and capacity from the GRID Explorer API."
+  },
+  {
+    "path": "/docs/getting-started",
+    "label": "DOCS · START",
+    "title": "Getting Started With GRID",
+    "description": "Make your first GRID public API calls, install the CLI, and follow the operator path to a connected node."
+  },
+  {
+    "path": "/docs/identity",
+    "label": "DOCS · IDENTITY",
+    "title": "GRID Identity Badges",
+    "description": "Learn how GRID identity and verification badges communicate operator, organization, and realm trust."
+  },
+  {
+    "path": "/docs/network",
+    "label": "DOCS · NETWORK",
+    "title": "GRID Network Architecture & Status",
+    "description": "Understand Genesis, coordinators, P2P peers, signed blocks, current network status, and trust boundaries."
+  },
+  {
+    "path": "/docs/nodes",
+    "label": "DOCS · NODES",
+    "title": "GRID Nodes & Mesh",
+    "description": "Learn how GRID nodes expose useful compute, join the peer fabric, and connect through Mesh."
+  },
+  {
+    "path": "/docs/por",
+    "label": "DOCS · POR",
+    "title": "Proof of Resource Documentation",
+    "description": "Learn how GRID measures, verifies, and scores useful computational work through Proof of Resource."
+  },
+  {
+    "path": "/docs/register",
+    "label": "DOCS · REGISTER",
+    "title": "GRID Name Registration",
+    "description": "Register and activate a public GRID name with the registry while preserving clear ownership and review boundaries."
+  },
+  {
+    "path": "/docs/registry",
+    "label": "DOCS · REGISTRY",
+    "title": "GRID Registry API",
+    "description": "Query public GRID names, entities, computes, compliance, and registration data through the Registry API."
+  },
+  {
+    "path": "/docs/security",
+    "label": "DOCS · SECURITY",
+    "title": "GRID Data & Safety",
+    "description": "Review GRID’s public-data boundaries, key-handling rules, transport controls, and operator security guidance."
+  },
+  {
+    "path": "/docs/wallets",
+    "label": "DOCS · WALLETS",
+    "title": "ARK and Phoenix — GRID Wallets",
+    "description": "Understand GRID’s native ARK and Phoenix wallet architecture, local signing, pairing, and platform support."
+  },
+  {
+    "path": "/ember",
+    "label": "EMBER",
+    "title": "Ember — The Original GRID Wallet",
+    "description": "Explore Ember, the original native wallet experience for GRID rewards and settlement."
+  },
+  {
+    "path": "/engine",
+    "label": "ENGINE",
+    "title": "GRID Engine — Isolated Workload Control Plane",
+    "description": "Prepare policy-controlled encrypted workload envelopes for isolated container execution on GRID."
+  },
+  {
+    "path": "/entity",
+    "label": "ENTITY",
+    "title": "GRID Entity",
+    "description": "Explore realm security, organization verification, and public entity identity across the GRID network."
+  },
+  {
+    "path": "/explain",
+    "label": "EXPLAIN",
+    "title": "GRID & Mesh in Plain English",
+    "description": "A visual introduction to GRID, useful mining, Mesh, grid:// names, and the network’s settlement model."
+  },
+  {
+    "path": "/explorer",
+    "label": "EXPLORER",
+    "title": "GRID Explorer — Live Network Telemetry",
+    "description": "Inspect live GRID blocks, peers, network capacity, signed state, and current public telemetry."
+  },
+  {
+    "path": "/mine",
+    "label": "MINE",
+    "title": "Mine GRID — Verified Useful Work",
+    "description": "Configure a reward wallet and inspect verified GRID mining receipts produced by useful computation."
+  },
+  {
+    "path": "/news",
+    "label": "NEWS",
+    "title": "GRID News — Dispatches From the Open Compute Network",
+    "description": "Read project updates, technical milestones, community letters, and dispatches from the GRID network."
+  },
+  {
+    "path": "/news/contribute",
+    "label": "NEWS · CONTRIBUTE",
+    "title": "Welcome to GRID — A Call for Contributors",
+    "description": "An open invitation for engineers, designers, writers, researchers, operators, and organizers to build GRID."
+  },
+  {
+    "path": "/news/letter",
+    "label": "NEWS · LETTER",
+    "title": "A Letter to the Crypto Community — GRID",
+    "description": "GRID’s Phase 1 letter on useful computation, open infrastructure, cryptographic verification, and community participation."
+  },
+  {
+    "path": "/news/open",
+    "label": "NEWS · OPEN",
+    "title": "We’re Going Open — GRID News",
+    "description": "Why GRID is opening its code, network model, documentation, and contribution path to the community."
+  },
+  {
+    "path": "/otg",
+    "label": "OTG27",
+    "title": "OTG27 — Meet Us on the GRID",
+    "description": "Join GRID’s first annual community gathering for talks, technical labs, live network sessions, and planetary compute."
+  },
+  {
+    "path": "/phoenix",
+    "label": "PHOENIX",
+    "title": "Phoenix — Native GRID Wallet",
+    "description": "Download the native Phoenix wallet for GRID custody, rewards, and settlement on desktop platforms."
+  },
+  {
+    "path": "/por",
+    "label": "PROOF OF RESOURCE",
+    "title": "Proof of Resource Consensus — GRID",
+    "description": "See how GRID contributes, executes, verifies, and scores useful computational work."
+  },
+  {
+    "path": "/quick",
+    "label": "QUICK START",
+    "title": "Quick Start — Mine and Support GRID",
+    "description": "Install the current GRID CLI and start a connected P2P miner or peer in a few commands."
+  },
+  {
+    "path": "/registry",
+    "label": "REGISTRY",
+    "title": "GRID Registry — Public Names That Stay Real",
+    "description": "Activate and inspect public names on registry.grid with clear ownership, review, and entity context."
+  },
+  {
+    "path": "/school",
+    "label": "SCHOOL",
+    "title": "GRID School — Learn the Entire Network",
+    "description": "Follow guided lessons and graded quizzes covering GRID, Mesh, Proof of Resource, wallets, settlement, and CHIP."
+  },
+  {
+    "path": "/shop",
+    "label": "SHOP",
+    "title": "GRID Shop — Compute Apparel",
+    "description": "Shop GRID Compute apparel and support the open planetary compute network."
+  },
+  {
+    "path": "/slud",
+    "label": "SLUD",
+    "title": "SLUD — Spam. Scam. Slop.",
+    "description": "Learn how Mesh protects users from spam, scams, and AI slop with a cleaner trust-aware web."
+  },
+  {
+    "path": "/token",
+    "label": "TOKEN",
+    "title": "GRID, Solana & Bitcoin",
+    "description": "Understand how GRID compute utility, Solana’s public transfer rail, and Bitcoin settlement fit together."
+  },
+  {
+    "path": "/wallet",
+    "label": "WALLETS",
+    "title": "GRID Wallets — Native Apps for Every Platform",
+    "description": "Discover native GRID wallets for macOS, Windows, Linux, iOS, and Android, including current platform availability."
+  },
+  {
+    "path": "/white-paper",
+    "label": "WHITE PAPER",
+    "title": "GRID White Paper",
+    "description": "Read the original GRID white paper describing the vision, architecture, useful-compute model, and network roadmap."
+  }
+]

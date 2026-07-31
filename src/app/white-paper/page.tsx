@@ -1,12 +1,9 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
 
-export const metadata: Metadata = {
-  title: "GRID White Paper",
-  description:
-    "An accessible introduction to GRID's distributed compute architecture, Proof of Resource, verification, and resource economy.",
-};
+export const metadata: Metadata = metadataFor("/white-paper");
 
 const layers = [
   {

@@ -1,11 +1,9 @@
+import type { Metadata } from "next";
+import { metadataFor } from "@/lib/seo";
 import { CodeBlock } from "@/components/docs/CodeBlock";
 import { H1, H2, Lead, Note, P, Ul } from "@/components/docs/DocsChrome";
 
-export const metadata = {
-  title: "GRID CLI",
-  description:
-    "Install GRID 0.2.24 and operate peers, mining, useful compute, wallets, and the public registry.",
-};
+export const metadata: Metadata = metadataFor("/docs/cli");
 
 export default function CliDocsPage() {
   return (

@@ -1,3 +1,4 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Footer } from "@/components/Footer";
@@ -5,11 +6,7 @@ import { Nav } from "@/components/Nav";
 import { ScrambleText } from "@/components/ScrambleText";
 import styles from "./chip.module.css";
 
-export const metadata: Metadata = {
-  title: "What Is a CHIP? — GRID",
-  description:
-    "GRID's CHIP model combines token utility with blockchain-native accounting, then connects through Solana to Bitcoin settlement.",
-};
+export const metadata: Metadata = metadataFor("/chip");
 
 function Section({
   id,

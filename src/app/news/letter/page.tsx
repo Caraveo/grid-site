@@ -1,13 +1,10 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
 
-export const metadata: Metadata = {
-  title: "GRID News | Phase 1: A letter to the crypto community",
-  description:
-    "A Phase 1 founder letter on why GRID is being built, proof-of-resource compute, and the path from transactions to useful work.",
-};
+export const metadata: Metadata = metadataFor("/news/letter");
 
 const published = "July 28, 2026";
 

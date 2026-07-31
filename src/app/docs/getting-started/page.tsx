@@ -1,11 +1,10 @@
+import type { Metadata } from "next";
+import { metadataFor } from "@/lib/seo";
 import Link from "next/link";
 import { CodeBlock } from "@/components/docs/CodeBlock";
 import { H1, H2, Lead, Note, P, Ul } from "@/components/docs/DocsChrome";
 
-export const metadata = {
-  title: "Getting started",
-  description: "First GRID public API calls and operator path.",
-};
+export const metadata: Metadata = metadataFor("/docs/getting-started");
 
 export default function GettingStartedPage() {
   return (

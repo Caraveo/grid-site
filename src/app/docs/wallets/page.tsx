@@ -1,11 +1,9 @@
+import type { Metadata } from "next";
+import { metadataFor } from "@/lib/seo";
 import { CodeBlock } from "@/components/docs/CodeBlock";
 import { H1, H2, Lead, Note, P, Table, Ul } from "@/components/docs/DocsChrome";
 
-export const metadata = {
-  title: "ARK and Phoenix — GRID Wallets",
-  description:
-    "Use ARK, Phoenix, and the GRID CLI to manage GRID addresses and reward wallets safely.",
-};
+export const metadata: Metadata = metadataFor("/docs/wallets");
 
 export default function WalletsDocsPage() {
   return (

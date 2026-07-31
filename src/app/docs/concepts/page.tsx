@@ -1,10 +1,8 @@
+import type { Metadata } from "next";
+import { metadataFor } from "@/lib/seo";
 import { H1, H2, H3, Lead, Note, P, Table, Ul } from "@/components/docs/DocsChrome";
 
-export const metadata = {
-  title: "Concepts",
-  description:
-    "GRID network concepts: nodes, computes, realms, mesh, and the public registry.",
-};
+export const metadata: Metadata = metadataFor("/docs/concepts");
 
 export default function ConceptsPage() {
   return (

@@ -1,21 +1,9 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 
-export const metadata: Metadata = {
-  title: "Contribute — Build GRID with us",
-  description:
-    "Join the GRID contributor group: open-source engineering, documentation, community stewardship, OTG organizing, research, design, and project coordination.",
-  alternates: { canonical: "https://grid-compute.com/contribute" },
-  openGraph: {
-    title: "Contribute — Build GRID with us",
-    description: "Code, organize, document, design, research, and grow the GRID community.",
-    url: "https://grid-compute.com/contribute",
-    siteName: "GRID",
-    type: "website",
-    images: [{ url: "/downloads/og/card-03.png", width: 1200, height: 630, alt: "Contribute to GRID" }],
-  },
-};
+export const metadata: Metadata = metadataFor("/contribute");
 
 const paths = [
   {

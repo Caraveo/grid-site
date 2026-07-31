@@ -1,11 +1,10 @@
+import type { Metadata } from "next";
+import { metadataFor } from "@/lib/seo";
 import { CodeBlock } from "@/components/docs/CodeBlock";
 import { H1, H2, Lead, P } from "@/components/docs/DocsChrome";
 import { API_BASE } from "@/lib/docs-nav";
 
-export const metadata = {
-  title: "Code examples",
-  description: "curl, JavaScript, and Python examples for the GRID public API.",
-};
+export const metadata: Metadata = metadataFor("/docs/examples");
 
 export default function ExamplesPage() {
   return (

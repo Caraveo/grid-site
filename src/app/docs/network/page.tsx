@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { metadataFor } from "@/lib/seo";
 import { CodeBlock } from "@/components/docs/CodeBlock";
 import { ArchitectureDiagram } from "@/components/docs/ArchitectureDiagram";
 import {
@@ -11,11 +13,7 @@ import {
   Ul,
 } from "@/components/docs/DocsChrome";
 
-export const metadata = {
-  title: "Network architecture & status",
-  description:
-    "How the GRID Genesis node, coordinator, P2P peers, settlement chain, and public telemetry fit together.",
-};
+export const metadata: Metadata = metadataFor("/docs/network");
 
 export default function NetworkDocsPage() {
   return (

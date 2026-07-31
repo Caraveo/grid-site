@@ -1,10 +1,8 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "ARK — GRID Wallet",
-  description: "ARK is the locally signed GRID wallet for Mac, Windows, and Linux.",
-};
+export const metadata: Metadata = metadataFor("/ark");
 
 export default function ARKPage() {
   const release =

@@ -1,10 +1,11 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { Otg27Tickets } from "@/components/Otg27Tickets";
 import { buildMetadata, PAGES } from "@/lib/seo";
 
-export const metadata: Metadata = buildMetadata(PAGES.otg27);
+export const metadata: Metadata = metadataFor("/otg");
 
 const agenda = [
   {

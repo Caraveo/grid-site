@@ -1,12 +1,9 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
 
-export const metadata: Metadata = {
-  title: "Proof of Resource Consensus",
-  description:
-    "How GRID measures useful compute, verifies work, scores resources, and records signed settlements.",
-};
+export const metadata: Metadata = metadataFor("/por");
 
 const pipeline = [
   {

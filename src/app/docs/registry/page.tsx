@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { metadataFor } from "@/lib/seo";
 import { CodeBlock } from "@/components/docs/CodeBlock";
 import {
   Endpoint,
@@ -10,11 +12,7 @@ import {
 } from "@/components/docs/DocsChrome";
 import { API_BASE } from "@/lib/docs-nav";
 
-export const metadata = {
-  title: "Registry API",
-  description:
-    "GET /api/registry — canonical public directory for GRID names, nodes, and computes.",
-};
+export const metadata: Metadata = metadataFor("/docs/registry");
 
 export default function RegistryDocsPage() {
   return (

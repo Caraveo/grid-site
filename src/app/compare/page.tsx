@@ -1,12 +1,9 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
 
-export const metadata: Metadata = {
-  title: "GRID vs Bitcoin, Ethereum, Solana & Dogecoin",
-  description:
-    "A feature-by-feature comparison of GRID and four established public blockchain networks.",
-};
+export const metadata: Metadata = metadataFor("/compare");
 
 type Mark = "yes" | "pilot" | "no";
 

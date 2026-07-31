@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { metadataFor } from "@/lib/seo";
 import { CodeBlock } from "@/components/docs/CodeBlock";
 import {
   H1,
@@ -9,11 +11,7 @@ import {
   Ul,
 } from "@/components/docs/DocsChrome";
 
-export const metadata = {
-  title: "Mining, rewards & use cases",
-  description:
-    "How GRID mining work is verified and settled during the current public pilot.",
-};
+export const metadata: Metadata = metadataFor("/docs/earn");
 
 export default function EarnDocsPage() {
   return (

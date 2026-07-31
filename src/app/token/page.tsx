@@ -1,3 +1,4 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/components/Footer";
@@ -10,7 +11,7 @@ import {
 } from "@/components/token/Diagrams";
 import { buildMetadata, PAGES } from "@/lib/seo";
 
-export const metadata: Metadata = buildMetadata(PAGES.token);
+export const metadata: Metadata = metadataFor("/token");
 
 function Section({
   id,

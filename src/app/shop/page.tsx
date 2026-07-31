@@ -1,3 +1,4 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
@@ -6,7 +7,7 @@ import { ProductGrid } from "@/components/Shop";
 import { SHOP_PRODUCTS } from "@/lib/shop-products";
 import { buildMetadata, PAGES } from "@/lib/seo";
 
-export const metadata: Metadata = buildMetadata(PAGES.shop);
+export const metadata: Metadata = metadataFor("/shop");
 
 export default function ShopPage() {
   return (

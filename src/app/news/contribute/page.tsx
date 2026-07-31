@@ -1,23 +1,9 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 
-export const metadata: Metadata = {
-  title: "Welcome to the GRID — A Call for Contributors",
-  description:
-    "GRID is calling developers, open-source maintainers, community leaders, researchers, writers, designers, moderators, and OTG organizers to help build the project.",
-  alternates: { canonical: "https://grid-compute.com/news/contribute" },
-  openGraph: {
-    title: "Welcome to the GRID — A Call for Contributors",
-    description:
-      "56,712 lines. Five connected codebases. One approved contributor. It is time to widen the circle.",
-    url: "https://grid-compute.com/news/contribute",
-    siteName: "GRID",
-    type: "article",
-    publishedTime: "2026-07-30T00:00:00-06:00",
-    images: [{ url: "/downloads/og/card-03.png", width: 1200, height: 630, alt: "Welcome to the GRID" }],
-  },
-};
+export const metadata: Metadata = metadataFor("/news/contribute");
 
 const stats = [
   ["56,712", "lines of source", "Measured across Rust, TypeScript, TSX, CSS, Python, SQL, and shell code."],

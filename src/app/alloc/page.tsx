@@ -1,3 +1,4 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/components/Footer";
@@ -10,7 +11,7 @@ import {
 } from "@/components/alloc/AllocationDiagrams";
 import { buildMetadata, PAGES } from "@/lib/seo";
 
-export const metadata: Metadata = buildMetadata(PAGES.alloc);
+export const metadata: Metadata = metadataFor("/alloc");
 
 const buckets = [
   {

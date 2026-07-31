@@ -1,3 +1,4 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Nav } from "@/components/Nav";
@@ -6,7 +7,7 @@ import { RegisterFlow } from "@/components/RegisterFlow";
 import { ScrambleText } from "@/components/ScrambleText";
 import { buildMetadata, PAGES } from "@/lib/seo";
 
-export const metadata: Metadata = buildMetadata(PAGES.registry);
+export const metadata: Metadata = metadataFor("/registry");
 
 function Section({
   id,

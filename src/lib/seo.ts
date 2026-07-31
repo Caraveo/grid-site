@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import seoPages from "./seo-pages.json";
 
 export const SITE_URL = "https://grid-compute.com";
 export const SITE_NAME = "GRID";
@@ -16,6 +17,89 @@ export type PageSeo = {
   keywords?: string[];
   noIndex?: boolean;
 };
+
+type SeoRegistryPage = {
+  path: string;
+  label: string;
+  title: string;
+  description: string;
+  noIndex?: boolean;
+};
+
+export const SEO_PAGES = seoPages as SeoRegistryPage[];
+
+export function ogImageForPath(path: string): string {
+  const slug =
+    path === "/"
+      ? "home"
+      : path
+          .replace(/^\/|\/$/g, "")
+          .replaceAll("/", "-")
+          .replace(/[^a-z0-9-]/gi, "-")
+          .toLowerCase();
+  return `/downloads/og/${slug}.png`;
+}
+
+export function canonicalUrl(path: string): string {
+  if (path === "/docs") return "https://docs.grid-compute.com";
+  if (path.startsWith("/docs/")) {
+    return `https://docs.grid-compute.com${path.slice("/docs".length)}`;
+  }
+  return absoluteUrl(path);
+}
+
+/** Canonical, Open Graph, and Twitter metadata for every document route. */
+export function metadataFor(path: string): Metadata {
+  const page = SEO_PAGES.find((candidate) => candidate.path === path);
+  if (!page) {
+    throw new Error(`Missing SEO registry entry for ${path}`);
+  }
+
+  const url = canonicalUrl(path);
+  const image = absoluteUrl(ogImageForPath(path));
+
+  return {
+    title: page.title,
+    description: page.description,
+    alternates: { canonical: url },
+    openGraph: {
+      title: page.title,
+      description: page.description,
+      url,
+      siteName: path.startsWith("/docs") ? "GRID Docs" : SITE_NAME,
+      locale: "en_US",
+      type: "website",
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: `${page.title} — Open Graph preview`,
+          type: "image/png",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: page.title,
+      description: page.description,
+      images: [image],
+    },
+    robots: page.noIndex
+      ? { index: false, follow: false, nocache: true }
+      : {
+          index: true,
+          follow: true,
+          googleBot: {
+            index: true,
+            follow: true,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+            "max-video-preview": -1,
+          },
+        },
+  };
+}
 
 export function absoluteUrl(path: string): string {
   if (path.startsWith("http")) return path;

@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { metadataFor } from "@/lib/seo";
 import { CodeBlock } from "@/components/docs/CodeBlock";
 import {
   Endpoint,
@@ -9,11 +11,7 @@ import {
   Table,
 } from "@/components/docs/DocsChrome";
 
-export const metadata = {
-  title: "Explorer API",
-  description:
-    "Read GRID chain blocks, coordinator statistics, Genesis health, settlements, and mesh telemetry from one public endpoint.",
-};
+export const metadata: Metadata = metadataFor("/docs/explorer");
 
 export default function ExplorerDocsPage() {
   return (

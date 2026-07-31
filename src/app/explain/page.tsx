@@ -1,3 +1,4 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Nav } from "@/components/Nav";
@@ -13,7 +14,7 @@ import {
 } from "@/components/explain/Diagrams";
 import { buildMetadata, PAGES } from "@/lib/seo";
 
-export const metadata: Metadata = buildMetadata(PAGES.explain);
+export const metadata: Metadata = metadataFor("/explain");
 
 function Section({
   id,

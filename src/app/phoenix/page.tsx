@@ -1,3 +1,4 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/components/Footer";
@@ -5,7 +6,7 @@ import { Nav } from "@/components/Nav";
 import { ScrambleText } from "@/components/ScrambleText";
 import { buildMetadata, PAGES } from "@/lib/seo";
 
-export const metadata: Metadata = buildMetadata(PAGES.wallet);
+export const metadata: Metadata = metadataFor("/phoenix");
 
 const releaseBase =
   "https://github.com/Caraveo/grid-wallets/releases/download/v0.2.24";

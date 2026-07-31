@@ -1,12 +1,10 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
 
-export const metadata: Metadata = {
-  title: "Quick start | Mine and support GRID",
-  description: "Start a P2P GRID miner or peer in a few commands."
-};
+export const metadata: Metadata = metadataFor("/quick");
 
 const Code = ({ children }: { children: string }) => (
   <pre className="mt-4 overflow-x-auto rounded-xl border border-border bg-black p-5 text-sm leading-7 text-white"><code>{children}</code></pre>
