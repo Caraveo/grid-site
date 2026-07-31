@@ -78,12 +78,20 @@ export default function ChipPage() {
               aria-hidden="true"
             />
             <Image
-              src="/images/grid-chip-stack.png"
-              alt="A grounded stack of GRID cryptographic chips with one chip standing upright"
+              src="/images/grid-chip-light.png"
+              alt="A grounded stack of white GRID cryptographic chips with one chip standing upright"
               fill
               priority
               sizes="(min-width: 1024px) 58vw, 100vw"
-              className="object-contain object-bottom"
+              className="object-contain object-bottom dark:hidden"
+            />
+            <Image
+              src="/images/grid-chip-dark.png"
+              alt="A grounded stack of black GRID cryptographic chips with one chip standing upright"
+              fill
+              priority
+              sizes="(min-width: 1024px) 58vw, 100vw"
+              className="hidden object-contain object-bottom dark:block"
             />
           </figure>
         </div>
