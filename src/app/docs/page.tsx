@@ -42,7 +42,7 @@ export default function DocsHomePage() {
           <Link className="text-foreground underline-offset-2 hover:underline" href="/docs/getting-started">
             Run a node
           </Link>{" "}
-          — install GRID 0.2.20, initialize keys, join P2P, and mine
+          — install GRID 0.2.24, initialize keys, join P2P, and mine
         </li>
         <li>
           <Link className="text-foreground underline-offset-2 hover:underline" href="/docs/por">
@@ -58,7 +58,7 @@ export default function DocsHomePage() {
         </li>
         <li>
           <Link className="text-foreground underline-offset-2 hover:underline" href="/docs/wallets">
-            Wallets & Ember
+            Phoenix · GRID Wallet
           </Link>{" "}
           — native GRID addresses and Solana devnet reward addresses
         </li>

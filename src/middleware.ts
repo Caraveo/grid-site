@@ -1,14 +1,105 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+const ARK_WEB_ORIGIN = "https://grid-compute.com";
+const ARK_UPSTREAM_ORIGIN = "https://genesis.grid-compute.com";
+const ARK_MAX_BODY_BYTES = 16 * 1024;
+
+function arkCorsHeaders(): HeadersInit {
+  return {
+    "Access-Control-Allow-Origin": ARK_WEB_ORIGIN,
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Cache-Control": "no-store",
+    Vary: "Origin",
+    "X-Content-Type-Options": "nosniff",
+  };
+}
+
+function isARKReadPath(pathname: string): boolean {
+  return (
+    pathname === "/health" ||
+    pathname === "/v1/chain" ||
+    /^\/v1\/wallet\/grid01[ac-hj-np-z02-9]{20,120}(?:\/nonce)?$/.test(pathname)
+  );
+}
+
+async function proxyARKRequest(request: NextRequest): Promise<Response> {
+  const { pathname, search } = request.nextUrl;
+  const origin = request.headers.get("origin");
+
+  if (origin && origin !== ARK_WEB_ORIGIN) {
+    return Response.json(
+      { ok: false, error: "origin not allowed" },
+      { status: 403, headers: arkCorsHeaders() },
+    );
+  }
+  if (request.method === "OPTIONS") {
+    return new Response(null, { status: 204, headers: arkCorsHeaders() });
+  }
+
+  const isRead = request.method === "GET" && isARKReadPath(pathname);
+  const isWrite =
+    request.method === "POST" && pathname === "/v1/transactions";
+  if (!isRead && !isWrite) {
+    return Response.json(
+      { ok: false, error: "route not found" },
+      { status: 404, headers: arkCorsHeaders() },
+    );
+  }
+
+  const contentLength = Number(request.headers.get("content-length") ?? "0");
+  if (contentLength > ARK_MAX_BODY_BYTES) {
+    return Response.json(
+      { ok: false, error: "request body too large" },
+      { status: 413, headers: arkCorsHeaders() },
+    );
+  }
+
+  let body: ArrayBuffer | undefined;
+  if (isWrite) {
+    body = await request.arrayBuffer();
+    if (body.byteLength > ARK_MAX_BODY_BYTES) {
+      return Response.json(
+        { ok: false, error: "request body too large" },
+        { status: 413, headers: arkCorsHeaders() },
+      );
+    }
+  }
+
+  const upstream = await fetch(`${ARK_UPSTREAM_ORIGIN}${pathname}${search}`, {
+    method: request.method,
+    headers: isWrite ? { "Content-Type": "application/json" } : undefined,
+    body,
+    redirect: "manual",
+    cache: "no-store",
+  });
+  const headers = new Headers(arkCorsHeaders());
+  headers.set(
+    "Content-Type",
+    upstream.headers.get("content-type") ?? "application/json",
+  );
+  return new Response(upstream.body, { status: upstream.status, headers });
+}
+
 /**
  * docs.grid-compute.com serves the /docs tree at the host root.
  * Example: https://docs.grid-compute.com/registry → /docs/registry
  *
  * Static assets, API, and Next internals stay unprefixed.
  */
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const host = (request.headers.get("host") ?? "").toLowerCase();
+  const isARKHost =
+    host === "ark.grid-compute.com" ||
+    host.startsWith("ark.grid-compute.com:") ||
+    host === "ark.localhost" ||
+    host.startsWith("ark.localhost:");
+  const isMailHost =
+    host === "mail.grid-compute.com" ||
+    host.startsWith("mail.grid-compute.com:") ||
+    host === "mail.localhost" ||
+    host.startsWith("mail.localhost:");
   const isExplorerHost =
     host === "explorer.grid-compute.com" ||
     host.startsWith("explorer.grid-compute.com:") ||
@@ -26,6 +117,25 @@ export function middleware(request: NextRequest) {
     host.startsWith("engine.localhost:");
 
   const { pathname } = request.nextUrl;
+
+  if (isARKHost) {
+    return proxyARKRequest(request);
+  }
+
+  if (isMailHost) {
+    if (
+      pathname.startsWith("/dashboard") ||
+      pathname.startsWith("/login") ||
+      pathname.startsWith("/api") ||
+      pathname.startsWith("/_next") ||
+      /\.[a-zA-Z0-9]+$/.test(pathname)
+    ) {
+      return NextResponse.next();
+    }
+    const url = request.nextUrl.clone();
+    url.pathname = "/dashboard/mail";
+    return NextResponse.rewrite(url);
+  }
 
   if (isExplorerHost) {
     if (

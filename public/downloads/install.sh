@@ -35,8 +35,8 @@ FORCE=0
 SYSTEM=0
 UNINSTALL=0
 YES=0
-VERSION_HINT="0.2.20"
-RELEASE_PATH="v0.2.20"
+VERSION_HINT="0.2.24"
+ASSET_REV="20260731-v0224-architecture"
 
 for arg in "$@"; do
   case "$arg" in
@@ -292,7 +292,7 @@ if [[ "$FORCE" -eq 0 ]]; then
 fi
 
 asset="$(asset_name)"
-url="${ORIGIN}/downloads/cli/${RELEASE_PATH}/${asset}"
+url="${ORIGIN}/downloads/cli/${asset}?rev=${ASSET_REV}"
 tmp="$(mktemp "${TMPDIR:-/tmp}/grid-cli.XXXXXX")"
 sums="$(mktemp "${TMPDIR:-/tmp}/grid-sums.XXXXXX")"
 sig="$(mktemp "${TMPDIR:-/tmp}/grid-sig.XXXXXX")"
@@ -317,9 +317,9 @@ chmod +x "$tmp"
 
 step "Verify signed release"
 need_cmd openssl
-curl -fsSL --proto '=https' --tlsv1.2 "${ORIGIN}/downloads/cli/${RELEASE_PATH}/SHA256SUMS" -o "$sums"
-curl -fsSL --proto '=https' --tlsv1.2 "${ORIGIN}/downloads/cli/${RELEASE_PATH}/SHA256SUMS.sig" -o "$sig"
-curl -fsSL --proto '=https' --tlsv1.2 "${ORIGIN}/downloads/cli/${RELEASE_PATH}/release-signing-public.pem" -o "$pub"
+curl -fsSL --proto '=https' --tlsv1.2 "${ORIGIN}/downloads/cli/SHA256SUMS?rev=${ASSET_REV}" -o "$sums"
+curl -fsSL --proto '=https' --tlsv1.2 "${ORIGIN}/downloads/cli/SHA256SUMS.sig?rev=${ASSET_REV}" -o "$sig"
+curl -fsSL --proto '=https' --tlsv1.2 "${ORIGIN}/downloads/cli/release-signing-public.pem?rev=${ASSET_REV}" -o "$pub"
 fingerprint="$(openssl pkey -pubin -in "$pub" -outform DER 2>/dev/null | openssl dgst -sha256 | awk '{print $NF}')"
 [[ "$fingerprint" == "4f1d04b12256e848642c6fcde56ed9b95f4917d64c23a8965f5f63f7ace09735" ]] ||
   die "release signing key fingerprint changed — installation stopped"

@@ -4,7 +4,7 @@ import { H1, H2, Lead, Note, P, Ul } from "@/components/docs/DocsChrome";
 export const metadata = {
   title: "GRID CLI",
   description:
-    "Install GRID 0.2.20 and operate peers, mining, useful compute, wallets, and the public registry.",
+    "Install GRID 0.2.24 and operate peers, mining, useful compute, wallets, and the public registry.",
 };
 
 export default function CliDocsPage() {
@@ -12,7 +12,7 @@ export default function CliDocsPage() {
     <>
       <H1>GRID CLI</H1>
       <Lead>
-        GRID 0.2.20 is the primary operator surface: join the P2P fabric, mine
+        GRID 0.2.24 is the primary operator surface: join the P2P fabric, mine
         verified work, host computes, inspect resources, manage wallets, and talk
         to the public registry.
       </Lead>
@@ -27,7 +27,7 @@ grid --version
 grid --help
 
 # Current expected release:
-# grid 0.2.20`}
+# grid 0.2.24`}
       />
 
       <H2 id="init">Initialize operator state</H2>
@@ -123,7 +123,7 @@ grid registry
 GRID_SITE_URL=https://grid-compute.com grid registry`}
       />
 
-      <H2 id="ember">Run an ember</H2>
+      <H2 id="realm-stack">Run a realm stack</H2>
       <P>
         After claiming a realm and activating its public registry name, start the
         full realm stack:

@@ -12,7 +12,7 @@ export default function GettingStartedPage() {
     <>
       <H1>Getting started</H1>
       <Lead>
-        Install the signed GRID 0.2.20 CLI, create local operator protection,
+        Install the signed GRID 0.2.24 CLI, create local operator protection,
         initialize a node, join the canonical Genesis peer, and start the mining
         track against the public coordinator.
       </Lead>
@@ -28,7 +28,7 @@ export default function GettingStartedPage() {
         code={`curl -fsSL https://grid-compute.com/downloads/install.sh | bash
 
 grid --version
-# grid 0.2.20`}
+# grid 0.2.24`}
       />
 
       <H2 id="identity">2. Protect keys and initialize</H2>
@@ -78,7 +78,7 @@ grid stats`}
         or an upstream is temporarily unreachable.
       </P>
 
-      <H2 id="ember">5. Optional: claim and run an Ember realm</H2>
+      <H2 id="realm-stack">5. Optional: claim and run a realm stack</H2>
       <Ul>
         <li>Claim a local realm identity with <code className="font-mono">grid claim garage</code>.</li>
         <li>Activate the public registry name if it should be listed.</li>
