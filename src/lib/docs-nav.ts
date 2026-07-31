@@ -51,8 +51,8 @@ export const DOCS_NAV: DocsNavSection[] = [
       },
       {
         href: "/docs/wallets",
-        label: "Wallets & Ember",
-        hint: "GRID · Solana devnet",
+        label: "ARK + Phoenix wallets",
+        hint: "Custody · pairing · signing",
       },
     ],
   },

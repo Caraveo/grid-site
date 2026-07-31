@@ -2,19 +2,20 @@ import { CodeBlock } from "@/components/docs/CodeBlock";
 import { H1, H2, Lead, Note, P, Table, Ul } from "@/components/docs/DocsChrome";
 
 export const metadata = {
-  title: "Phoenix — GRID Wallet",
+  title: "ARK and Phoenix — GRID Wallets",
   description:
-    "Use Phoenix and the GRID CLI to manage GRID addresses and Solana devnet reward wallets safely.",
+    "Use ARK, Phoenix, and the GRID CLI to manage GRID addresses and reward wallets safely.",
 };
 
 export default function WalletsDocsPage() {
   return (
     <>
-      <H1>Phoenix — GRID Wallet</H1>
+      <H1>ARK and Phoenix — GRID Wallets</H1>
       <Lead>
-        Phoenix is the native desktop wallet for the GRID pilot. It manages GRID
-        addresses and a separate Solana reward address, defaults to the public
-        Genesis network, and can be switched to local or custom nodes in settings.
+        ARK is the locally signed wallet connected to canonical Genesis. Phoenix
+        is the operator-focused desktop suite for GRID and reward management.
+        Both keep custody local and ship as native desktop applications—not web
+        wallets.
       </Lead>
 
       <Note>
@@ -36,7 +37,14 @@ export default function WalletsDocsPage() {
         ]}
       />
       <P>
-        Download from{" "}
+        Download ARK from{" "}
+        <a
+          className="text-foreground underline-offset-2 hover:underline"
+          href="https://grid-compute.com/ark"
+        >
+          grid-compute.com/ark
+        </a>
+        {" "}or Phoenix from{" "}
         <a
           className="text-foreground underline-offset-2 hover:underline"
           href="https://grid-compute.com/phoenix"
