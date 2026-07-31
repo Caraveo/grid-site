@@ -75,16 +75,9 @@ export default function WhitePaperPage() {
           <div className="mt-10 flex flex-wrap gap-3">
             <a
               href="/downloads/GRID-White-Paper.pdf"
-              download="GRID-White-Paper.pdf"
-              className="btn-primary"
-            >
-              Download the PDF
-            </a>
-            <a
-              href="/downloads/GRID-White-Paper.pdf"
               target="_blank"
               rel="noreferrer"
-              className="btn-ghost"
+              className="btn-primary"
             >
               Read original
             </a>
@@ -220,17 +213,17 @@ export default function WhitePaperPage() {
         <p className="section-label">Original document</p>
         <h2 className="section-title mx-auto mt-5 max-w-4xl">Read the complete architecture and vision.</h2>
         <p className="section-body mx-auto mt-6">
-          Download the original ten-page GRID white paper as a PDF.
+          Open the original ten-page GRID white paper.
         </p>
         <div className="mt-9 flex flex-wrap justify-center gap-3">
           <a
             href="/downloads/GRID-White-Paper.pdf"
-            download="GRID-White-Paper.pdf"
+            target="_blank"
+            rel="noreferrer"
             className="btn-primary"
           >
-            Download white paper
+            Read original
           </a>
-          <a href="/por" className="btn-ghost">Proof of Resource</a>
         </div>
       </Section>
 
