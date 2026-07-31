@@ -12,6 +12,7 @@ type NavChild = {
   labelKey: MessageKey;
   hintKey?: MessageKey;
   icon: string;
+  wide?: boolean;
 };
 
 type NavItem = {
@@ -40,6 +41,12 @@ function useMenu(): NavItem[] {
           labelKey: "nav.news",
           hintKey: "nav.news.hint",
           icon: "⌁",
+        },
+        {
+          href: "/otg",
+          labelKey: "nav.otg27",
+          hintKey: "nav.otg27.hint",
+          icon: "◈",
         },
         {
           href: "/token?view=1",
@@ -84,7 +91,7 @@ function useMenu(): NavItem[] {
           icon: "⌘",
         },
         {
-          href: "/ember",
+          href: "/phoenix",
           labelKey: "nav.emberItem",
           hintKey: "nav.ember.hint",
           icon: "✦",
@@ -112,6 +119,13 @@ function useMenu(): NavItem[] {
           labelKey: "nav.phases",
           hintKey: "nav.phases.hint",
           icon: "→",
+        },
+        {
+          href: "/school",
+          labelKey: "nav.school",
+          hintKey: "nav.school.hint",
+          icon: "✦",
+          wide: true,
         },
       ],
     },
@@ -155,7 +169,7 @@ function useMenu(): NavItem[] {
           icon: "⌖",
         },
         {
-          href: "/ember",
+          href: "/phoenix",
           labelKey: "nav.emberFull",
           hintKey: "nav.emberFull.hint",
           icon: "✦",
@@ -172,6 +186,12 @@ function useMenu(): NavItem[] {
       labelKey: "nav.getStarted",
       children: [
         {
+          href: "/contribute",
+          labelKey: "nav.contribute",
+          hintKey: "nav.contribute.hint",
+          icon: "✚",
+        },
+        {
           href: "/quick",
           labelKey: "nav.quick",
           hintKey: "nav.quick.hint",
@@ -184,7 +204,7 @@ function useMenu(): NavItem[] {
           icon: "+",
         },
         {
-          href: "/ember",
+          href: "/phoenix",
           labelKey: "nav.runEmber",
           hintKey: "nav.runEmber.hint",
           icon: "✦",
@@ -202,7 +222,7 @@ function useMenu(): NavItem[] {
           icon: ">_",
         },
         {
-          href: "/wallet",
+          href: "/phoenix",
           labelKey: "nav.wallets",
           hintKey: "nav.wallets.hint",
           icon: "▰",
@@ -219,31 +239,32 @@ function useMenu(): NavItem[] {
       labelKey: "nav.shop",
       href: "/shop",
     },
-    {
-      labelKey: "nav.otg27",
-      href: "/otg",
-    },
   ];
 }
 
 function DesktopDropdown({
   item,
   siteOrigin,
+  open,
+  onOpen,
+  onClose,
 }: {
   item: NavItem;
   siteOrigin?: string;
+  open: boolean;
+  onOpen: () => void;
+  onClose: () => void;
 }) {
   const { t } = useLocale();
-  const [open, setOpen] = useState(false);
   const ref = useRef<HTMLLIElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const enter = () => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
-    setOpen(true);
+    onOpen();
   };
   const leave = () => {
-    closeTimer.current = setTimeout(() => setOpen(false), 120);
+    closeTimer.current = setTimeout(onClose, 1200);
   };
 
   useEffect(() => {
@@ -271,10 +292,10 @@ function DesktopDropdown({
       : item.children.length > 4
         ? "grid-cols-2 w-[500px]"
         : "grid-cols-1 min-w-[250px]";
+  // Keep every desktop menu anchored to the same viewport position, regardless
+  // of which top-level item opened it.
   const panelPositionClass =
-    item.children.length > 9
-      ? "fixed top-16 left-1/2 -translate-x-1/2 pt-3 lg:top-20"
-      : "absolute top-full left-1/2 -translate-x-1/2 pt-3";
+    "fixed top-16 left-1/2 -translate-x-1/2 pt-3 lg:top-20";
 
   return (
     <li
@@ -284,7 +305,7 @@ function DesktopDropdown({
       onMouseLeave={leave}
       onFocus={enter}
       onBlur={(e) => {
-        if (!ref.current?.contains(e.relatedTarget as Node)) setOpen(false);
+        if (!ref.current?.contains(e.relatedTarget as Node)) onClose();
       }}
     >
       <button
@@ -292,7 +313,7 @@ function DesktopDropdown({
         aria-expanded={open}
         aria-haspopup="true"
         className="flex items-center gap-1.5 text-[0.7rem] font-medium tracking-[0.2em] text-white/70 uppercase transition hover:text-white"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => (open ? onClose() : onOpen())}
       >
         {t(item.labelKey)}
         <svg
@@ -321,8 +342,10 @@ function DesktopDropdown({
               <a
                 key={c.href + c.labelKey}
                 href={siteHref(c.href, siteOrigin)}
-                className="group/item flex min-h-[64px] items-start gap-3 bg-black/95 px-3.5 py-3 transition hover:bg-[#111]"
-                onClick={() => setOpen(false)}
+                className={`group/item flex min-h-[64px] items-start gap-3 bg-black/95 px-3.5 py-3 transition hover:bg-[#111] ${
+                  c.wide ? "col-span-3" : ""
+                }`}
+                onClick={onClose}
               >
                 <span
                   aria-hidden
@@ -354,6 +377,7 @@ export function Nav({ siteOrigin }: { siteOrigin?: string } = {}) {
   const menu = useMenu();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [desktopSection, setDesktopSection] = useState<MessageKey | null>(null);
   const [mobileSection, setMobileSection] = useState<string | null>(null);
 
   useEffect(() => {
@@ -384,6 +408,13 @@ export function Nav({ siteOrigin }: { siteOrigin?: string } = {}) {
               key={item.labelKey}
               item={item}
               siteOrigin={siteOrigin}
+              open={desktopSection === item.labelKey}
+              onOpen={() => setDesktopSection(item.labelKey)}
+              onClose={() =>
+                setDesktopSection((current) =>
+                  current === item.labelKey ? null : current,
+                )
+              }
             />
           ))}
         </ul>
@@ -392,7 +423,7 @@ export function Nav({ siteOrigin }: { siteOrigin?: string } = {}) {
           <LanguageSwitcher />
           <ThemeToggle />
           <a
-            href={siteHref("/ember", siteOrigin)}
+            href={siteHref("/phoenix", siteOrigin)}
             className="hidden border border-white/25 px-4 py-2 text-[0.65rem] font-semibold tracking-[0.18em] uppercase transition hover:border-white/60 hover:text-white sm:inline-flex"
           >
             {t("nav.ember")}
@@ -527,7 +558,7 @@ export function Nav({ siteOrigin }: { siteOrigin?: string } = {}) {
             </li>
             <li className="pt-2">
               <a
-                href={siteHref("/ember", siteOrigin)}
+                href={siteHref("/phoenix", siteOrigin)}
                 onClick={() => setOpen(false)}
                 className="btn-ghost w-full"
               >

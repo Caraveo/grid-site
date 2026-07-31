@@ -342,7 +342,7 @@ export function RolesDiagram() {
       ),
     },
     {
-      title: "Ember",
+      title: "Realm stack",
       body: "The full stack for one realm: host + mine + compute + paid registry.",
       icon: (
         <path

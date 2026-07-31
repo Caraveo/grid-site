@@ -38,7 +38,7 @@ const flow = [
 
 export default function TokenPage() {
   return (
-    <main className="min-h-screen">
+    <main className="token-page min-h-screen">
       <div className="noise" aria-hidden="true" />
       <Nav />
 
