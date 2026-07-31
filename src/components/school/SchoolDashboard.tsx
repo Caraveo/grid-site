@@ -182,8 +182,55 @@ const lessons: Lesson[] = [
     ],
   },
   {
-    id: "api",
+    id: "chip",
     number: "06",
+    title: "What is a CHIP?",
+    eyebrow: "A new crypto category",
+    duration: "12 min",
+    level: "Foundation",
+    summary: "Learn why GRID uses CHIP—not token or coin alone—to describe computational utility with verifiable history and portable settlement.",
+    outcomes: ["Define CHIP in plain language", "Compare a token, CHIP, and coin", "Trace CHIP-GRID through SOL toward BTC settlement"],
+    sections: [
+      {
+        title: "What a CHIP is",
+        paragraphs: [
+          "CHIP means computational hybrid instrument. It describes utility created inside a compute network, evidenced by that network’s signed history, and made portable through an external token rail. A CHIP sits conceptually between a token and a coin without pretending that those categories are interchangeable.",
+          "A token normally inherits another blockchain’s ledger. A coin is native to its own blockchain. CHIP-GRID begins with GRID’s own computational truth—authorized work, evidence, receipts, and signed network history—then uses established public networks for movement and durable settlement.",
+        ],
+        callout: "Token → CHIP ← Coin. CHIP-GRID → SOL token → BTC coin.",
+      },
+      {
+        title: "Why CHIP exists",
+        paragraphs: [
+          "Crypto vocabulary often forces a project into one of two boxes. Calling GRID only a token hides the compute network that creates and verifies its utility. Calling it a coin implies a conventional native monetary blockchain and obscures the separate roles of Solana and Bitcoin.",
+          "CHIP gives the crypto community a more precise category. GRID supplies computational utility and signed evidence. Solana supplies a fast public token rail. Bitcoin supplies the preferred final Transact Security Layer. The public model explains these roles without publishing private keys, anti-abuse controls, operator thresholds, or sensitive signing and deployment details.",
+        ],
+        callout: "CHIP exists to name where the utility comes from—not to manufacture a new promise of price or profit.",
+      },
+    ],
+    links: [
+      { label: "Read the CHIP definition", href: "/chip" },
+      { label: "Token architecture", href: "/token?view=1" },
+      { label: "Proof of Resource", href: "/por" },
+    ],
+    quiz: [
+      {
+        question: "What makes CHIP-GRID different from describing GRID only as a token?",
+        choices: ["It guarantees a market price", "Its utility begins in GRID’s compute network and signed work history", "It replaces Solana", "It is company equity"],
+        answer: 1,
+        explanation: "The CHIP category preserves the origin of GRID utility: verified computation and signed network evidence.",
+      },
+      {
+        question: "Which role mapping matches the public CHIP model?",
+        choices: ["GRID is settlement, SOL is compute, BTC is identity", "GRID is utility, SOL is the token rail, BTC is final settlement", "GRID, SOL, and BTC are the same asset", "BTC schedules GRID containers"],
+        answer: 1,
+        explanation: "GRID creates and records computational utility, Solana carries public token ownership, and Bitcoin anchors the preferred settlement boundary.",
+      },
+    ],
+  },
+  {
+    id: "api",
+    number: "07",
     title: "Docs, CLI + public APIs",
     eyebrow: "Build with the network",
     duration: "15 min",
@@ -215,7 +262,7 @@ const lessons: Lesson[] = [
   },
   {
     id: "community",
-    number: "07",
+    number: "08",
     title: "Contributors, Discord + Slack",
     eyebrow: "The human network",
     duration: "10 min",
@@ -247,7 +294,7 @@ const lessons: Lesson[] = [
   },
   {
     id: "roadmap",
-    number: "08",
+    number: "09",
     title: "Roadmap + your next move",
     eyebrow: "From learning to action",
     duration: "8 min",
@@ -350,7 +397,7 @@ export function SchoolDashboard() {
                 <span className="text-emerald-400">whole GRID.</span>
               </h1>
               <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted">
-                Eight lessons from first principles to real participation. Read at your pace,
+                Nine lessons from first principles to real participation. Read at your pace,
                 pass each quiz with 70%, and leave knowing how the machine and human networks fit together.
               </p>
             </div>
@@ -369,7 +416,7 @@ export function SchoolDashboard() {
       <div className="mx-auto grid max-w-[94rem] lg:grid-cols-[21rem_minmax(0,1fr)]">
         <aside className="border-b border-border bg-surface lg:sticky lg:top-20 lg:h-[calc(100vh-5rem)] lg:overflow-y-auto lg:border-b-0 lg:border-r">
           <div className="border-b border-border p-5">
-            <p className="font-mono text-[0.62rem] tracking-[0.18em] text-muted uppercase">Curriculum / 8 lessons</p>
+            <p className="font-mono text-[0.62rem] tracking-[0.18em] text-muted uppercase">Curriculum / 9 lessons</p>
           </div>
           <nav className="grid sm:grid-cols-2 lg:grid-cols-1">
             {lessons.map((lesson) => {

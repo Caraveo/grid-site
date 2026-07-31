@@ -43,6 +43,37 @@ const distinctions = [
   },
 ];
 
+const dictionary = [
+  {
+    term: "CHIP",
+    pronunciation: "/tʃɪp/",
+    kind: "noun · GRID cryptography",
+    definition:
+      "A computational hybrid instrument: an asset whose utility is created and evidenced by a compute network, while ownership can travel through an external token rail toward coin settlement.",
+  },
+  {
+    term: "CHIP-GRID",
+    pronunciation: "/tʃɪp ɡrɪd/",
+    kind: "proper noun · protocol asset",
+    definition:
+      "The GRID network’s CHIP. It represents verified computational utility recorded in GRID’s signed history; it is distinct from SOL, which carries transactions, and BTC, which provides the preferred final settlement boundary.",
+  },
+  {
+    term: "compute truth",
+    pronunciation: "/kəmˈpjuːt truːθ/",
+    kind: "noun · evidence layer",
+    definition:
+      "The signed, inspectable record that useful work was authorized, performed, measured, and accepted under the network’s public rules.",
+  },
+  {
+    term: "settlement rail",
+    pronunciation: "/ˈsɛtəlmənt reɪl/",
+    kind: "noun · infrastructure",
+    definition:
+      "A separate network used to move or settle value. In the GRID model, Solana is the fast public token rail and Bitcoin is the durable coin settlement layer.",
+  },
+];
+
 export default function ChipPage() {
   return (
     <main className="min-h-screen bg-background">
@@ -160,6 +191,82 @@ export default function ChipPage() {
         </div>
       </Section>
 
+      <Section id="both-and-neither">
+        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-end lg:gap-20">
+          <div>
+            <p className="section-label">The category question</p>
+            <h2 className="max-w-5xl text-[clamp(3rem,7vw,6.5rem)] font-semibold leading-[0.9] tracking-[-0.055em] text-foreground">
+              Is a CHIP a Token or a Coin?
+            </h2>
+          </div>
+          <div className="border-l-2 border-cyan-300/55 pl-6 sm:pl-8">
+            <p className="text-3xl font-semibold tracking-tight text-cyan-300 sm:text-5xl">
+              Well… both and neither.
+            </p>
+            <p className="mt-6 text-base leading-8 text-muted sm:text-lg">
+              A CHIP behaves like a token when it moves through a public ledger. It
+              behaves like a coin when its meaning comes from its own network history.
+              But it is not merely either one: its utility originates in verified
+              computation, then travels through separate transaction and settlement
+              layers. That hybrid is the point. It is a CHIP.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-14 grid gap-px bg-foreground/10 md:grid-cols-3">
+          {[
+            ["Token-like", "Portable ownership and fast transfer through the Solana rail."],
+            ["Coin-like", "Meaning anchored in GRID’s own signed computational history."],
+            ["Distinctly CHIP", "Utility begins with verified work—not issuance alone or a conventional monetary chain."],
+          ].map(([title, copy]) => (
+            <article key={title} className="bg-background p-7">
+              <h3 className="font-mono text-xs tracking-[0.18em] text-cyan-300 uppercase">
+                {title}
+              </h3>
+              <p className="mt-4 text-sm leading-7 text-muted">{copy}</p>
+            </article>
+          ))}
+        </div>
+      </Section>
+
+      <Section id="dictionary">
+        <div className="grid gap-12 lg:grid-cols-[0.58fr_1.42fr] lg:gap-20">
+          <div>
+            <p className="section-label">Blockchain dictionary</p>
+            <h2 className="section-title mt-5">CHIP, defined.</h2>
+            <p className="section-body mt-6">
+              A compact vocabulary for the category GRID is introducing to the
+              crypto community.
+            </p>
+          </div>
+          <dl className="border-t border-foreground/15">
+            {dictionary.map((entry) => (
+              <div
+                key={entry.term}
+                className="grid gap-4 border-b border-foreground/15 py-7 sm:grid-cols-[10rem_1fr] sm:gap-8"
+              >
+                <dt>
+                  <strong className="block text-xl font-semibold text-foreground">
+                    {entry.term}
+                  </strong>
+                  <span className="mt-2 block font-mono text-[0.65rem] text-cyan-300/75">
+                    {entry.pronunciation}
+                  </span>
+                </dt>
+                <dd>
+                  <p className="font-mono text-[0.65rem] tracking-[0.16em] text-muted uppercase">
+                    {entry.kind}
+                  </p>
+                  <p className="mt-3 text-base leading-7 text-muted">
+                    {entry.definition}
+                  </p>
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </Section>
+
       <Section>
         <p className="section-label">Three forms · distinct roles</p>
         <h2 className="section-title mt-5 max-w-4xl">Token → CHIP ← Coin</h2>
@@ -181,8 +288,23 @@ export default function ChipPage() {
       <Section>
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
           <div>
-            <p className="section-label">Why GRID is a CHIP</p>
+            <p className="section-label">How it works · public architecture</p>
             <h2 className="section-title mt-5">Value begins with verified work.</h2>
+            <p className="section-body mt-6">
+              CHIP exists because “token” describes portability and “coin” describes
+              a native chain, but neither word fully describes utility born inside a
+              compute network and carried outward for settlement.
+            </p>
+            <div className="mt-8 border-l-2 border-cyan-300/45 bg-cyan-300/[0.055] p-5">
+              <p className="font-mono text-[0.65rem] tracking-[0.16em] text-cyan-300 uppercase">
+                Deliberate boundary
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-muted">
+                This page explains roles and verification flow. Private keys,
+                anti-abuse controls, operator thresholds, signing internals, and
+                deployment details are intentionally outside this public overview.
+              </p>
+            </div>
           </div>
           <div className="space-y-px bg-foreground/10">
             {[

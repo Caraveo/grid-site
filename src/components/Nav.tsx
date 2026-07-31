@@ -180,6 +180,13 @@ function useMenu(): NavItem[] {
           hintKey: "nav.engine.hint",
           icon: "▣",
         },
+        {
+          href: "/chip",
+          labelKey: "nav.chip",
+          hintKey: "nav.chip.hint",
+          icon: "◉",
+          wide: true,
+        },
       ],
     },
     {
@@ -343,7 +350,13 @@ function DesktopDropdown({
                 key={c.href + c.labelKey}
                 href={siteHref(c.href, siteOrigin)}
                 className={`group/item flex min-h-[64px] items-start gap-3 bg-black/95 px-3.5 py-3 transition hover:bg-[#111] ${
-                  c.wide ? "col-span-3" : ""
+                  c.wide
+                    ? item.children!.length > 9
+                      ? "col-span-3"
+                      : item.children!.length > 4
+                        ? "col-span-2"
+                        : ""
+                    : ""
                 }`}
                 onClick={onClose}
               >
