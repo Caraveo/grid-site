@@ -14,7 +14,7 @@ export function SupplySplitDiagram() {
       <div className="grid overflow-hidden rounded-sm border border-white/12 sm:grid-cols-2">
         <div className="relative min-h-56 bg-cyan-300/[0.07] p-7 sm:min-h-72 sm:p-9">
           <div className="absolute inset-x-0 top-0 h-1 bg-cyan-300" />
-          <p className="font-mono text-xs tracking-[0.2em] text-cyan-200/65 uppercase">50%</p>
+          <p className="font-mono text-xs tracking-[0.2em] text-[var(--allocation-blue)] uppercase">50%</p>
           <p className="mt-5 text-5xl font-semibold tracking-tight text-white sm:text-6xl">5B</p>
           <p className="mt-2 text-lg font-semibold text-white">Compute mining</p>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/45">
@@ -23,7 +23,7 @@ export function SupplySplitDiagram() {
         </div>
         <div className="relative min-h-56 border-t border-white/12 bg-violet-300/[0.055] p-7 sm:min-h-72 sm:border-t-0 sm:border-l sm:p-9">
           <div className="absolute inset-x-0 top-0 h-1 bg-violet-300" />
-          <p className="font-mono text-xs tracking-[0.2em] text-violet-200/65 uppercase">50%</p>
+          <p className="font-mono text-xs tracking-[0.2em] text-[var(--allocation-purple)] uppercase">50%</p>
           <p className="mt-5 text-5xl font-semibold tracking-tight text-white sm:text-6xl">5B</p>
           <p className="mt-2 text-lg font-semibold text-white">Treasury allocation</p>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/45">

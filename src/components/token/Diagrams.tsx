@@ -1,5 +1,5 @@
 const nodeClass =
-  "flex min-h-28 flex-col justify-between rounded-sm border border-white/12 bg-white/[0.035] p-5";
+  "token-block flex min-h-28 flex-col justify-between rounded-sm border border-white/12 bg-white/[0.035] p-5";
 
 function Arrow() {
   return (
@@ -13,7 +13,7 @@ function Arrow() {
 export function ConsolidationDiagram() {
   return (
     <figure
-      className="rounded-sm border border-white/12 bg-black/20 p-4 sm:p-7"
+      className="token-block rounded-sm border border-white/12 bg-black/20 p-4 sm:p-7"
       aria-labelledby="consolidation-caption"
     >
       <div className="grid items-stretch lg:grid-cols-[1fr_3rem_1fr_3rem_1fr]">
@@ -77,14 +77,14 @@ export function ConsolidationDiagram() {
 export function SolanaLedgerDiagram() {
   return (
     <figure
-      className="relative overflow-hidden rounded-sm border border-white/12 bg-black/20 p-6 sm:p-9"
+      className="token-block relative overflow-hidden rounded-sm border border-white/12 bg-black/20 p-6 sm:p-9"
       aria-labelledby="solana-caption"
     >
       <div className="absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(103,232,249,.1)_1px,transparent_1px),linear-gradient(90deg,rgba(103,232,249,.1)_1px,transparent_1px)] [background-size:34px_34px]" />
       <div className="relative grid items-center gap-8 md:grid-cols-[1fr_1.25fr_1fr]">
         <div className="space-y-3">
           {["GRID wallet", "Compute market", "Settlement app"].map((label) => (
-            <div key={label} className="rounded-sm border border-white/10 bg-black/50 px-4 py-3 text-sm text-white/65">
+            <div key={label} className="token-block rounded-sm border border-white/10 bg-black/50 px-4 py-3 text-sm text-white/65">
               {label}
             </div>
           ))}
@@ -105,7 +105,7 @@ export function SolanaLedgerDiagram() {
               />
             );
           })}
-          <div className="relative rounded-full border border-cyan-300/35 bg-[#071416] px-6 py-7 text-center shadow-[0_0_55px_rgba(34,211,238,.12)]">
+          <div className="token-block relative rounded-full border border-cyan-300/35 bg-[#071416] px-6 py-7 text-center shadow-[0_0_55px_rgba(34,211,238,.12)]">
             <p className="text-[0.62rem] font-semibold tracking-[0.24em] text-cyan-200/60 uppercase">
               Network
             </p>
@@ -116,7 +116,7 @@ export function SolanaLedgerDiagram() {
 
         <div className="space-y-3">
           {["Sign", "Validate", "Confirm"].map((label, index) => (
-            <div key={label} className="flex items-center gap-3 rounded-sm border border-white/10 bg-black/50 px-4 py-3">
+            <div key={label} className="token-block flex items-center gap-3 rounded-sm border border-white/10 bg-black/50 px-4 py-3">
               <span className="font-mono text-xs text-cyan-200/55">0{index + 1}</span>
               <span className="text-sm text-white/65">{label}</span>
             </div>

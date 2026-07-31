@@ -44,7 +44,7 @@ export function Wallets() {
             Native desktop apps use the same encrypted vault, recovery phrase,
             grid0 address, and transaction workflow as the GRID command line.
           </p>
-          <Link href="/wallet" className="btn-primary mt-8">
+          <Link href="/phoenix" className="btn-primary mt-8">
             Download GRID Wallet
           </Link>
         </div>

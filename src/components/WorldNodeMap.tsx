@@ -17,6 +17,8 @@ type Props = {
   genesis: PublicNode;
   nodes: PublicNode[];
   burstIds: string[];
+  selectedNodeId?: string | null;
+  onSelectNode?: (id: string) => void;
   onBurstDone?: (id: string) => void;
 };
 
@@ -60,6 +62,8 @@ export function WorldNodeMap({
   genesis,
   nodes,
   burstIds,
+  selectedNodeId,
+  onSelectNode,
   onBurstDone,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -68,12 +72,21 @@ export function WorldNodeMap({
   const genesisRef = useRef(genesis);
   const burstsRef = useRef<Burst[]>([]);
   const onBurstDoneRef = useRef(onBurstDone);
+  const onSelectNodeRef = useRef(onSelectNode);
+  const selectedNodeIdRef = useRef<string | null>(selectedNodeId ?? null);
+  const focusSelectionRef = useRef(false);
 
   useEffect(() => {
     nodesRef.current = nodes;
     genesisRef.current = genesis;
     onBurstDoneRef.current = onBurstDone;
-  }, [genesis, nodes, onBurstDone]);
+    onSelectNodeRef.current = onSelectNode;
+  }, [genesis, nodes, onBurstDone, onSelectNode]);
+
+  useEffect(() => {
+    selectedNodeIdRef.current = selectedNodeId ?? null;
+    focusSelectionRef.current = Boolean(selectedNodeId);
+  }, [selectedNodeId]);
 
   useEffect(() => {
     const now = performance.now();
@@ -102,6 +115,9 @@ export function WorldNodeMap({
     let resumeRotationAt = 0;
     let pointerX = 0;
     let pointerY = 0;
+    let pointerStartX = 0;
+    let pointerStartY = 0;
+    let pointerMoved = false;
     let rotation: [number, number] = [104, -24];
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
@@ -123,12 +139,21 @@ export function WorldNodeMap({
 
     const onPointerDown = (event: PointerEvent) => {
       dragging = true;
+      pointerMoved = false;
       pointerX = event.clientX;
       pointerY = event.clientY;
+      pointerStartX = event.clientX;
+      pointerStartY = event.clientY;
       canvas.setPointerCapture(event.pointerId);
     };
     const onPointerMove = (event: PointerEvent) => {
       if (!dragging) return;
+      if (
+        Math.abs(event.clientX - pointerStartX) > 3 ||
+        Math.abs(event.clientY - pointerStartY) > 3
+      ) {
+        pointerMoved = true;
+      }
       rotation = [
         rotation[0] + (event.clientX - pointerX) * 0.34,
         Math.max(
@@ -139,9 +164,25 @@ export function WorldNodeMap({
       pointerX = event.clientX;
       pointerY = event.clientY;
     };
-    const onPointerUp = () => {
+    const onPointerUp = (event: PointerEvent) => {
       dragging = false;
       resumeRotationAt = performance.now() + 2_000;
+      if (pointerMoved || !onSelectNodeRef.current) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const clickX = event.clientX - rect.left;
+      const clickY = event.clientY - rect.top;
+      const candidates = [genesisRef.current, ...nodesRef.current].filter(
+        (node): node is PublicNode & { lat: number; lng: number } =>
+          LIVE_STATUSES.has(node.status) &&
+          hasCoordinates(node) &&
+          visibleFrom(node, rotation),
+      );
+      const hit = candidates.find((node) => {
+        const point = projection([node.lng, node.lat]);
+        return point && Math.hypot(point[0] - clickX, point[1] - clickY) <= 18;
+      });
+      if (hit) onSelectNodeRef.current(hit.id);
     };
 
     resize();
@@ -232,6 +273,15 @@ export function WorldNodeMap({
         return LIVE_STATUSES.has(node.status) && hasCoordinates(node);
       }) as Array<PublicNode & { lat: number; lng: number }>;
 
+      const selectedNode = selectedNodeIdRef.current
+        ? liveNodes.find((node) => node.id === selectedNodeIdRef.current)
+        : undefined;
+      if (focusSelectionRef.current && selectedNode) {
+        // Bring a selected list item to the front of the globe immediately.
+        rotation = [-selectedNode.lng, -selectedNode.lat];
+        focusSelectionRef.current = false;
+      }
+
       for (const node of liveNodes) {
         if (!visibleFrom(node, rotation)) continue;
         const point = projection([node.lng, node.lat]);
@@ -255,17 +305,23 @@ export function WorldNodeMap({
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        ctx.font =
-          "600 9px ui-monospace, SFMono-Regular, Menlo, monospace";
-        ctx.textAlign = "center";
-        ctx.fillStyle = light
-          ? "rgba(0,0,0,0.68)"
-          : "rgba(255,255,255,0.72)";
-        ctx.fillText(
-          `${node.label.toUpperCase()} · ${node.region}`,
-          x,
-          y - 12,
-        );
+        if (selectedNode?.id === node.id) {
+          ctx.beginPath();
+          ctx.arc(x, y, radius + 7, 0, Math.PI * 2);
+          ctx.strokeStyle = light ? "rgba(0,0,0,0.78)" : "rgba(255,255,255,0.9)";
+          ctx.lineWidth = 1.25;
+          ctx.stroke();
+
+          const label = node.label.toUpperCase();
+          ctx.font = "600 9px ui-monospace, SFMono-Regular, Menlo, monospace";
+          const labelWidth = ctx.measureText(label).width + 14;
+          const labelY = y - radius - 14;
+          ctx.fillStyle = light ? "rgba(255,255,255,0.9)" : "rgba(0,0,0,0.78)";
+          ctx.fillRect(x - labelWidth / 2, labelY - 10, labelWidth, 17);
+          ctx.textAlign = "center";
+          ctx.fillStyle = light ? "rgba(0,0,0,0.82)" : "rgba(255,255,255,0.92)";
+          ctx.fillText(label, x, labelY + 2);
+        }
       }
 
       const activeBursts: Burst[] = [];
@@ -336,7 +392,7 @@ export function WorldNodeMap({
         aria-label="Rotating Earth showing only live GRID nodes at privacy-rounded locations"
         className="block w-full cursor-grab touch-none active:cursor-grabbing"
       />
-      <div className="pointer-events-none absolute left-4 top-4 rounded-full border border-emerald-300/20 bg-black/65 px-3 py-1 font-mono text-[0.58rem] tracking-[0.16em] text-emerald-200/70 uppercase backdrop-blur">
+      <div className="globe-status-badge pointer-events-none absolute left-4 top-4 rounded-full px-3 py-1 font-mono text-[0.62rem] tracking-[0.16em] uppercase backdrop-blur">
         Live nodes only · Real Earth
       </div>
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 bg-gradient-to-t from-black/80 via-black/35 to-transparent px-4 pb-3 pt-12 font-mono text-[0.55rem] leading-relaxed tracking-[0.08em] text-white/42">

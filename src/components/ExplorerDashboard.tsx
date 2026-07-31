@@ -123,6 +123,7 @@ export function ExplorerDashboard() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [selectedBlockHash, setSelectedBlockHash] = useState<string | null>(null);
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
     try {
@@ -302,6 +303,10 @@ export function ExplorerDashboard() {
             genesis={mapGenesis}
             nodes={activeNodes}
             burstIds={[]}
+            selectedNodeId={selectedNodeId}
+            onSelectNode={(id) =>
+              setSelectedNodeId((current) => (current === id ? null : id))
+            }
           />
         </div>
         <div className="mt-4 panel overflow-hidden">
@@ -312,7 +317,19 @@ export function ExplorerDashboard() {
             {nodes.map((node) => {
               const live = activeNodes.some((active) => active.id === node.id);
               return (
-                <div key={node.id} className="grid grid-cols-[1fr_auto_auto] items-center gap-4 px-5 py-4 text-sm sm:grid-cols-[1.2fr_.7fr_.5fr_.5fr]">
+                <button
+                  key={node.id}
+                  type="button"
+                  aria-pressed={selectedNodeId === node.id}
+                  onClick={() =>
+                    setSelectedNodeId((current) =>
+                      current === node.id ? null : node.id,
+                    )
+                  }
+                  className={`grid w-full grid-cols-[1fr_auto_auto] items-center gap-4 px-5 py-4 text-left text-sm transition-colors hover:bg-surface/60 sm:grid-cols-[1.2fr_.7fr_.5fr_.5fr] ${
+                    selectedNodeId === node.id ? "bg-surface" : ""
+                  }`}
+                >
                   <div className="min-w-0">
                     <p className="flex items-center gap-2 truncate text-foreground"><StatusDot live={live} />{node.label}</p>
                     <p className="mt-1 truncate font-mono text-[0.65rem] text-dim">{node.id}</p>
@@ -320,7 +337,7 @@ export function ExplorerDashboard() {
                   <span className="hidden text-xs text-muted sm:block">{node.region}</span>
                   <span className="font-mono text-xs text-muted">{node.class}</span>
                   <span className="font-mono text-[0.65rem] text-muted">{node.role === "genesis" && live ? "now" : age(node.lastSeen, sampleTime)}</span>
-                </div>
+                </button>
               );
             })}
           </div>
