@@ -7,11 +7,11 @@ $binDir = if ($env:GRID_INSTALL_DIR) { $env:GRID_INSTALL_DIR } else { Join-Path 
 $target = Join-Path $binDir "grid.exe"
 $tmp = Join-Path ([System.IO.Path]::GetTempPath()) "grid-windows-x86_64.exe"
 $sums = Join-Path ([System.IO.Path]::GetTempPath()) "GRID-SHA256SUMS"
-$releasePath = "v0.2.20"
+$assetRev = "20260731-v0224-architecture"
 
 New-Item -ItemType Directory -Force -Path $binDir | Out-Null
-Invoke-WebRequest -UseBasicParsing "$origin/downloads/cli/$releasePath/grid-windows-x86_64.exe" -OutFile $tmp
-Invoke-WebRequest -UseBasicParsing "$origin/downloads/cli/$releasePath/SHA256SUMS" -OutFile $sums
+Invoke-WebRequest -UseBasicParsing "$origin/downloads/cli/grid-windows-x86_64.exe?rev=$assetRev" -OutFile $tmp
+Invoke-WebRequest -UseBasicParsing "$origin/downloads/cli/SHA256SUMS?rev=$assetRev" -OutFile $sums
 $line = Get-Content $sums | Where-Object { $_ -match "grid-windows-x86_64\.exe$" } | Select-Object -First 1
 if (-not $line) {
   Remove-Item -Force $tmp -ErrorAction SilentlyContinue
@@ -37,6 +37,6 @@ if (-not (($userPath -split ";") -contains $binDir)) {
   [Environment]::SetEnvironmentVariable("Path", (($userPath.TrimEnd(";") + ";" + $binDir).TrimStart(";")), "User")
 }
 
-Write-Host "GRID v0.2.20 installed: $target"
+Write-Host "GRID v0.2.24 installed: $target"
 Write-Host "Open a new PowerShell, then run: grid --version"
 Write-Host "For isolated host jobs: wsl --install -d Ubuntu, then run the Linux installer inside WSL2."

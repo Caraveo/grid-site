@@ -2,17 +2,17 @@ import { CodeBlock } from "@/components/docs/CodeBlock";
 import { H1, H2, Lead, Note, P, Table, Ul } from "@/components/docs/DocsChrome";
 
 export const metadata = {
-  title: "Wallets & Ember",
+  title: "Phoenix — GRID Wallet",
   description:
-    "Use the Ember desktop wallet and GRID CLI to manage GRID addresses and Solana devnet reward wallets safely.",
+    "Use Phoenix and the GRID CLI to manage GRID addresses and Solana devnet reward wallets safely.",
 };
 
 export default function WalletsDocsPage() {
   return (
     <>
-      <H1>Wallets & Ember</H1>
+      <H1>Phoenix — GRID Wallet</H1>
       <Lead>
-        Ember is the native desktop wallet for the GRID pilot. It manages GRID
+        Phoenix is the native desktop wallet for the GRID pilot. It manages GRID
         addresses and a separate Solana reward address, defaults to the public
         Genesis network, and can be switched to local or custom nodes in settings.
       </Lead>
@@ -24,14 +24,14 @@ export default function WalletsDocsPage() {
         reward pilot.
       </Note>
 
-      <H2 id="downloads">Official Ember v0.1.2 builds</H2>
+      <H2 id="downloads">Official desktop wallet v0.2.24 builds</H2>
       <Table
         headers={["Platform", "Format", "Release"]}
         rows={[
-          ["macOS Apple silicon", "ZIP · native SwiftUI", "v0.1.2"],
-          ["macOS Intel", "ZIP · native SwiftUI", "v0.1.2"],
-          ["Windows x86_64", "EXE or MSI", "v0.1.2"],
-          ["Linux x86_64", "AppImage or Debian package", "v0.1.2"],
+          ["macOS Apple silicon", "ARK or Phoenix · native package", "v0.2.24"],
+          ["macOS Intel", "ARK universal or Phoenix · native package", "v0.2.24"],
+          ["Windows x86_64", "ARK or Phoenix · EXE/MSI", "v0.2.24"],
+          ["Linux x86_64", "ARK or Phoenix · AppImage/Debian", "v0.2.24"],
           ["iOS / Android", "Not released", "Coming soon"],
         ]}
       />
@@ -39,9 +39,9 @@ export default function WalletsDocsPage() {
         Download from{" "}
         <a
           className="text-foreground underline-offset-2 hover:underline"
-          href="https://grid-compute.com/ember"
+          href="https://grid-compute.com/phoenix"
         >
-          grid-compute.com/ember
+          grid-compute.com/phoenix
         </a>
         . If the site cannot identify the operating system, it links to the
         platform chooser. Verify installers against the release SHA256SUMS file.
