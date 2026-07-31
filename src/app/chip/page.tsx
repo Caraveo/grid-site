@@ -52,25 +52,18 @@ const dictionary = [
       "A computational hybrid instrument: an asset whose utility is created and evidenced by a compute network, while ownership can travel through an external token rail toward coin settlement.",
   },
   {
-    term: "CHIP-GRID",
-    pronunciation: "/tʃɪp ɡrɪd/",
-    kind: "proper noun · protocol asset",
+    term: "token",
+    pronunciation: "/ˈtoʊkən/",
+    kind: "noun · hosted digital asset",
     definition:
-      "The GRID network’s CHIP. It represents verified computational utility recorded in GRID’s signed history; it is distinct from SOL, which carries transactions, and BTC, which provides the preferred final settlement boundary.",
+      "An asset issued and accounted for on an existing blockchain. In the CHIP model, a token can provide a portable ownership and transaction rail, but it does not create GRID’s underlying record of computational utility.",
   },
   {
-    term: "compute truth",
-    pronunciation: "/kəmˈpjuːt truːθ/",
-    kind: "noun · evidence layer",
+    term: "coin",
+    pronunciation: "/kɔɪn/",
+    kind: "noun · blockchain-native asset",
     definition:
-      "The signed, inspectable record that useful work was authorized, performed, measured, and accepted under the network’s public rules.",
-  },
-  {
-    term: "settlement rail",
-    pronunciation: "/ˈsɛtəlmənt reɪl/",
-    kind: "noun · infrastructure",
-    definition:
-      "A separate network used to move or settle value. In the GRID model, Solana is the fast public token rail and Bitcoin is the durable coin settlement layer.",
+      "The native asset of its own blockchain, used within that chain’s security and settlement system. In the CHIP model, Bitcoin is an independent coin settlement boundary—not the GRID CHIP itself.",
   },
 ];
 
@@ -85,10 +78,13 @@ export default function ChipPage() {
         <div className="relative mx-auto grid max-w-7xl items-end gap-10 lg:grid-cols-[0.86fr_1.14fr] lg:gap-0">
           <div className="relative z-10">
             <p className="section-label">CHIP · Computational Hybrid Instrument Protocol</p>
-            <h1 className="mt-6 text-[clamp(4rem,12vw,10rem)] font-semibold leading-[0.82] tracking-[-0.065em] text-foreground">
-              <span className="text-cyan-300">CHIP</span> the
-              <br />
-              old BLOCK.
+            <h1 className="relative z-20 mt-6 font-semibold leading-[0.82] tracking-[-0.065em] text-foreground lg:w-[min(78vw,1100px)] lg:text-[clamp(7rem,11vw,10rem)]">
+              <span className="block text-[clamp(4rem,12vw,10rem)] lg:whitespace-nowrap lg:text-inherit">
+                <span className="text-cyan-300">CHIP</span> the
+              </span>
+              <span className="block text-[clamp(4rem,12vw,10rem)] lg:whitespace-nowrap lg:text-inherit">
+                old BLOCK.
+              </span>
             </h1>
             <ScrambleText
               text="TOKEN UTILITY. BLOCKCHAIN TRUTH. COMPUTE FIRST."
