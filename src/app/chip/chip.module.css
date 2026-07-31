@@ -1,0 +1,23 @@
+.darkArt {
+  display: block;
+}
+
+.lightArt {
+  display: none;
+}
+
+:global(html.light) .darkArt {
+  display: none;
+}
+
+:global(html.light) .lightArt {
+  display: block;
+}
+
+:global(html.dark) .darkArt {
+  display: block;
+}
+
+:global(html.dark) .lightArt {
+  display: none;
+}

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
 import { ScrambleText } from "@/components/ScrambleText";
+import styles from "./chip.module.css";
 
 export const metadata: Metadata = {
   title: "What Is a CHIP? — GRID",
@@ -54,9 +55,9 @@ export default function ChipPage() {
           <div className="relative z-10">
             <p className="section-label">CHIP · Computational Hybrid Instrument Protocol</p>
             <h1 className="mt-6 text-[clamp(4rem,12vw,10rem)] font-semibold leading-[0.82] tracking-[-0.065em] text-foreground">
-              We are a
+              Chip off the
               <br />
-              <span className="text-cyan-300">CHIP.</span>
+              old <span className="text-cyan-300">Block.</span>
             </h1>
             <ScrambleText
               text="TOKEN UTILITY. BLOCKCHAIN TRUTH. COMPUTE FIRST."
@@ -83,7 +84,7 @@ export default function ChipPage() {
               fill
               priority
               sizes="(min-width: 1024px) 58vw, 100vw"
-              className="object-contain object-bottom dark:hidden"
+              className={`${styles.lightArt} object-contain object-bottom`}
             />
             <Image
               src="/images/grid-chip-dark.png"
@@ -91,7 +92,7 @@ export default function ChipPage() {
               fill
               priority
               sizes="(min-width: 1024px) 58vw, 100vw"
-              className="hidden object-contain object-bottom dark:block"
+              className={`${styles.darkArt} object-contain object-bottom`}
             />
           </figure>
         </div>
