@@ -181,6 +181,12 @@
     "description": "Configure a reward wallet and inspect verified GRID mining receipts produced by useful computation."
   },
   {
+    "path": "/mesh",
+    "label": "MESH",
+    "title": "MESH — GRID",
+    "description": "MESH is a minimal internet browser with built-in Mesh blockchain capabilities for opening grid:// realms and navigating the GRID compute network."
+  },
+  {
     "path": "/news",
     "label": "NEWS",
     "title": "GRID News — Dispatches From the Open Compute Network",
