@@ -64,7 +64,7 @@ globe_region = "NA-W"
 # Optional overrides (env wins if you prefer env-only)
 # site_url and webhook secret better as env for secrets:
 # GRID_SITE_URL=https://grid-compute.com
-# GRID_WEBHOOK_SECRET=kshjdafnuw49rht98234y92h98y39n4yt498fc274ytv823n97y5
+# GRID_WEBHOOK_SECRET=replace-with-a-runtime-secret
 ```
 
 - Default `GRID_SITE_URL` empty = feature off  

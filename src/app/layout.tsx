@@ -45,8 +45,7 @@ const themeInitScript = `
     var k = 'grid-theme';
     var t = localStorage.getItem(k);
     if (t !== 'light' && t !== 'dark') {
-      t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches)
-        ? 'light' : 'dark';
+      t = 'light';
     }
     var d = document.documentElement;
     d.classList.remove('light','dark');
@@ -67,7 +66,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased light`}
       suppressHydrationWarning
     >
       <head>

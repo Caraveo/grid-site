@@ -7,7 +7,7 @@ $binDir = if ($env:GRID_INSTALL_DIR) { $env:GRID_INSTALL_DIR } else { Join-Path 
 $target = Join-Path $binDir "grid.exe"
 $tmp = Join-Path ([System.IO.Path]::GetTempPath()) "grid-windows-x86_64.exe"
 $sums = Join-Path ([System.IO.Path]::GetTempPath()) "GRID-SHA256SUMS"
-$assetRev = "20260729-v0219-p2pnode"
+$assetRev = "20260731-v0224-architecture"
 
 New-Item -ItemType Directory -Force -Path $binDir | Out-Null
 Invoke-WebRequest -UseBasicParsing "$origin/downloads/cli/grid-windows-x86_64.exe?rev=$assetRev" -OutFile $tmp
@@ -37,6 +37,6 @@ if (-not (($userPath -split ";") -contains $binDir)) {
   [Environment]::SetEnvironmentVariable("Path", (($userPath.TrimEnd(";") + ";" + $binDir).TrimStart(";")), "User")
 }
 
-Write-Host "GRID v0.2.18 installed: $target"
+Write-Host "GRID v0.2.24 installed: $target"
 Write-Host "Open a new PowerShell, then run: grid --version"
 Write-Host "For isolated host jobs: wsl --install -d Ubuntu, then run the Linux installer inside WSL2."

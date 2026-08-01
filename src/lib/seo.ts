@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import seoPages from "./seo-pages.json";
 
 export const SITE_URL = "https://grid-compute.com";
 export const SITE_NAME = "GRID";
@@ -16,6 +17,89 @@ export type PageSeo = {
   keywords?: string[];
   noIndex?: boolean;
 };
+
+type SeoRegistryPage = {
+  path: string;
+  label: string;
+  title: string;
+  description: string;
+  noIndex?: boolean;
+};
+
+export const SEO_PAGES = seoPages as SeoRegistryPage[];
+
+export function ogImageForPath(path: string): string {
+  const slug =
+    path === "/"
+      ? "home"
+      : path
+          .replace(/^\/|\/$/g, "")
+          .replaceAll("/", "-")
+          .replace(/[^a-z0-9-]/gi, "-")
+          .toLowerCase();
+  return `/downloads/og/${slug}.png`;
+}
+
+export function canonicalUrl(path: string): string {
+  if (path === "/docs") return "https://docs.grid-compute.com";
+  if (path.startsWith("/docs/")) {
+    return `https://docs.grid-compute.com${path.slice("/docs".length)}`;
+  }
+  return absoluteUrl(path);
+}
+
+/** Canonical, Open Graph, and Twitter metadata for every document route. */
+export function metadataFor(path: string): Metadata {
+  const page = SEO_PAGES.find((candidate) => candidate.path === path);
+  if (!page) {
+    throw new Error(`Missing SEO registry entry for ${path}`);
+  }
+
+  const url = canonicalUrl(path);
+  const image = absoluteUrl(ogImageForPath(path));
+
+  return {
+    title: page.title,
+    description: page.description,
+    alternates: { canonical: url },
+    openGraph: {
+      title: page.title,
+      description: page.description,
+      url,
+      siteName: path.startsWith("/docs") ? "GRID Docs" : SITE_NAME,
+      locale: "en_US",
+      type: "website",
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: `${page.title} — Open Graph preview`,
+          type: "image/png",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: page.title,
+      description: page.description,
+      images: [image],
+    },
+    robots: page.noIndex
+      ? { index: false, follow: false, nocache: true }
+      : {
+          index: true,
+          follow: true,
+          googleBot: {
+            index: true,
+            follow: true,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+            "max-video-preview": -1,
+          },
+        },
+  };
+}
 
 export function absoluteUrl(path: string): string {
   if (path.startsWith("http")) return path;
@@ -85,14 +169,14 @@ export const PAGES = {
     ],
   },
   ember: {
-    title: "Ember — host + mine + compute + registry | GRID",
+    title: "Realm stack — host + mine + compute + registry | GRID",
     description:
-      "An ember is the full stack for one grid:// realm: host useful work, mine security PoR, serve compute, and activate on the public registry.",
-    path: "/ember",
-    label: "EMBER",
+      "The realm stack combines hosting, mining, compute, and registry participation for one grid:// realm.",
+    path: "/docs/concepts#realm-stack",
+    label: "REALM STACK",
     ogImage: "/downloads/og/card-01.png",
     keywords: [
-      "ember",
+      "realm stack",
       "GRID",
       "host",
       "mine",
@@ -166,14 +250,15 @@ export const PAGES = {
     ],
   },
   wallet: {
-    title: "GRID Wallet — macOS, Windows & Linux",
+    title: "Phoenix — GRID Wallet for macOS, Windows & Linux",
     description:
-      "Download the native GRID Wallet for macOS, Windows, or Linux. Manage GRID, claim mining rewards, and configure Solana settlement from an encrypted local vault.",
-    path: "/wallet",
-    label: "WALLET",
+      "Download Phoenix, the native GRID Wallet for macOS, Windows, or Linux. Manage GRID, claim mining rewards, and configure Solana settlement from an encrypted local vault.",
+    path: "/phoenix",
+    label: "PHOENIX · GRID WALLET",
     ogImage: "/downloads/og/card-01.png",
     keywords: [
       "GRID Wallet",
+      "Phoenix wallet",
       "GRID desktop wallet",
       "macOS wallet",
       "Windows wallet",
@@ -233,6 +318,22 @@ export const PAGES = {
       "Cash App",
       "Bitcoin",
       "$Caraveo",
+    ],
+  },
+  otg27: {
+    title: "OTG27 — Meet us on the GRID",
+    description:
+      "GRID’s first annual in-person community gathering. Talks, technical labs, live network sessions, and the people building planetary compute — December 15, 2027.",
+    path: "/otg",
+    label: "OTG27",
+    ogImage: "/og-otg27.png",
+    keywords: [
+      "OTG27",
+      "GRID community",
+      "GRID blockchain event",
+      "distributed compute conference",
+      "blockchain developers",
+      "GRID",
     ],
   },
   admin: {

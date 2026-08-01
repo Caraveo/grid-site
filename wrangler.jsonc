@@ -9,6 +9,7 @@
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS",
+    "run_worker_first": ["/.well-known/*"],
   },
   "observability": {
     "enabled": true,
@@ -22,6 +23,8 @@
     { "pattern": "docs.grid-compute.com", "custom_domain": true },
     { "pattern": "explorer.grid-compute.com", "custom_domain": true },
     { "pattern": "engine.grid-compute.com", "custom_domain": true },
+    { "pattern": "mail.grid-compute.com", "custom_domain": true },
+    { "pattern": "ark.grid-compute.com", "custom_domain": true },
   ],
   "services": [
     {
@@ -40,6 +43,15 @@
       "id": "5208b9e52eb14933bdee027cb124c3f7",
     },
   ],
+  // Durable contributor identity, sessions, approvals and audit records.
+  "d1_databases": [
+    {
+      "binding": "CONTRIBUTOR_DB",
+      "database_name": "grid-contributors",
+      "database_id": "b190a6fc-8774-464b-b38e-3b6a30d9cc0b",
+      "migrations_dir": "migrations",
+    },
+  ],
   // Non-secret defaults (override in dashboard).
   "vars": {
     "GRID_PHASE": "1",
@@ -48,7 +60,15 @@
     "GENESIS_LABEL": "GENESIS",
     "GENESIS_REGION": "US-EAST-1",
     "GENESIS_API_URL": "https://genesis.grid-compute.com",
+    "MAIL_DOMAIN": "gridmail.dev",
+    "MAIL_SYSTEM_SENDER": "hi@gridmail.dev",
+    "CONTRIBUTOR_APP_ORIGIN": "https://grid-compute.com",
+    "CONTRIBUTOR_BOOTSTRAP_ADMIN_EMAIL": "hi@grid-compute.com",
   },
   // Secrets (never commit):
   //   npx wrangler secret put GRID_ADMIN_SECRET   # min 16 chars, admin dashboard
+  //   npx wrangler secret put AWS_MAIL_API_URL
+  //   npx wrangler secret put AWS_MAIL_API_SECRET
+  //   npx wrangler secret put CONTRIBUTOR_ENCRYPTION_KEY
+  //   npx wrangler secret put CONTRIBUTOR_IP_PEPPER
 }

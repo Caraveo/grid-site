@@ -152,7 +152,7 @@ export function Download() {
             Installer explains every step — download, verify, install, PATH.
             Looking for the desktop browser?{" "}
             <a
-              href="#mesh-downloads"
+              href="/mesh"
               className="text-white/70 underline-offset-2 hover:underline"
             >
               Download Mesh

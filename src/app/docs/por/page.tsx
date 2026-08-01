@@ -1,11 +1,9 @@
+import type { Metadata } from "next";
+import { metadataFor } from "@/lib/seo";
 import { CodeBlock } from "@/components/docs/CodeBlock";
 import { H1, H2, Lead, Note, P, Table, Ul } from "@/components/docs/DocsChrome";
 
-export const metadata = {
-  title: "Proof of Resource",
-  description:
-    "GRID Proof-of-Resource scoring, verification, reward allocation, emission controls, and current pilot limits.",
-};
+export const metadata: Metadata = metadataFor("/docs/por");
 
 export default function PorDocsPage() {
   return (

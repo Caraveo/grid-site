@@ -1,3 +1,4 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Nav } from "@/components/Nav";
@@ -13,7 +14,7 @@ import {
 } from "@/components/explain/Diagrams";
 import { buildMetadata, PAGES } from "@/lib/seo";
 
-export const metadata: Metadata = buildMetadata(PAGES.explain);
+export const metadata: Metadata = metadataFor("/explain");
 
 function Section({
   id,
@@ -255,10 +256,10 @@ export default function ExplainPage() {
           </div>
         </Section>
 
-        {/* 07 — Ember */}
+        {/* 07 — Realm stack */}
         <Section
-          id="ember"
-          label="07 · Ember"
+          id="realm-stack"
+          label="07 · Realm stack"
           title={
             <>
               The full stack
@@ -268,7 +269,7 @@ export default function ExplainPage() {
           }
         >
           <p className="mb-6 max-w-2xl section-body text-base">
-            An <strong className="font-normal text-white/85">ember</strong> is
+            A <strong className="font-normal text-white/85">realm stack</strong> combines
             host + mine + compute +{" "}
             <strong className="font-normal text-white/85">paid registry</strong>{" "}
             for a single address like{" "}
@@ -284,8 +285,8 @@ export default function ExplainPage() {
             <p className="mt-1">grid ember fire --start</p>
           </div>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href="/ember" className="btn-primary">
-              Ember guide
+            <a href="/docs/concepts#realm-stack" className="btn-primary">
+              Realm stack guide
             </a>
             <a href="/registry" className="btn-ghost">
               Registry · paywall
@@ -302,15 +303,15 @@ export default function ExplainPage() {
               Ready when you are
             </h2>
             <p className="mx-auto mt-6 max-w-lg section-body text-center">
-              Install the node, light an ember, or activate a public name on the
+              Install the node, start a realm stack, or activate a public name on the
               registry. The mesh only grows when machines join.
             </p>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
               <a href="/#download" className="btn-primary">
                 Download GRID
               </a>
-              <a href="/ember" className="btn-ghost">
-                Ember
+              <a href="/phoenix" className="btn-ghost">
+                Phoenix Wallet
               </a>
               <a href="/registry" className="btn-ghost">
                 Registry

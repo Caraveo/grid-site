@@ -1,12 +1,9 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
 
-export const metadata: Metadata = {
-  title: "Proof of Resource Consensus",
-  description:
-    "How GRID measures useful compute, verifies work, scores resources, and records signed settlements.",
-};
+export const metadata: Metadata = metadataFor("/por");
 
 const pipeline = [
   {
@@ -62,7 +59,7 @@ function Section({
   className?: string;
 }) {
   return (
-    <section id={id} className={`border-t border-white/10 px-5 py-20 sm:py-28 ${className}`}>
+    <section id={id} className={`border-t border-foreground/10 px-5 py-20 sm:py-28 ${className}`}>
       <div className="mx-auto max-w-7xl">{children}</div>
     </section>
   );
@@ -70,7 +67,7 @@ function Section({
 
 export default function PorPage() {
   return (
-    <main className="min-h-screen bg-background">
+    <main className="por-page min-h-screen bg-background">
       <div className="noise" aria-hidden="true" />
       <Nav />
 
@@ -78,12 +75,12 @@ export default function PorPage() {
         <div className="grid-bg pointer-events-none absolute inset-0" aria-hidden="true" />
         <div className="relative mx-auto max-w-7xl">
           <p className="section-label">Proof of Resource · PoR</p>
-          <h1 className="mt-6 max-w-6xl text-[clamp(3.5rem,9vw,8rem)] font-semibold leading-[0.87] tracking-[-0.06em] text-white">
+          <h1 className="mt-6 max-w-6xl text-[clamp(3.5rem,9vw,8rem)] font-semibold leading-[0.87] tracking-[-0.06em] text-foreground">
             Consensus around
             <br />
-            <span className="text-cyan-300">useful work.</span>
+            <span className="text-[var(--por-blue)]">useful work.</span>
           </h1>
-          <p className="mt-8 max-w-3xl text-lg leading-relaxed text-white/50 sm:text-xl">
+          <p className="mt-8 max-w-3xl text-lg leading-relaxed text-muted sm:text-xl">
             GRID measures real computational contribution—not an abstract puzzle.
             Work is assigned, verified, scored, and recorded as a signed settlement
             that peers can independently inspect.
@@ -95,11 +92,11 @@ export default function PorPage() {
             </a>
           </div>
 
-          <div className="mt-14 max-w-4xl border border-amber-300/25 bg-amber-300/[0.06] p-5 sm:p-6">
-            <p className="font-mono text-[0.65rem] tracking-[0.18em] text-amber-200 uppercase">
+          <div className="mt-14 max-w-4xl border border-[var(--por-yellow)]/25 bg-[var(--por-yellow)]/[0.06] p-5 sm:p-6">
+            <p className="font-mono text-[0.65rem] tracking-[0.18em] text-[var(--por-yellow)] uppercase">
               Current consensus boundary
             </p>
-            <p className="mt-3 text-sm leading-relaxed text-white/60">
+            <p className="mt-3 text-sm leading-relaxed text-muted">
               Proof of Resource currently governs contribution measurement and reward
               allocation. Blocks are produced by the Genesis authority and verified by
               connected peers. GRID does not yet claim permissionless production or
@@ -119,18 +116,18 @@ export default function PorPage() {
           </p>
         </div>
 
-        <ol className="mt-14 grid gap-px overflow-hidden border border-white/10 bg-white/10 lg:grid-cols-5">
+        <ol className="por-pipeline mt-14 grid gap-px overflow-hidden border border-foreground/10 bg-foreground/10 lg:grid-cols-5">
           {pipeline.map((step) => (
-            <li key={step.number} className="min-h-64 bg-background p-6">
-              <span className="font-mono text-xs text-cyan-300/55">{step.number}</span>
+            <li key={step.number} className="por-pipeline-step min-h-64 bg-background p-6">
+              <span className="font-mono text-xs text-[var(--por-blue)]">{step.number}</span>
               <div className="my-7 flex items-center" aria-hidden="true">
-                <span className="grid size-9 place-items-center rounded-full border border-cyan-300/30 bg-cyan-300/[0.06]">
-                  <span className="size-2 rounded-full bg-cyan-300" />
+                <span className="grid size-9 place-items-center rounded-full border border-[var(--por-blue)]/55 bg-[var(--por-blue)]/[0.1]">
+                  <span className="size-2 rounded-full bg-[var(--por-blue)]" />
                 </span>
-                <span className="h-px flex-1 bg-gradient-to-r from-cyan-300/30 to-transparent" />
+                <span className="h-px flex-1 bg-gradient-to-r from-[var(--por-blue)]/55 to-transparent" />
               </div>
-              <h3 className="text-xl font-semibold text-white">{step.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-white/42">{step.copy}</p>
+              <h3 className="text-xl font-semibold text-foreground">{step.title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-[var(--por-copy)]">{step.copy}</p>
             </li>
           ))}
         </ol>
@@ -148,27 +145,27 @@ export default function PorPage() {
             </p>
           </div>
           <div>
-            <div className="border border-white/12 bg-white/[0.025] p-6 sm:p-8">
-              <p className="font-mono text-xs tracking-[0.16em] text-white/35 uppercase">
+            <div className="border border-foreground/12 bg-foreground/[0.025] p-6 sm:p-8">
+              <p className="font-mono text-xs tracking-[0.16em] text-muted uppercase">
                 Implemented formula
               </p>
-              <p className="mt-6 overflow-x-auto font-mono text-lg leading-loose text-cyan-200 sm:text-2xl">
+              <p className="mt-6 overflow-x-auto font-mono text-lg leading-loose text-[var(--por-blue)] sm:text-2xl">
                 R = .55C + .15U + .10E + .20F
               </p>
-              <p className="mt-2 font-mono text-base text-white/60 sm:text-xl">
+              <p className="mt-2 font-mono text-base text-muted sm:text-xl">
                 Effective score = R × reputation
               </p>
-              <p className="mt-5 text-sm leading-relaxed text-white/40">
+              <p className="mt-5 text-sm leading-relaxed text-muted">
                 Reputation is constrained to a 0.5–1.5 multiplier so prior performance
                 influences rewards without replacing current verified work.
               </p>
             </div>
-            <div className="mt-px grid gap-px bg-white/10 sm:grid-cols-2">
+            <div className="mt-px grid gap-px bg-foreground/10 sm:grid-cols-2">
               {signals.map(([weight, title, copy]) => (
                 <article key={title} className="bg-background p-6">
-                  <p className="font-mono text-2xl text-cyan-300">{weight}</p>
-                  <h3 className="mt-4 font-semibold text-white">{title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-white/40">{copy}</p>
+                  <p className="font-mono text-2xl text-[var(--por-blue)]">{weight}</p>
+                  <h3 className="mt-4 font-semibold text-foreground">{title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted">{copy}</p>
                 </article>
               ))}
             </div>
@@ -183,24 +180,24 @@ export default function PorPage() {
         </div>
         <div className="mt-14 grid gap-4 lg:grid-cols-3">
           <article className="panel p-7 sm:p-9">
-            <p className="font-mono text-4xl text-emerald-300">90%</p>
-            <h3 className="mt-6 text-xl font-semibold text-white">Proportional pool</h3>
-            <p className="mt-3 text-sm leading-relaxed text-white/45">
+            <p className="font-mono text-4xl text-[var(--por-green)]">90%</p>
+            <h3 className="mt-6 text-xl font-semibold text-foreground">Proportional pool</h3>
+            <p className="mt-3 text-sm leading-relaxed text-muted">
               Distributed by effective PoR score after verified work is accepted.
             </p>
           </article>
           <article className="panel p-7 sm:p-9">
-            <p className="font-mono text-4xl text-emerald-300">10%</p>
-            <h3 className="mt-6 text-xl font-semibold text-white">Inclusion pool</h3>
-            <p className="mt-3 text-sm leading-relaxed text-white/45">
+            <p className="font-mono text-4xl text-[var(--por-green)]">10%</p>
+            <h3 className="mt-6 text-xl font-semibold text-foreground">Inclusion pool</h3>
+            <p className="mt-3 text-sm leading-relaxed text-muted">
               Reserved for qualifying small nodes so home contributors remain
               first-class participants.
             </p>
           </article>
           <article className="panel p-7 sm:p-9">
-            <p className="font-mono text-4xl text-emerald-300">5%</p>
-            <h3 className="mt-6 text-xl font-semibold text-white">Base cluster ceiling</h3>
-            <p className="mt-3 text-sm leading-relaxed text-white/45">
+            <p className="font-mono text-4xl text-[var(--por-green)]">5%</p>
+            <h3 className="mt-6 text-xl font-semibold text-foreground">Base cluster ceiling</h3>
+            <p className="mt-3 text-sm leading-relaxed text-muted">
               Large coordinated clusters are water-filled against a ceiling. The
               effective cap expands for very small networks so rewards are not stranded.
             </p>
@@ -218,24 +215,24 @@ export default function PorPage() {
               running pilot from the remaining protocol work.
             </p>
           </div>
-          <div className="border-t border-white/12">
+          <div className="border-t border-foreground/12">
             {implementation.map(([status, copy]) => (
               <div
                 key={copy}
-                className="grid gap-3 border-b border-white/12 py-5 sm:grid-cols-[7rem_1fr] sm:items-center"
+                className="grid gap-3 border-b border-foreground/12 py-5 sm:grid-cols-[7rem_1fr] sm:items-center"
               >
                 <span
                   className={`font-mono text-[0.65rem] tracking-[0.16em] uppercase ${
                     status === "Live"
-                      ? "text-emerald-300"
+                      ? "text-[var(--por-green)]"
                       : status === "Pilot"
-                        ? "text-cyan-300"
-                        : "text-white/35"
+                        ? "text-[var(--por-blue)]"
+                        : "text-muted"
                   }`}
                 >
                   {status}
                 </span>
-                <span className="text-sm leading-relaxed text-white/55">{copy}</span>
+                <span className="text-sm leading-relaxed text-muted">{copy}</span>
               </div>
             ))}
           </div>

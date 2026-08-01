@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { metadataFor } from "@/lib/seo";
 import Link from "next/link";
 import {
   H1,
@@ -10,6 +12,8 @@ import {
 } from "@/components/docs/DocsChrome";
 import { CodeBlock } from "@/components/docs/CodeBlock";
 import { API_BASE } from "@/lib/docs-nav";
+
+export const metadata: Metadata = metadataFor("/docs");
 
 export default function DocsHomePage() {
   return (
@@ -42,7 +46,7 @@ export default function DocsHomePage() {
           <Link className="text-foreground underline-offset-2 hover:underline" href="/docs/getting-started">
             Run a node
           </Link>{" "}
-          — install GRID 0.2.18, initialize keys, join P2P, and mine
+          — install GRID 0.2.24, initialize keys, join P2P, and mine
         </li>
         <li>
           <Link className="text-foreground underline-offset-2 hover:underline" href="/docs/por">
@@ -58,7 +62,7 @@ export default function DocsHomePage() {
         </li>
         <li>
           <Link className="text-foreground underline-offset-2 hover:underline" href="/docs/wallets">
-            Wallets & Ember
+            Phoenix · GRID Wallet
           </Link>{" "}
           — native GRID addresses and Solana devnet reward addresses
         </li>

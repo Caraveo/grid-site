@@ -95,6 +95,36 @@ If custom-domain routes fail (zone not on this account yet), remove the `routes`
 | Name | Where | Notes |
 |------|--------|--------|
 | `GRID_WEBHOOK_SECRET` | `wrangler secret put` | **Required** in production |
+| `AWS_MAIL_API_URL` | `wrangler secret put` | API Gateway endpoint for the private mail service |
+| `AWS_MAIL_API_SECRET` | `wrangler secret put` | Shared 256-bit secret used only between GRID and the mail Lambda |
+| `CONTRIBUTOR_ENCRYPTION_KEY` | `wrangler secret put` | Encrypts authenticator secrets at rest |
+| `CONTRIBUTOR_IP_PEPPER` | `wrangler secret put` | Privacy-preserving rate-limit/audit hashing |
+
+## Contributor identity and webmail
+
+Contributor access is isolated from the legacy operator-secret dashboard:
+
+- `/login` — email/password registration, verification, reset and TOTP login
+- `/dashboard` — contributor mailbox, security and administrator approval queue
+- `mail.grid-compute.com` — host-routed entry to `/dashboard/mail`
+- `{username}@gridmail.dev` — logical SES mailbox activated on approval
+- `CONTRIBUTOR_DB` — D1 identity, opaque sessions, approval state, quotas and audit log
+
+The AWS mail backend lives in `aws/mail/` and uses SES, private S3, Lambda,
+DynamoDB, and an HTTP API. Before first use, deploy that stack, publish the SES
+DKIM and MX outputs in Cloudflare DNS, and request SES production access.
+Then apply contributor migrations:
+
+```bash
+npx wrangler d1 migrations apply grid-contributors --remote
+npx wrangler secret put AWS_MAIL_API_URL
+npx wrangler secret put AWS_MAIL_API_SECRET
+```
+
+The first verified registration whose recovery email matches
+`CONTRIBUTOR_BOOTSTRAP_ADMIN_EMAIL` becomes the administrator. Its mailbox is
+activated from the Contributors screen after login. Every later contributor
+requires administrator approval, which activates their SES-backed mailbox.
 | `GRID_PHASE` | `wrangler.jsonc` vars | Default `1` |
 | `GENESIS_*` | vars | Globe genesis pin |
 

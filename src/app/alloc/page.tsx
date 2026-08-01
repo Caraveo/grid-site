@@ -1,3 +1,4 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/components/Footer";
@@ -10,7 +11,7 @@ import {
 } from "@/components/alloc/AllocationDiagrams";
 import { buildMetadata, PAGES } from "@/lib/seo";
 
-export const metadata: Metadata = buildMetadata(PAGES.alloc);
+export const metadata: Metadata = metadataFor("/alloc");
 
 const buckets = [
   {
@@ -97,7 +98,7 @@ function Section({
 
 export default function AllocationPage() {
   return (
-    <main className="min-h-screen">
+    <main className="allocation-page min-h-screen">
       <div className="noise" aria-hidden="true" />
       <Nav />
 
@@ -110,7 +111,7 @@ export default function AllocationPage() {
           </h1>
           <ScrambleText
             text="10,000,000,000 MAXIMUM. NO MYSTERY BUCKET."
-            className="mt-8 block font-mono text-xs tracking-[0.2em] text-cyan-200/70 sm:text-sm"
+            className="mt-8 block font-mono text-xs tracking-[0.2em] text-[var(--allocation-blue)] sm:text-sm"
           />
           <p className="mt-8 max-w-2xl text-lg leading-relaxed text-white/50 sm:text-xl">
             Five billion for verified compute. Five billion for building, protecting,
@@ -173,7 +174,7 @@ export default function AllocationPage() {
               <span className="font-mono text-xs text-white/25">{String(index + 1).padStart(2, "0")}</span>
               <div>
                 <p className="text-2xl font-semibold tracking-tight text-white">{bucket.amount}</p>
-                <p className="mt-1 font-mono text-xs text-cyan-200/45">{bucket.percent} total</p>
+                <p className="mt-1 font-mono text-xs text-[var(--allocation-blue)]">{bucket.percent} total</p>
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-white">{bucket.title}</h3>

@@ -1,11 +1,9 @@
+import type { Metadata } from "next";
+import { metadataFor } from "@/lib/seo";
 import { CodeBlock } from "@/components/docs/CodeBlock";
 import { H1, H2, Lead, Note, P, Table, Ul } from "@/components/docs/DocsChrome";
 
-export const metadata = {
-  title: "Auth for writes",
-  description:
-    "Signed node heartbeats and operator authentication for GRID write APIs.",
-};
+export const metadata: Metadata = metadataFor("/docs/auth");
 
 export default function AuthDocsPage() {
   return (

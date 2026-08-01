@@ -33,7 +33,13 @@ type Stats = {
   rejected: number;
 };
 
-type Tab = "names" | "orders" | "compliance" | "entity" | "reserved";
+type Tab =
+  | "names"
+  | "orders"
+  | "tickets"
+  | "compliance"
+  | "entity"
+  | "reserved";
 
 type ShopOrderRow = {
   id: string;
@@ -63,6 +69,34 @@ type OrderStats = {
   fulfilled: number;
   cancelled: number;
   pending_payment: number;
+};
+
+type Otg27OrderRow = {
+  id: string;
+  ticketId: string;
+  ticketName: string;
+  quantity: number;
+  unitPriceUsd: number;
+  totalUsd: number;
+  name: string;
+  email: string;
+  organization?: string;
+  paymentNote: string;
+  paymentMethod?: string;
+  paymentReference?: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type Otg27Stats = {
+  total: number;
+  payment_submitted: number;
+  confirmed: number;
+  cancelled: number;
+  pending_payment: number;
+  attendees: number;
+  revenueUsd: number;
 };
 
 type ReservedTerm = {
@@ -141,6 +175,9 @@ export function AdminDashboard() {
   const [orderRows, setOrderRows] = useState<ShopOrderRow[]>([]);
   const [orderStats, setOrderStats] = useState<OrderStats | null>(null);
   const [orderFilter, setOrderFilter] = useState<string>("");
+  const [ticketRows, setTicketRows] = useState<Otg27OrderRow[]>([]);
+  const [ticketStats, setTicketStats] = useState<Otg27Stats | null>(null);
+  const [ticketFilter, setTicketFilter] = useState<string>("");
 
   const refreshSession = useCallback(async () => {
     try {
@@ -274,6 +311,28 @@ export function AdminDashboard() {
     setError(null);
   }, [orderFilter]);
 
+  const loadTickets = useCallback(async () => {
+    const query = ticketFilter
+      ? `?status=${encodeURIComponent(ticketFilter)}`
+      : "";
+    const response = await fetch(`/api/admin/otg27${query}`, {
+      cache: "no-store",
+      credentials: "same-origin",
+    });
+    if (response.status === 401) {
+      setAuthed(false);
+      return;
+    }
+    const data = await response.json();
+    if (!data.ok) {
+      setError(data.error ?? "Failed to load OTG27 tickets");
+      return;
+    }
+    setTicketRows(data.orders ?? []);
+    setTicketStats(data.stats ?? null);
+    setError(null);
+  }, [ticketFilter]);
+
   useEffect(() => {
     void (async () => {
       const ok = await refreshSession();
@@ -285,15 +344,18 @@ export function AdminDashboard() {
     if (!authed) return;
     if (tab === "names") void loadRegs();
     if (tab === "orders") void loadOrders();
+    if (tab === "tickets") void loadTickets();
     if (tab === "compliance") void loadCompliance(false);
     if (tab === "entity") void loadEntities();
     if (tab === "reserved") void loadReserved();
   }, [
     filter,
     orderFilter,
+    ticketFilter,
     authed,
     loadRegs,
     loadOrders,
+    loadTickets,
     tab,
     loadCompliance,
     loadEntities,
@@ -345,6 +407,8 @@ export function AdminDashboard() {
     setReservedStats(null);
     setOrderRows([]);
     setOrderStats(null);
+    setTicketRows([]);
+    setTicketStats(null);
     setCmpDecrypted(false);
     setMsg("Signed out");
   }
@@ -393,6 +457,40 @@ export function AdminDashboard() {
       }
       setMsg("Order deleted");
       await loadOrders();
+    } catch {
+      setError("Network error");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function onTicketAction(
+    id: string,
+    action: "set_status" | "delete",
+    status?: string,
+  ) {
+    if (action === "delete" && !confirm(`Delete OTG27 order ${id}?`)) return;
+    setBusy(true);
+    setError(null);
+    setMsg(null);
+    try {
+      const response = await fetch("/api/admin/otg27", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ action, id, status }),
+      });
+      const data = await response.json();
+      if (!response.ok || !data.ok) {
+        setError(data.error ?? "Ticket update failed");
+        return;
+      }
+      setMsg(
+        action === "delete"
+          ? "Ticket order deleted"
+          : `OTG27 order → ${status}`,
+      );
+      await loadTickets();
     } catch {
       setError("Network error");
     } finally {
@@ -642,8 +740,8 @@ npm run deploy`}
           </p>
           <h1 className="mt-2 text-3xl font-thin tracking-wide">Dashboard</h1>
           <p className="mt-2 text-sm text-white/45">
-            Cash App registrations · shop orders · reserved · compliance · Key /
-            Verified
+            Cash App registrations · shop orders · OTG27 tickets · reserved ·
+            compliance · Key / Verified
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -653,6 +751,7 @@ npm run deploy`}
             onClick={() => {
               if (tab === "names") void loadRegs();
               if (tab === "orders") void loadOrders();
+              if (tab === "tickets") void loadTickets();
               if (tab === "compliance") void loadCompliance(cmpDecrypted);
               if (tab === "entity") void loadEntities();
               if (tab === "reserved") void loadReserved();
@@ -677,6 +776,7 @@ npm run deploy`}
           [
             ["names", "Names ($5)"],
             ["orders", "Orders (tees)"],
+            ["tickets", "OTG27 tickets"],
             ["reserved", "Reserved"],
             ["compliance", "Compliance / IP·MAC"],
             ["entity", "Key · Verified"],
@@ -1356,6 +1456,181 @@ npm run deploy`}
                             type="button"
                             disabled={busy}
                             onClick={() => void onOrderDelete(o.id)}
+                            className="rounded border border-red-500/30 px-2 py-1 text-[0.65rem] text-red-200/80 hover:bg-red-500/10"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {tab === "tickets" && (
+        <div className="mt-8 space-y-6">
+          <p className="text-sm text-white/50">
+            OTG27 passes · payment submissions appear here for verification.
+            Confirm only after matching the payment note in Cash App or Bitcoin.
+          </p>
+
+          {ticketStats && (
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7">
+              {(
+                [
+                  ["Orders", ticketStats.total],
+                  ["Submitted", ticketStats.payment_submitted],
+                  ["Confirmed", ticketStats.confirmed],
+                  ["Cancelled", ticketStats.cancelled],
+                  ["Draft pay", ticketStats.pending_payment],
+                  ["Attendees", ticketStats.attendees],
+                  ["Revenue", `$${ticketStats.revenueUsd}`],
+                ] as const
+              ).map(([label, value]) => (
+                <div
+                  key={label}
+                  className="rounded-xl border border-white/10 bg-white/[0.02] px-4 py-3"
+                >
+                  <p className="font-mono text-[0.6rem] tracking-wider text-white/35 uppercase">
+                    {label}
+                  </p>
+                  <p className="mt-1 text-2xl font-thin text-white">{value}</p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="flex flex-wrap gap-2">
+            {(
+              [
+                ["", "Tracked (all)"],
+                ["payment_submitted", "Submitted"],
+                ["confirmed", "Confirmed"],
+                ["cancelled", "Cancelled"],
+              ] as const
+            ).map(([id, label]) => (
+              <button
+                key={id || "all"}
+                type="button"
+                onClick={() => setTicketFilter(id)}
+                className={`rounded-full border px-3 py-1.5 font-mono text-[0.65rem] tracking-wider uppercase transition ${
+                  ticketFilter === id
+                    ? "border-white bg-white text-black"
+                    : "border-white/20 text-white/60 hover:border-white/40"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
+          <div className="overflow-x-auto rounded-xl border border-white/10">
+            <table className="w-full min-w-[980px] text-left text-sm">
+              <thead className="border-b border-white/10 bg-white/[0.03] font-mono text-[0.6rem] tracking-wider text-white/40 uppercase">
+                <tr>
+                  <th className="px-3 py-2.5 font-normal">Pass</th>
+                  <th className="px-3 py-2.5 font-normal">Attendee</th>
+                  <th className="px-3 py-2.5 font-normal">Payment</th>
+                  <th className="px-3 py-2.5 font-normal">Status</th>
+                  <th className="px-3 py-2.5 font-normal">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {ticketRows.length === 0 ? (
+                  <tr>
+                    <td
+                      colSpan={5}
+                      className="px-4 py-10 text-center text-white/40"
+                    >
+                      No tracked OTG27 ticket orders yet
+                    </td>
+                  </tr>
+                ) : (
+                  ticketRows.map((order) => (
+                    <tr
+                      key={order.id}
+                      className="border-b border-white/5 align-top last:border-0"
+                    >
+                      <td className="px-3 py-3">
+                        <p className="text-white">{order.ticketName}</p>
+                        <p className="mt-0.5 text-xs text-white/45">
+                          {order.quantity} × ${order.unitPriceUsd} · $
+                          {order.totalUsd}
+                        </p>
+                        <p className="mt-1 font-mono text-[0.55rem] text-white/25">
+                          {order.id}
+                        </p>
+                      </td>
+                      <td className="px-3 py-3">
+                        <p className="text-white/85">{order.name}</p>
+                        <p className="text-xs text-white/50">{order.email}</p>
+                        {order.organization && (
+                          <p className="text-xs text-white/35">
+                            {order.organization}
+                          </p>
+                        )}
+                      </td>
+                      <td className="px-3 py-3 font-mono text-xs text-white/60">
+                        <p>{order.paymentNote}</p>
+                        <p className="mt-1 text-white/40">
+                          {order.paymentMethod ?? "—"}
+                        </p>
+                        {order.paymentReference && (
+                          <p className="mt-1 break-all text-white/30">
+                            {order.paymentReference}
+                          </p>
+                        )}
+                        <p className="mt-1 text-[0.6rem] text-white/25">
+                          {new Date(order.updatedAt).toLocaleString()}
+                        </p>
+                      </td>
+                      <td className="px-3 py-3">
+                        <StatusBadge status={order.status} />
+                      </td>
+                      <td className="px-3 py-3">
+                        <div className="flex flex-wrap gap-1.5">
+                          {order.status !== "confirmed" && (
+                            <button
+                              type="button"
+                              disabled={busy}
+                              onClick={() =>
+                                void onTicketAction(
+                                  order.id,
+                                  "set_status",
+                                  "confirmed",
+                                )
+                              }
+                              className="rounded border border-emerald-500/30 px-2 py-1 text-[0.65rem] text-emerald-200/90 hover:bg-emerald-500/10"
+                            >
+                              Confirm
+                            </button>
+                          )}
+                          {order.status !== "cancelled" && (
+                            <button
+                              type="button"
+                              disabled={busy}
+                              onClick={() =>
+                                void onTicketAction(
+                                  order.id,
+                                  "set_status",
+                                  "cancelled",
+                                )
+                              }
+                              className="rounded border border-white/15 px-2 py-1 text-[0.65rem] text-white/50 hover:bg-white/5"
+                            >
+                              Cancel
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            disabled={busy}
+                            onClick={() =>
+                              void onTicketAction(order.id, "delete")
+                            }
                             className="rounded border border-red-500/30 px-2 py-1 text-[0.65rem] text-red-200/80 hover:bg-red-500/10"
                           >
                             Delete

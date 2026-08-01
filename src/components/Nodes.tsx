@@ -59,6 +59,7 @@ export function Nodes() {
   const [loading, setLoading] = useState(true);
   const [burstIds, setBurstIds] = useState<string[]>([]);
   const [toasts, setToasts] = useState<Toast[]>([]);
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const knownRef = useRef<Set<string>>(new Set());
   const primedRef = useRef(false);
 
@@ -204,6 +205,10 @@ export function Nodes() {
               genesis={genesis}
               nodes={nodes}
               burstIds={burstIds}
+              selectedNodeId={selectedNodeId}
+              onSelectNode={(id) =>
+                setSelectedNodeId((current) => (current === id ? null : id))
+              }
               onBurstDone={(id) =>
                 setBurstIds((b) => b.filter((x) => x !== id))
               }
@@ -302,7 +307,25 @@ export function Nodes() {
                   {peers.map((p) => (
                     <tr
                       key={p.id}
-                      className="border-b border-white/5 transition hover:bg-white/[0.03]"
+                      tabIndex={0}
+                      role="button"
+                      aria-pressed={selectedNodeId === p.id}
+                      onClick={() =>
+                        setSelectedNodeId((current) =>
+                          current === p.id ? null : p.id,
+                        )
+                      }
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter" || event.key === " ") {
+                          event.preventDefault();
+                          setSelectedNodeId((current) =>
+                            current === p.id ? null : p.id,
+                          );
+                        }
+                      }}
+                      className={`cursor-pointer border-b border-white/5 transition hover:bg-white/[0.03] focus-visible:outline focus-visible:outline-1 focus-visible:outline-white/70 ${
+                        selectedNodeId === p.id ? "bg-white/[0.06]" : ""
+                      }`}
                     >
                       <td className="px-5 py-3.5">
                         <span className="inline-flex items-center gap-2 capitalize text-white/70">

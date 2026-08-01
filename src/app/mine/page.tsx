@@ -1,12 +1,10 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import { Footer } from "@/components/Footer";
 import { MiningDashboard } from "@/components/MiningDashboard";
 import { Nav } from "@/components/Nav";
 
-export const metadata: Metadata = {
-  title: "Mine GRID | Live devnet dashboard",
-  description: "Configure a Solana reward wallet and inspect verified GRID mining receipts.",
-};
+export const metadata: Metadata = metadataFor("/mine");
 
 export default function MinePage() {
   return (

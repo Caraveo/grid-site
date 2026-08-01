@@ -1,13 +1,10 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import { ExplorerDashboard } from "@/components/ExplorerDashboard";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
 
-export const metadata: Metadata = {
-  title: "GRID Explorer | Live network telemetry",
-  description:
-    "Live GRID Genesis, signed-chain, coordinator, mining, settlement, and peer-mesh telemetry.",
-};
+export const metadata: Metadata = metadataFor("/explorer");
 
 export default function ExplorerPage() {
   return (

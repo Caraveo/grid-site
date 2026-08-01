@@ -1,12 +1,9 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
 
-export const metadata: Metadata = {
-  title: "GRID vs Bitcoin, Ethereum, Solana & Dogecoin",
-  description:
-    "A feature-by-feature comparison of GRID and four established public blockchain networks.",
-};
+export const metadata: Metadata = metadataFor("/compare");
 
 type Mark = "yes" | "pilot" | "no";
 
@@ -160,13 +157,13 @@ function Value({ value, grid = false }: { value: Mark | string; grid?: boolean }
       </span>
     );
   }
-  if (value === "no") return <span className="text-white/20">—</span>;
+  if (value === "no") return <span className="compare-no-marker">—</span>;
   return <span className={grid ? "font-medium text-emerald-300" : "text-white/55"}>{value}</span>;
 }
 
 export default function ComparePage() {
   return (
-    <main className="min-h-screen bg-background">
+    <main className="compare-page min-h-screen bg-background">
       <div className="noise" aria-hidden="true" />
       <Nav />
 
@@ -216,7 +213,7 @@ export default function ComparePage() {
             </p>
           </div>
 
-          <div className="overflow-x-auto border border-white/10 bg-black/20">
+          <div className="compare-table-shell overflow-x-auto border border-white/10 bg-black/20">
             <table className="w-full min-w-[1120px] border-collapse text-left">
               <thead>
                 <tr className="border-b border-white/15">
@@ -227,7 +224,7 @@ export default function ComparePage() {
                     <th
                       key={network.name}
                       className={`px-5 py-5 font-mono text-[0.7rem] tracking-[0.12em] uppercase ${
-                        network.name === "GRID" ? "bg-emerald-400/[0.07] text-emerald-300" : "text-white/55"
+                        network.name === "GRID" ? "compare-grid-cell bg-emerald-400/[0.07] text-emerald-300" : "text-white/55"
                       }`}
                     >
                       {network.name}
@@ -244,7 +241,7 @@ export default function ComparePage() {
                         {row.detail}
                       </span>
                     </th>
-                    <td className="bg-emerald-400/[0.045] px-5 py-5 align-top text-sm">
+                    <td className="compare-grid-cell bg-emerald-400/[0.045] px-5 py-5 align-top text-sm">
                       <Value value={row.grid} grid />
                     </td>
                     <td className="px-5 py-5 align-top text-sm"><Value value={row.ethereum} /></td>

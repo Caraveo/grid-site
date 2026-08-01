@@ -91,7 +91,7 @@ export function Timeline() {
             <a href="#download" className="btn-primary min-w-[200px]">
               Install GRID
             </a>
-            <a href="#mesh-downloads" className="btn-ghost min-w-[200px]">
+            <a href="/mesh" className="btn-ghost min-w-[200px]">
               Download Mesh
             </a>
           </div>

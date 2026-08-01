@@ -2,6 +2,7 @@
 
 import { PhaseLabel } from "./PhaseLabel";
 import { ScrambleText } from "./ScrambleText";
+import { FilmDialog } from "./FilmDialog";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
 const HERO = {
@@ -11,7 +12,7 @@ const HERO = {
     download: "Download Mesh",
     explain: "Explain",
     registry: "Registry",
-    tag: "Bitcoin · Transact Security Layer",
+    tag: "Super Compute Fabric",
     scroll: "Scroll",
   },
   es: {
@@ -20,7 +21,7 @@ const HERO = {
     download: "Descargar Mesh",
     explain: "Explicar",
     registry: "Registro",
-    tag: "Bitcoin · Capa de seguridad de transacciones",
+    tag: "Super Compute Fabric",
     scroll: "Desplazar",
   },
   de: {
@@ -29,7 +30,7 @@ const HERO = {
     download: "Mesh laden",
     explain: "Erklären",
     registry: "Registry",
-    tag: "Bitcoin · Transact Security Layer",
+    tag: "Super Compute Fabric",
     scroll: "Scrollen",
   },
   fr: {
@@ -38,7 +39,7 @@ const HERO = {
     download: "Télécharger Mesh",
     explain: "Expliquer",
     registry: "Registre",
-    tag: "Bitcoin · Couche de sécurité des transactions",
+    tag: "Super Compute Fabric",
     scroll: "Défiler",
   },
 } as const;
@@ -78,7 +79,7 @@ export function Hero() {
         </p>
 
         <div className="mt-10 flex flex-col items-center gap-4 animate-fade-up delay-3 sm:flex-row">
-          <a href="#mesh-downloads" className="btn-primary min-w-[200px]">
+          <a href="/mesh" className="btn-primary min-w-[200px]">
             {h.download}
           </a>
           <a href="/explain" className="btn-ghost min-w-[200px]">
@@ -87,6 +88,7 @@ export function Hero() {
           <a href="/registry" className="btn-ghost min-w-[200px]">
             {h.registry}
           </a>
+          <FilmDialog />
         </div>
 
         <p className="mt-10 animate-fade-up delay-4 font-mono text-[0.65rem] tracking-[0.22em] text-white/35 uppercase">

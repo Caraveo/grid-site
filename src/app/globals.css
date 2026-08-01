@@ -8,7 +8,7 @@ html.dark {
   --foreground: #ffffff;
   --fg-strong: #ffffff;
   --muted: #a1a1a1;
-  --dim: #6b6b6b;
+  --dim: #767676;
   --border: rgba(255, 255, 255, 0.12);
   --surface: rgba(255, 255, 255, 0.03);
   --surface-hover: rgba(255, 255, 255, 0.06);
@@ -141,6 +141,60 @@ body {
   background:
     radial-gradient(ellipse 60% 40% at 50% 55%, var(--hero-glow-a) 0%, transparent 70%),
     radial-gradient(ellipse 40% 30% at 50% 100%, var(--hero-glow-b) 0%, transparent 60%);
+}
+
+/* ─── Theme-synchronized GRID film ─── */
+.film-video-light {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.film-video-dark {
+  opacity: 1;
+  visibility: visible;
+}
+
+html.light .film-video-light {
+  opacity: 1;
+  visibility: visible;
+}
+
+html.light .film-video-dark {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.film-video-dark,
+.film-video-light {
+  transition: opacity 0.22s ease;
+}
+
+.watch-film-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  min-height: 3rem;
+  border: 1px solid var(--btn-ghost-border);
+  padding: 0.9rem 2.25rem;
+  color: var(--fg-strong);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.watch-film-cta:hover {
+  border-color: var(--fg-strong);
+  background: var(--fg-strong);
+  color: var(--background);
+}
+
+.film-dialog {
+  background:
+    linear-gradient(var(--background), color-mix(in srgb, var(--background) 82%, transparent)),
+    radial-gradient(circle at 50% 50%, var(--glow), transparent 46rem);
 }
 
 /* ─── Fade / reveal animations ─── */
@@ -300,6 +354,296 @@ body {
   box-shadow: var(--panel-hover-shadow);
 }
 
+/* ─── Contributor open call ─── */
+.contribute-page {
+  --contribute-accent: #6ee7b7;
+}
+
+html.light .contribute-page {
+  --contribute-accent: #17663b;
+}
+
+/* ─── Contributor article ─── */
+html.light .contributor-article .text-white {
+  color: #0a0a0a !important;
+}
+
+html.light .contributor-article [class*="text-white/"] {
+  color: #4b4b4b !important;
+}
+
+html.light .contributor-article .text-emerald-300,
+html.light .contributor-article [class*="text-emerald-300/"] {
+  color: #166534 !important;
+}
+
+html.light .contributor-article .text-\[\#9da5ff\],
+html.light .contributor-article .text-\[\#aeb4ff\] {
+  color: #4338ca !important;
+}
+
+/* ─── Token architecture surfaces ─── */
+html.light .token-page .token-block {
+  background-color: #ffffff !important;
+}
+
+html.light .token-page .token-block .text-white {
+  color: #0a0a0a !important;
+}
+
+html.light .token-page .token-block [class*="text-white/"] {
+  color: #555555 !important;
+}
+
+html.light .token-page .token-block [class*="text-cyan-"] {
+  color: #0e7490 !important;
+}
+
+/* ─── Proof of Resource accents ─── */
+.por-page {
+  --por-blue: #67e8f9;
+  --por-yellow: #fde68a;
+  --por-green: #6ee7b7;
+  --por-copy: #b8b8b8;
+}
+
+html.light .por-page {
+  --por-blue: #075985;
+  --por-yellow: #854d0e;
+  --por-green: #166534;
+  --por-copy: #444444;
+}
+
+html.light .por-page .por-pipeline {
+  border-color: rgba(0, 0, 0, 0.14);
+  background-color: rgba(0, 0, 0, 0.14);
+}
+
+html.light .por-page .por-pipeline-step {
+  background-color: #ffffff;
+}
+
+/* ─── News accents ─── */
+.news-page {
+  --news-blue: #67e8f9;
+}
+
+html.light .news-page {
+  --news-blue: #075985;
+}
+
+/* ─── Allocation accents ─── */
+.allocation-page {
+  --allocation-blue: #a5f3fc;
+  --allocation-purple: #ddd6fe;
+}
+
+html.light .allocation-page {
+  --allocation-blue: #075985;
+  --allocation-purple: #5b21b6;
+}
+
+/* ─── Network comparison ─── */
+.compare-page {
+  --compare-green: #34d399;
+  --compare-no-marker: rgba(255, 255, 255, 0.58);
+}
+
+html.light .compare-page {
+  --compare-green: #047857;
+  --compare-no-marker: #626262;
+}
+
+.compare-page .compare-no-marker {
+  color: var(--compare-no-marker);
+  font-weight: 600;
+}
+
+html.light .compare-page .compare-table-shell {
+  border-color: rgba(0, 0, 0, 0.12);
+  background-color: #ffffff;
+}
+
+html.light .compare-page .compare-table-shell th,
+html.light .compare-page .compare-table-shell td {
+  background-color: #ffffff;
+}
+
+html.light .compare-page .compare-table-shell .compare-grid-cell {
+  background-color: #f0faf5;
+}
+
+html.light .compare-page .compare-table-shell tr {
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+html.light .compare-page .text-emerald-300,
+html.light .compare-page .text-emerald-400 {
+  color: var(--compare-green) !important;
+}
+
+/* ─── OTG27 annual community event ─── */
+.otg-page {
+  --otg-signal: #9cff57;
+  --otg-signal-fg: #071003;
+  --otg-page-bg: #050505;
+  --otg-card-bg: #080808;
+  --otg-grid-line: rgba(255, 255, 255, 0.1);
+  --otg-hero-fade: rgba(0, 0, 0, 0.05);
+  background:
+    radial-gradient(circle at 88% 8%, rgba(156, 255, 87, 0.06), transparent 22rem),
+    var(--otg-page-bg);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+html.light .otg-page {
+  --otg-signal: #397a12;
+  --otg-signal-fg: #ffffff;
+  --otg-page-bg: #f7f7f5;
+  --otg-card-bg: #ffffff;
+  --otg-grid-line: rgba(0, 0, 0, 0.1);
+  --otg-hero-fade: rgba(247, 247, 245, 0.05);
+}
+
+.otg-hero {
+  background:
+    linear-gradient(to bottom, var(--otg-hero-fade), var(--otg-page-bg) 96%),
+    radial-gradient(circle at 74% 45%, rgba(156, 255, 87, 0.08), transparent 25%);
+}
+
+.otg-grid {
+  opacity: 0.32;
+  background-image:
+    linear-gradient(var(--otg-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--otg-grid-line) 1px, transparent 1px);
+  background-size: clamp(42px, 6vw, 88px) clamp(42px, 6vw, 88px);
+  mask-image: linear-gradient(to bottom, transparent, black 18%, black 82%, transparent);
+}
+
+.otg-orb {
+  right: 8vw;
+  top: 21%;
+  width: min(34vw, 32rem);
+  aspect-ratio: 1;
+  border: 1px solid rgba(156, 255, 87, 0.35);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 4rem rgba(156, 255, 87, 0.015),
+    0 0 0 8rem rgba(156, 255, 87, 0.01),
+    inset 0 0 5rem rgba(156, 255, 87, 0.04);
+}
+
+.otg-orb::before,
+.otg-orb::after {
+  content: "";
+  position: absolute;
+  background: rgba(156, 255, 87, 0.3);
+}
+
+.otg-orb::before {
+  left: 50%;
+  top: -18%;
+  width: 1px;
+  height: 136%;
+}
+
+.otg-orb::after {
+  left: -18%;
+  top: 50%;
+  width: 136%;
+  height: 1px;
+}
+
+.otg-display {
+  display: flex;
+  align-items: flex-start;
+  font-size: clamp(7rem, 24vw, 22rem);
+  font-weight: 650;
+  line-height: 0.68;
+  letter-spacing: -0.095em;
+}
+
+.otg-display .otg-27 {
+  color: var(--otg-signal);
+  font-weight: 250;
+}
+
+.otg-kicker {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--otg-signal);
+}
+
+.otg-btn-signal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.1rem;
+  padding: 0.85rem 1.75rem;
+  border: 1px solid var(--otg-signal);
+  background: var(--otg-signal);
+  color: var(--otg-signal-fg);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: 180ms ease;
+}
+
+.otg-btn-signal:hover {
+  background: transparent;
+  color: var(--otg-signal);
+  box-shadow: 0 0 2rem rgba(156, 255, 87, 0.12);
+}
+
+.otg-agenda-row {
+  transition: padding 180ms ease, background 180ms ease;
+}
+
+.otg-agenda-row:hover {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.otg-ticket-featured {
+  box-shadow: inset 0 3px 0 var(--otg-signal);
+}
+
+.otg-field-label {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: color-mix(in srgb, var(--foreground) 42%, transparent);
+  text-transform: uppercase;
+}
+
+.otg-field {
+  width: 100%;
+  margin-top: 0.4rem;
+  border: 1px solid color-mix(in srgb, var(--foreground) 15%, transparent);
+  background: color-mix(in srgb, var(--background) 82%, transparent);
+  padding: 0.75rem;
+  color: var(--foreground);
+  font-size: 0.875rem;
+  outline: none;
+}
+
+.otg-field:focus {
+  border-color: rgba(156, 255, 87, 0.7);
+}
+
+@media (max-width: 640px) {
+  .otg-orb {
+    right: -26vw;
+    top: 25%;
+    width: 72vw;
+    opacity: 0.65;
+  }
+}
+
 /* ─── Nav ─── */
 .nav-scrolled {
   background: var(--nav-bg);
@@ -335,6 +679,43 @@ body {
    Light mode: remap hardcoded dark Tailwind utilities
    (site was built with text-white / bg-black throughout)
    ═══════════════════════════════════════════════════════════ */
+html.dark .text-white\/48,
+html.dark .text-white\/45,
+html.dark .text-white\/42,
+html.dark .text-white\/40,
+html.dark .text-white\/38,
+html.dark .text-white\/36,
+html.dark .text-white\/35,
+html.dark .text-white\/30,
+html.dark .text-white\/25,
+html.dark .text-white\/20,
+html.dark .text-foreground\/48,
+html.dark .text-foreground\/45,
+html.dark .text-foreground\/42,
+html.dark .text-foreground\/40,
+html.dark .text-foreground\/38,
+html.dark .text-foreground\/36,
+html.dark .text-foreground\/35,
+html.dark .text-foreground\/30,
+html.dark .text-foreground\/25,
+html.dark .text-foreground\/20 {
+  color: var(--muted) !important;
+}
+
+html.dark [class*="text-cyan-200/"],
+html.dark [class*="text-cyan-300/"] {
+  color: #67e8f9 !important;
+}
+html.dark [class*="text-emerald-100/"],
+html.dark [class*="text-emerald-200/"],
+html.dark [class*="text-emerald-300/"] {
+  color: #6ee7b7 !important;
+}
+html.dark [class*="text-amber-100/"],
+html.dark [class*="text-amber-200/"] {
+  color: #fde68a !important;
+}
+
 html.light .bg-black {
   background-color: var(--background) !important;
 }
@@ -370,28 +751,50 @@ html.light .text-white\/70 {
   color: color-mix(in srgb, var(--fg-strong) 70%, transparent) !important;
 }
 html.light .text-white\/60 {
-  color: color-mix(in srgb, var(--fg-strong) 60%, transparent) !important;
+  color: var(--muted) !important;
 }
 html.light .text-white\/55 {
-  color: color-mix(in srgb, var(--fg-strong) 55%, transparent) !important;
+  color: var(--muted) !important;
 }
 html.light .text-white\/50 {
-  color: color-mix(in srgb, var(--fg-strong) 50%, transparent) !important;
+  color: var(--muted) !important;
 }
 html.light .text-white\/45 {
-  color: color-mix(in srgb, var(--fg-strong) 48%, transparent) !important;
+  color: var(--muted) !important;
 }
 html.light .text-white\/40 {
-  color: color-mix(in srgb, var(--fg-strong) 42%, transparent) !important;
+  color: var(--muted) !important;
 }
 html.light .text-white\/35 {
-  color: color-mix(in srgb, var(--fg-strong) 38%, transparent) !important;
+  color: var(--muted) !important;
 }
 html.light .text-white\/30 {
-  color: color-mix(in srgb, var(--fg-strong) 32%, transparent) !important;
+  color: var(--muted) !important;
 }
 html.light .text-white\/25 {
-  color: color-mix(in srgb, var(--fg-strong) 28%, transparent) !important;
+  color: var(--muted) !important;
+}
+html.light .text-white\/65,
+html.light .text-white\/62,
+html.light .text-white\/52,
+html.light .text-white\/48,
+html.light .text-white\/42,
+html.light .text-white\/38,
+html.light .text-white\/36,
+html.light .text-white\/20 {
+  color: var(--muted) !important;
+}
+
+html.light .text-foreground\/65,
+html.light .text-foreground\/60,
+html.light .text-foreground\/55,
+html.light .text-foreground\/50,
+html.light .text-foreground\/45,
+html.light .text-foreground\/40,
+html.light .text-foreground\/35,
+html.light .text-foreground\/30,
+html.light .text-foreground\/25 {
+  color: var(--muted) !important;
 }
 
 html.light .border-white,
@@ -488,7 +891,36 @@ html.light .bg-white\/10 {
   background-color: color-mix(in srgb, var(--fg-strong) 10%, transparent) !important;
 }
 
-/* Ember accent stays warm */
+/* Pale dark-mode accents become saturated, readable accents in light mode. */
+html.light .text-cyan-200,
+html.light [class*="text-cyan-200/"],
+html.light .text-cyan-300,
+html.light [class*="text-cyan-300/"] {
+  color: #075985 !important;
+}
+html.light .text-emerald-100,
+html.light [class*="text-emerald-100/"],
+html.light .text-emerald-200,
+html.light [class*="text-emerald-200/"],
+html.light .text-emerald-300,
+html.light [class*="text-emerald-300/"],
+html.light .text-emerald-400,
+html.light [class*="text-emerald-400/"] {
+  color: #166534 !important;
+}
+html.light .text-amber-100,
+html.light [class*="text-amber-100/"],
+html.light .text-amber-200,
+html.light [class*="text-amber-200/"],
+html.light .text-amber-400 {
+  color: #854d0e !important;
+}
+html.light .text-violet-200,
+html.light .text-purple-200 {
+  color: #5b21b6 !important;
+}
+
+/* Phoenix accent stays warm */
 html.light .text-\[\#ff6a1a\],
 html.light .text-\[\#ff6a1a\]\/90 {
   color: var(--ember) !important;
@@ -504,6 +936,18 @@ html.light .bg-\[\#ff6a1a\]\/\[0\.06\] {
 html.light pre,
 html.light .font-mono.bg-black\/60 {
   background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Globe telemetry chip needs its own contrast treatment in both themes. */
+.globe-status-badge {
+  border: 1px solid rgba(110, 231, 183, 0.5);
+  background: rgba(2, 12, 8, 0.88);
+  color: #a7f3d0;
+}
+html.light .globe-status-badge {
+  border-color: #15803d;
+  background: rgba(255, 255, 255, 0.94);
+  color: #14532d;
 }
 
 /* Dropdown menus */

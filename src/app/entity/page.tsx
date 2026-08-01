@@ -1,3 +1,4 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import { EntityApply } from "@/components/EntityApply";
 
@@ -6,11 +7,7 @@ import { EntityApply } from "@/components/EntityApply";
  * Key ($300) and Verified Entity ($10k) via Cash App $Caraveo.
  * No public protocol marketing.
  */
-export const metadata: Metadata = {
-  title: "Entity · GRID",
-  description: "Realm security and organization verification.",
-  robots: { index: false, follow: false },
-};
+export const metadata: Metadata = metadataFor("/entity");
 
 export default function EntityPage() {
   return (

@@ -1,10 +1,8 @@
+import type { Metadata } from "next";
+import { metadataFor } from "@/lib/seo";
 import { H1, H2, H3, Lead, Note, P, Table, Ul } from "@/components/docs/DocsChrome";
 
-export const metadata = {
-  title: "Concepts",
-  description:
-    "GRID network concepts: nodes, computes, realms, mesh, and the public registry.",
-};
+export const metadata: Metadata = metadataFor("/docs/concepts");
 
 export default function ConceptsPage() {
   return (
@@ -97,11 +95,11 @@ export default function ConceptsPage() {
         yet elect permissionless block producers.
       </P>
 
-      <H2 id="ember">Ember</H2>
+      <H2 id="realm-stack">Realm stack</H2>
       <P>
-        An <strong className="text-foreground">ember</strong> is the full local
-        stack for one realm: host useful jobs + mine PoR + serve compute + keep
-        the registry announcement fresh. Operators typically run{" "}
+        A <strong className="text-foreground">realm stack</strong> is the full local
+        operator stack for one realm: host useful jobs + mine PoR + serve compute +
+        keep the registry announcement fresh. The current CLI command is{" "}
         <code className="font-mono text-foreground">grid ember &lt;name&gt; --start</code>.
       </P>
 

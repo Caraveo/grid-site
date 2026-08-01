@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { metadataFor } from "@/lib/seo";
 import { CodeBlock } from "@/components/docs/CodeBlock";
 import {
   Endpoint,
@@ -11,11 +13,7 @@ import {
 } from "@/components/docs/DocsChrome";
 import { API_BASE } from "@/lib/docs-nav";
 
-export const metadata = {
-  title: "Nodes & mesh",
-  description:
-    "Public mesh peers and location-only globe pings for GRID nodes.",
-};
+export const metadata: Metadata = metadataFor("/docs/nodes");
 
 export default function NodesDocsPage() {
   return (

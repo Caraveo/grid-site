@@ -36,7 +36,9 @@ export type MeshDownload = {
   available: boolean;
 };
 
-const MESH_VERSION = "0.2.0";
+const MESH_VERSION = "0.2.24";
+const MESH_RELEASE =
+  "https://github.com/Caraveo/grid-net/releases/download/v0.2.24";
 
 /**
  * Mesh browser builds.
@@ -51,12 +53,12 @@ export const MESH_DOWNLOADS: MeshDownload[] = [
     badge: "Available",
     primary: {
       label: "Download .dmg",
-      href: "/downloads/mesh/mac-intel/MESH.dmg",
+      href: `${MESH_RELEASE}/MESH-macOS-x86_64.dmg`,
       filename: "MESH-mac-intel.dmg",
     },
     secondary: {
       label: ".app.zip",
-      href: "/downloads/mesh/mac-intel/MESH.app.zip",
+      href: `${MESH_RELEASE}/MESH-macOS-x86_64.app.zip`,
       filename: "MESH-mac-intel.app.zip",
     },
     note: "Open the disk image and drag Mesh to Applications.",
@@ -69,12 +71,12 @@ export const MESH_DOWNLOADS: MeshDownload[] = [
     badge: "Available",
     primary: {
       label: "Download .dmg",
-      href: "/downloads/mesh/mac-arm/MESH.dmg",
+      href: `${MESH_RELEASE}/MESH-macOS-arm64.dmg`,
       filename: "MESH-mac-arm.dmg",
     },
     secondary: {
       label: ".app.zip",
-      href: "/downloads/mesh/mac-arm/MESH.app.zip",
+      href: `${MESH_RELEASE}/MESH-macOS-arm64.app.zip`,
       filename: "MESH-mac-arm.app.zip",
     },
     note: "Apple silicon. Installs like any Mac app.",
@@ -87,12 +89,12 @@ export const MESH_DOWNLOADS: MeshDownload[] = [
     badge: "Available",
     primary: {
       label: "Download AppImage",
-      href: "/downloads/mesh/linux/MESH.AppImage",
+      href: `${MESH_RELEASE}/MESH-Linux-x86_64.AppImage`,
       filename: "MESH-linux.AppImage",
     },
     secondary: {
       label: ".deb",
-      href: "/downloads/mesh/linux/mesh_amd64.deb",
+      href: `${MESH_RELEASE}/MESH-Linux-x86_64.deb`,
       filename: "mesh_amd64.deb",
     },
     note: "AppImage (chmod +x && ./MESH.AppImage) or .deb. x86_64.",
@@ -105,15 +107,15 @@ export const MESH_DOWNLOADS: MeshDownload[] = [
     badge: "Available",
     primary: {
       label: "Download Mesh",
-      href: "/downloads/mesh/windows/MESH-Setup.zip",
+      href: `${MESH_RELEASE}/MESH-Windows-x86_64-setup.exe`,
       filename: "MESH-Setup.zip",
     },
     secondary: {
       label: "Portable.zip",
-      href: "/downloads/mesh/windows/MESH-Setup.zip",
-      filename: "MESH-Setup.zip",
+      href: `${MESH_RELEASE}/MESH-Windows-x86_64.msi`,
+      filename: "MESH-Windows-x86_64.msi",
     },
-    note: "Windows 11+. Unzip and run Mesh.bat.",
+    note: "Windows 11+. Use the installer or managed MSI package.",
     available: true,
   },
 ];
@@ -122,23 +124,23 @@ export const DOWNLOADS = {
   mesh: {
     version: MESH_VERSION,
     /** @deprecated prefer MESH_DOWNLOADS */
-    dmg: "/downloads/mesh/mac-intel/MESH.dmg",
-    appZip: "/downloads/mesh/mac-intel/MESH.app.zip",
+    dmg: `${MESH_RELEASE}/MESH-macOS-x86_64.dmg`,
+    appZip: `${MESH_RELEASE}/MESH-macOS-x86_64.app.zip`,
     platform: "Multi-platform",
     platforms: MESH_DOWNLOADS,
   },
   cli: {
     darwinX64:
-      "/downloads/cli/grid-darwin-x86_64?rev=20260729-v0219-p2pnode",
+      "/downloads/cli/grid-darwin-x86_64?rev=20260731-v0224-architecture",
     darwinArm64:
-      "/downloads/cli/grid-darwin-aarch64?rev=20260729-v0219-p2pnode",
+      "/downloads/cli/grid-darwin-aarch64?rev=20260731-v0224-architecture",
     linuxX64:
-      "/downloads/cli/grid-linux-x86_64?rev=20260729-v0219-p2pnode" as string | null,
+      "/downloads/cli/grid-linux-x86_64?rev=20260731-v0224-architecture" as string | null,
     windowsX64:
-      "/downloads/cli/grid-windows-x86_64.exe?rev=20260729-v0219-p2pnode",
+      "/downloads/cli/grid-windows-x86_64.exe?rev=20260731-v0224-architecture",
     installSh: "/downloads/install.sh",
     installPs: "/downloads/install.ps1",
-    version: "0.2.18",
+    version: "0.2.24",
   },
 };
 

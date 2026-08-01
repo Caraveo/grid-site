@@ -1,3 +1,4 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Nav } from "@/components/Nav";
@@ -6,7 +7,7 @@ import { RegisterFlow } from "@/components/RegisterFlow";
 import { ScrambleText } from "@/components/ScrambleText";
 import { buildMetadata, PAGES } from "@/lib/seo";
 
-export const metadata: Metadata = buildMetadata(PAGES.registry);
+export const metadata: Metadata = metadataFor("/registry");
 
 function Section({
   id,
@@ -67,8 +68,8 @@ export default function RegistryPage() {
               <a href="#register" className="btn-primary">
                 Register a name
               </a>
-              <a href="/ember" className="btn-ghost">
-                What is an ember?
+              <a href="/docs/concepts#realm-stack" className="btn-ghost">
+                What is a realm stack?
               </a>
               <a href="/explain" className="btn-ghost">
                 Explain GRID
@@ -129,7 +130,7 @@ export default function RegistryPage() {
           label="02 · What activation unlocks"
           title={
             <>
-              Ember registry leg
+              Realm-stack registry leg
               <br />
               <span className="font-thin text-white/70">&amp; public presence</span>
             </>
@@ -147,8 +148,8 @@ export default function RegistryPage() {
                 is rejected for that name (HTTP 402).
               </p>
               <p>
-                An <a href="/ember" className="text-white underline-offset-4 hover:underline">ember</a>{" "}
-                is host + mine + compute +{" "}
+                A <a href="/docs/concepts#realm-stack" className="text-white underline-offset-4 hover:underline">realm stack</a>{" "}
+                combines host + mine + compute +{" "}
                 <strong className="font-normal text-white/85">this paid registry leg</strong>
                 . Local mining works without it; public mesh identity does not.
               </p>
@@ -276,8 +277,8 @@ export default function RegistryPage() {
             <p className="section-label">Related</p>
             <h2 className="section-title mt-4">After you&apos;re active</h2>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-              <a href="/ember" className="btn-primary">
-                Ember guide
+              <a href="/docs/concepts#realm-stack" className="btn-primary">
+                Realm stack guide
               </a>
               <a href="/explain#realms" className="btn-ghost">
                 Realms

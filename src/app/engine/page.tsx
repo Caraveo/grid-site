@@ -1,11 +1,9 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
 
-export const metadata: Metadata = {
-  title: "GRID Engine | Isolated workload control plane",
-  description: "GRID Engine prepares policy-controlled, encrypted workload envelopes and isolated container execution.",
-};
+export const metadata: Metadata = metadataFor("/engine");
 
 export default function EnginePage() {
   return <><div className="noise" aria-hidden /><Nav siteOrigin="https://grid-compute.com" />

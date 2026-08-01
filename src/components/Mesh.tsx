@@ -1,6 +1,7 @@
 import { ScrambleText } from "./ScrambleText";
 import { DOWNLOADS } from "@/lib/downloads";
 import { MeshDownloads } from "./MeshDownloads";
+import { MeshShowcase } from "./MeshShowcase";
 
 const FLOW = [
   {
@@ -54,20 +55,25 @@ export function Mesh() {
         {/* Header */}
         <div className="mx-auto max-w-3xl text-center">
           <p className="section-label">
-            <ScrambleText text="Mesh · Desktop browser" />
+            <ScrambleText text="Mesh · Internet browser" />
           </p>
           <h2 className="section-title mt-5">
-            Download <ScrambleText text="Mesh" />
+            Minimal browser. <ScrambleText text="Powerful mesh." />
           </h2>
           <p className="mx-auto mt-6 section-body text-center">
-            Mesh is the desktop app for the GRID mesh. Type a realm. Open{" "}
-            <span className="font-mono text-white/80">grid://</span> the way the
-            old web opened https — the primary network is compute.
+            Mesh is a fast, minimal internet browser with Mesh blockchain
+            capabilities built in. Browse the web you know, then open{" "}
+            <span className="font-mono text-white/80">grid://</span> realms,
+            discover compute, and move across the GRID network without changing
+            tools.
           </p>
           <p className="mt-4 font-mono text-[0.65rem] tracking-[0.18em] text-white/35 uppercase">
             v{DOWNLOADS.mesh.version} · auto-detects your machine
           </p>
         </div>
+
+        {/* Mesh in use — rotates automatically, with manual controls */}
+        <MeshShowcase />
 
         {/* Smart downloads — best build for this browser */}
         <MeshDownloads />

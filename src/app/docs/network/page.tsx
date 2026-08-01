@@ -1,4 +1,7 @@
+import type { Metadata } from "next";
+import { metadataFor } from "@/lib/seo";
 import { CodeBlock } from "@/components/docs/CodeBlock";
+import { ArchitectureDiagram } from "@/components/docs/ArchitectureDiagram";
 import {
   H1,
   H2,
@@ -10,11 +13,7 @@ import {
   Ul,
 } from "@/components/docs/DocsChrome";
 
-export const metadata = {
-  title: "Network architecture & status",
-  description:
-    "How the GRID Genesis node, coordinator, P2P peers, settlement chain, and public telemetry fit together.",
-};
+export const metadata: Metadata = metadataFor("/docs/network");
 
 export default function NetworkDocsPage() {
   return (
@@ -31,6 +30,16 @@ export default function NetworkDocsPage() {
         production is Genesis-led today. P2P verification is live, but permissionless
         block production and decentralized finality are not yet implemented.
       </Note>
+
+      <H2 id="overview">Architecture overview</H2>
+      <ArchitectureDiagram />
+      <P>
+        Contributors should preserve these boundaries: wallets own custody and
+        signing, the ARK edge accepts signed envelopes, GRID core owns validation
+        and replay protection, and Genesis currently anchors canonical Phase 1
+        state. A service may relay data across a boundary; it must not silently
+        absorb the responsibility on the other side.
+      </P>
 
       <H2 id="topology">Public topology</H2>
       <Table
@@ -165,7 +174,7 @@ grid mainnet --migrate-storage`}
 
       <H3 id="local">Local and custom networks</H3>
       <P>
-        Development tools and Ember wallet settings may target a local or custom
+        Development tools and Phoenix wallet settings may target a local or custom
         node. That is useful for testing, but it creates a different trust boundary.
         The public pilot defaults to the canonical Genesis endpoints above.
       </P>

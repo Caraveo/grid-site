@@ -35,8 +35,8 @@ FORCE=0
 SYSTEM=0
 UNINSTALL=0
 YES=0
-VERSION_HINT="0.2.18"
-ASSET_REV="20260729-v0219-p2pnode"
+VERSION_HINT="0.2.24"
+ASSET_REV="20260731-v0224-architecture"
 
 for arg in "$@"; do
   case "$arg" in

@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { metadataFor } from "@/lib/seo";
 import { CodeBlock } from "@/components/docs/CodeBlock";
 import {
   H1,
@@ -9,11 +11,7 @@ import {
   Ul,
 } from "@/components/docs/DocsChrome";
 
-export const metadata = {
-  title: "Mining, rewards & use cases",
-  description:
-    "How GRID mining work is verified and settled during the current public pilot.",
-};
+export const metadata: Metadata = metadataFor("/docs/earn");
 
 export default function EarnDocsPage() {
   return (
@@ -52,7 +50,7 @@ export default function EarnDocsPage() {
             "Host and mine tracks in one process",
           ],
           [
-            "Ember",
+            "Phoenix",
             "grid ember NAME --start",
             "Host, mine, named compute, and registry presence",
           ],
@@ -134,7 +132,7 @@ grid stats`}
           ["Network monitor", "Explorer + mesh APIs", "Health and coarse presence"],
           ["Useful job launcher", "Coordinator protocol", "Authorized pilot job types"],
           ["Mesh experience", "grid:// realm + registry", "Requires claimed and active realm"],
-          ["Wallet dashboard", "Ember / CLI", "Pilot chain and Solana devnet"],
+          ["Wallet dashboard", "Phoenix / CLI", "Pilot chain and Solana devnet"],
         ]}
       />
 

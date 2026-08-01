@@ -2,7 +2,7 @@
  * Build-time Open Graph PNGs (1200×630) via next/og ImageResponse.
  * Output: public/og/*.png
  */
-import { writeFile, mkdir } from "node:fs/promises";
+import { writeFile, mkdir, readFile, readdir } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { ImageResponse } from "next/og.js";
@@ -11,44 +11,68 @@ import { createElement as h } from "react";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUT = join(__dirname, "../public/downloads/og");
 
-const pages = [
-  {
-    file: "card-00.png",
-    label: "GRID",
-    title: "Useful mining.\nPlanetary compute.",
-    description:
-      "Run a node. Do real work. Earn GRID. The planetary supercomputer built from machines everywhere.",
-  },
-  {
-    file: "card-01.png",
-    label: "EMBER",
-    title: "Ember — full stack\nfor one realm",
-    description:
-      "host + mine + compute + registry. One grid:// name. Fully yours.",
-  },
-  {
-    file: "card-02.png",
-    label: "REGISTRY",
-    title: "Registry — public\nnames that stay real",
-    description:
-      "Activate on registry.grid. Cash App $5 → $Caraveo. Donations accepted.",
-  },
-  {
-    file: "card-03.png",
-    label: "EXPLAIN",
-    title: "GRID & Mesh\nin plain English",
-    description:
-      "What the network is, how Mesh opens grid://, and how Bitcoin secures value.",
-  },
-  {
-    file: "card-04.png",
-    label: "ADMIN",
-    title: "GRID Admin",
-    description: "Registry administration.",
-  },
-];
+function fileForPath(path) {
+  if (path === "/") return "home.png";
+  return `${path
+    .replace(/^\/|\/$/g, "")
+    .replaceAll("/", "-")
+    .replace(/[^a-z0-9-]/gi, "-")
+    .toLowerCase()}.png`;
+}
 
-function ogElement({ title, description, label }) {
+function accentForPath(path) {
+  let hash = 0;
+  for (const character of path) {
+    hash = (hash * 31 + character.charCodeAt(0)) >>> 0;
+  }
+  const accents = ["#50f01c", "#22d3ee", "#60a5fa", "#a78bfa", "#fb923c"];
+  return accents[hash % accents.length];
+}
+
+async function pageFiles(directory) {
+  const entries = await readdir(directory, { withFileTypes: true });
+  const children = await Promise.all(
+    entries.map(async (entry) => {
+      const path = join(directory, entry.name);
+      if (entry.isDirectory()) return pageFiles(path);
+      return entry.name === "page.tsx" ? [path] : [];
+    }),
+  );
+  return children.flat();
+}
+
+async function validateCoverage(pages) {
+  const appDirectory = join(__dirname, "../src/app");
+  const files = await pageFiles(appDirectory);
+  const registered = new Set(pages.map((page) => page.path));
+  const seen = new Set();
+
+  for (const file of files) {
+    const relative = file
+      .slice(appDirectory.length)
+      .replace(/\/page\.tsx$/, "")
+      .replaceAll("\\", "/");
+    const route = relative || "/";
+    seen.add(route);
+    if (!registered.has(route)) {
+      throw new Error(`Missing SEO registry entry for ${route}`);
+    }
+    const source = await readFile(file, "utf8");
+    if (!source.includes(`metadataFor(${JSON.stringify(route)})`)) {
+      throw new Error(`Page ${route} is not wired to its route metadata`);
+    }
+  }
+
+  const stale = [...registered].filter((route) => !seen.has(route));
+  if (stale.length) {
+    throw new Error(`SEO registry contains routes without pages: ${stale.join(", ")}`);
+  }
+
+  console.log(`validated SEO coverage for ${files.length} document routes`);
+}
+
+function ogElement({ title, description, label, path }) {
+  const accent = accentForPath(path);
   return h(
     "div",
     {
@@ -96,7 +120,7 @@ function ogElement({ title, description, label }) {
         height: 320,
         borderRadius: 999,
         background:
-          "radial-gradient(circle, rgba(255,106,26,0.18) 0%, transparent 70%)",
+          `radial-gradient(circle, ${accent}33 0%, transparent 70%)`,
         bottom: -100,
         left: -40,
       },
@@ -227,17 +251,20 @@ function ogElement({ title, description, label }) {
             fontSize: 16,
             letterSpacing: "0.16em",
             textTransform: "uppercase",
-            color: "rgba(255,106,26,0.95)",
+            color: accent,
             fontWeight: 600,
           },
         },
-        "Planetary compute",
+        path === "/" ? "Planetary compute" : path,
       ),
     ),
   );
 }
 
 async function main() {
+  const registryPath = join(__dirname, "../src/lib/seo-pages.json");
+  const pages = JSON.parse(await readFile(registryPath, "utf8"));
+  await validateCoverage(pages);
   await mkdir(OUT, { recursive: true });
   for (const page of pages) {
     const res = new ImageResponse(ogElement(page), {
@@ -245,7 +272,7 @@ async function main() {
       height: 630,
     });
     const buf = Buffer.from(await res.arrayBuffer());
-    const dest = join(OUT, page.file);
+    const dest = join(OUT, fileForPath(page.path));
     await writeFile(dest, buf);
     console.log("wrote", dest, buf.length, "bytes");
   }

@@ -1,3 +1,4 @@
+import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Nav } from "@/components/Nav";
@@ -5,7 +6,7 @@ import { Footer } from "@/components/Footer";
 import { ScrambleText } from "@/components/ScrambleText";
 import { buildMetadata, PAGES } from "@/lib/seo";
 
-export const metadata: Metadata = buildMetadata(PAGES.slud);
+export const metadata: Metadata = metadataFor("/slud");
 
 function Section({
   id,
@@ -142,7 +143,7 @@ export default function SludPage() {
               <a href="#detect" className="btn-ghost">
                 SLUD detected
               </a>
-              <a href="/#mesh-downloads" className="btn-ghost">
+              <a href="/mesh" className="btn-ghost">
                 Get MESH
               </a>
             </div>
@@ -411,7 +412,7 @@ export default function SludPage() {
               a network that does not treat you as inventory.
             </p>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-              <a href="/#mesh-downloads" className="btn-primary">
+              <a href="/mesh" className="btn-primary">
                 Download MESH
               </a>
               <a href="/explain" className="btn-ghost">

@@ -1,15 +1,15 @@
 const RELEASE =
-  "https://github.com/Caraveo/grid-wallet-releases/releases/download/wallet-v0.1.2";
+  "https://github.com/Caraveo/grid-wallets/releases/download/v0.2.24";
 
-export type EmberDownloadChoice = {
-  label: "Get Ember" | "Get Wallet";
+export type PhoenixDownloadChoice = {
+  label: "Get Phoenix" | "Get Phoenix Wallet";
   platform: string;
   href: string;
   mobile: boolean;
   note?: string;
 };
 
-export type EmberBrowserSignals = {
+export type PhoenixBrowserSignals = {
   userAgent: string;
   platform: string;
   maxTouchPoints: number;
@@ -23,10 +23,10 @@ type NavigatorUAData = {
   ) => Promise<{ architecture?: string; bitness?: string }>;
 };
 
-export const emberFallback: EmberDownloadChoice = {
-  label: "Get Wallet",
+export const phoenixFallback: PhoenixDownloadChoice = {
+  label: "Get Phoenix Wallet",
   platform: "Choose your platform",
-  href: "https://grid-compute.com/wallet",
+  href: "https://grid-compute.com/phoenix",
   mobile: false,
 };
 
@@ -38,7 +38,7 @@ function architectureFrom(value: string | undefined): "arm64" | "x86_64" | undef
   return undefined;
 }
 
-function macArchitecture(signals: EmberBrowserSignals): "arm64" | "x86_64" | undefined {
+function macArchitecture(signals: PhoenixBrowserSignals): "arm64" | "x86_64" | undefined {
   const hinted = architectureFrom(signals.architecture);
   if (hinted) return hinted;
 
@@ -58,9 +58,9 @@ function macArchitecture(signals: EmberBrowserSignals): "arm64" | "x86_64" | und
   return uaArchitecture;
 }
 
-export function chooseEmberDownload(
-  rawSignals: EmberBrowserSignals,
-): EmberDownloadChoice {
+export function choosePhoenixDownload(
+  rawSignals: PhoenixBrowserSignals,
+): PhoenixDownloadChoice {
   const signals = {
     ...rawSignals,
     userAgent: rawSignals.userAgent.toLowerCase(),
@@ -71,23 +71,23 @@ export function chooseEmberDownload(
     signals.platform === "macintel" && signals.maxTouchPoints > 1;
   if (/iphone|ipad|ipod/.test(signals.userAgent) || ipadDesktopMode) {
     return {
-      ...emberFallback,
+      ...phoenixFallback,
       platform: "iOS · coming soon",
       mobile: true,
     };
   }
   if (/android/.test(signals.userAgent)) {
     return {
-      ...emberFallback,
+      ...phoenixFallback,
       platform: "Android · coming soon",
       mobile: true,
     };
   }
   if (/windows/.test(signals.userAgent) || signals.platform.startsWith("win")) {
     return {
-      label: "Get Ember",
+      label: "Get Phoenix",
       platform: "Windows 10/11 · x86_64",
-      href: `${RELEASE}/GRID-Wallet-Windows-x86_64-setup.exe`,
+      href: `${RELEASE}/Phoenix-Windows-x86_64-setup.exe`,
       mobile: false,
     };
   }
@@ -98,22 +98,22 @@ export function chooseEmberDownload(
     const architecture = macArchitecture(rawSignals);
     if (architecture === "arm64") {
       return {
-        label: "Get Ember",
+        label: "Get Phoenix",
         platform: "macOS 13+ · Apple silicon",
-        href: `${RELEASE}/GRID-Wallet-macOS-aarch64.zip`,
+        href: `${RELEASE}/Phoenix-macOS-arm64.zip`,
         mobile: false,
       };
     }
     if (architecture === "x86_64") {
       return {
-        label: "Get Ember",
+        label: "Get Phoenix",
         platform: "macOS 13+ · Intel",
-        href: `${RELEASE}/GRID-Wallet-macOS-x86_64.zip`,
+        href: `${RELEASE}/Phoenix-macOS-x86_64.zip`,
         mobile: false,
       };
     }
     return {
-      ...emberFallback,
+      ...phoenixFallback,
       platform: "macOS · choose Intel or Apple silicon",
       note:
         "This browser hides your Mac architecture, so choose the matching build on the wallet page.",
@@ -122,19 +122,19 @@ export function chooseEmberDownload(
   if (/linux|x11/.test(signals.userAgent) || signals.platform.includes("linux")) {
     if (architectureFrom(rawSignals.architecture) === "arm64") {
       return {
-        ...emberFallback,
+        ...phoenixFallback,
         platform: "Linux ARM64 · build unavailable",
         note: "The current Linux release supports x86_64. More builds are coming.",
       };
     }
     return {
-      label: "Get Ember",
+      label: "Get Phoenix",
       platform: "Linux · x86_64 AppImage",
-      href: `${RELEASE}/GRID-Wallet-Linux-x86_64.AppImage`,
+      href: `${RELEASE}/Phoenix-Linux-x86_64.AppImage`,
       mobile: false,
     };
   }
-  return emberFallback;
+  return phoenixFallback;
 }
 
 function readWebglRenderer(): string | undefined {
@@ -158,7 +158,7 @@ function readWebglRenderer(): string | undefined {
   }
 }
 
-export async function detectEmberDownload(): Promise<EmberDownloadChoice> {
+export async function detectPhoenixDownload(): Promise<PhoenixDownloadChoice> {
   const nav = navigator as Navigator & { userAgentData?: NavigatorUAData };
   let architecture: string | undefined;
 
@@ -172,7 +172,7 @@ export async function detectEmberDownload(): Promise<EmberDownloadChoice> {
     // Privacy-focused browsers may reject high-entropy client hints.
   }
 
-  return chooseEmberDownload({
+  return choosePhoenixDownload({
     userAgent: nav.userAgent,
     platform: nav.platform,
     maxTouchPoints: nav.maxTouchPoints ?? 0,
