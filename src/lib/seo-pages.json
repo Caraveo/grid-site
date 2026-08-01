@@ -13,6 +13,33 @@
     "noIndex": true
   },
   {
+    "path": "/dashboard",
+    "label": "DASHBOARD",
+    "title": "GRID Dashboard",
+    "description": "Private operations dashboard for GRID services.",
+    "noIndex": true
+  },
+  {
+    "path": "/dashboard/mail",
+    "label": "DASHBOARD · MAIL",
+    "title": "GRID Mail Dashboard",
+    "description": "Private mail operations dashboard for GRID.",
+    "noIndex": true
+  },
+  {
+    "path": "/login",
+    "label": "LOGIN",
+    "title": "Sign In to GRID",
+    "description": "Secure sign-in for private GRID operations.",
+    "noIndex": true
+  },
+  {
+    "path": "/mesh",
+    "label": "MESH",
+    "title": "MESH — GRID",
+    "description": "MESH is the desktop browser for GRID. Open grid:// realms and navigate the compute network."
+  },
+  {
     "path": "/alloc",
     "label": "ALLOCATION",
     "title": "GRID Allocation — Every GRID Counted",
@@ -179,12 +206,6 @@
     "label": "MINE",
     "title": "Mine GRID — Verified Useful Work",
     "description": "Configure a reward wallet and inspect verified GRID mining receipts produced by useful computation."
-  },
-  {
-    "path": "/mesh",
-    "label": "MESH",
-    "title": "MESH — GRID",
-    "description": "MESH is a minimal internet browser with built-in Mesh blockchain capabilities for opening grid:// realms and navigating the GRID compute network."
   },
   {
     "path": "/news",

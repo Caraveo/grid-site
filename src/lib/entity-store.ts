@@ -14,6 +14,7 @@ import {
 } from "./gp-id";
 import { CASH_APP_CASHTAG, cashAppPayUrl } from "./registration-store";
 import { sanitizeLabel, sanitizeNodeId } from "./sanitize";
+import nacl from "tweetnacl";
 
 const KV_KEY = "gp-entity-v1";
 const MAX_ROWS = 5_000;
@@ -436,6 +437,65 @@ export async function getActiveCertForRealm(
   } catch {
     return { application: app, cert: app.certJson };
   }
+}
+
+function systemRealmSeed(): Uint8Array | null {
+  const raw = String(process.env.GRID_SYSTEM_REALM_SEED ?? "")
+    .trim()
+    .toLowerCase();
+  if (!/^[0-9a-f]{64}$/.test(raw)) return null;
+  return hexToBytes(raw);
+}
+
+function hexToBytes(hex: string): Uint8Array {
+  const bytes = new Uint8Array(hex.length / 2);
+  for (let i = 0; i < bytes.length; i++) {
+    bytes[i] = parseInt(hex.slice(i * 2, i * 2 + 2), 16);
+  }
+  return bytes;
+}
+
+function bytesToHex(bytes: Uint8Array): string {
+  return Array.from(bytes)
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+export async function ensureSystemRealmCertificate(): Promise<{
+  application: EntityApplication;
+  cert: unknown;
+} | null> {
+  const seed = systemRealmSeed();
+  if (!seed) return null;
+
+  const { store, kv } = await loadStore();
+  const existing = store.byId.system_grid_root;
+  if (existing?.status === "active" && existing.certJson) {
+    return { application: existing, cert: JSON.parse(existing.certJson) };
+  }
+
+  const keyPair = nacl.sign.keyPair.fromSeed(seed);
+  const now = new Date().toISOString();
+  const application: EntityApplication = {
+    id: "system_grid_root",
+    tier: "verified",
+    realm: "grid",
+    gpId: bytesToHex(nacl.hash(keyPair.publicKey)),
+    pubkeyHex: bytesToHex(keyPair.publicKey),
+    nodeId: "grid-root",
+    entityName: "GRID",
+    status: "active",
+    feeUsd: 0,
+    paymentNote: "system realm",
+    createdAt: now,
+    updatedAt: now,
+  };
+  const { issueCertificate } = await import("./gp-ca");
+  application.certJson = JSON.stringify(issueCertificate(application));
+  store.byId[application.id] = application;
+  store.byRealmTier[rtKey(application.realm, application.tier)] = application.id;
+  await saveStore(store, kv);
+  return { application, cert: JSON.parse(application.certJson) };
 }
 
 export async function entityAdminStats(): Promise<Record<string, number>> {

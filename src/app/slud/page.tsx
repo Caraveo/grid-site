@@ -143,7 +143,7 @@ export default function SludPage() {
               <a href="#detect" className="btn-ghost">
                 SLUD detected
               </a>
-              <a href="/#mesh-downloads" className="btn-ghost">
+              <a href="/mesh" className="btn-ghost">
                 Get MESH
               </a>
             </div>
@@ -412,7 +412,7 @@ export default function SludPage() {
               a network that does not treat you as inventory.
             </p>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-              <a href="/#mesh-downloads" className="btn-primary">
+              <a href="/mesh" className="btn-primary">
                 Download MESH
               </a>
               <a href="/explain" className="btn-ghost">

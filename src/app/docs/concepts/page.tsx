@@ -95,11 +95,11 @@ export default function ConceptsPage() {
         yet elect permissionless block producers.
       </P>
 
-      <H2 id="ember">Ember</H2>
+      <H2 id="realm-stack">Realm stack</H2>
       <P>
-        An <strong className="text-foreground">ember</strong> is the full local
-        stack for one realm: host useful jobs + mine PoR + serve compute + keep
-        the registry announcement fresh. Operators typically run{" "}
+        A <strong className="text-foreground">realm stack</strong> is the full local
+        operator stack for one realm: host useful jobs + mine PoR + serve compute +
+        keep the registry announcement fresh. The current CLI command is{" "}
         <code className="font-mono text-foreground">grid ember &lt;name&gt; --start</code>.
       </P>
 

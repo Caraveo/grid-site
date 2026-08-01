@@ -25,14 +25,7 @@ export function getStoredTheme(): Theme | null {
 }
 
 export function resolveInitialTheme(): Theme {
-  const stored = getStoredTheme();
-  if (stored) return stored;
-  if (typeof window !== "undefined" && window.matchMedia) {
-    if (window.matchMedia("(prefers-color-scheme: light)").matches) {
-      return "light";
-    }
-  }
-  return "dark";
+  return getStoredTheme() ?? "light";
 }
 
 export function ThemeToggle({ className = "" }: { className?: string }) {

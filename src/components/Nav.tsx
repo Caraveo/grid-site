@@ -133,7 +133,7 @@ function useMenu(): NavItem[] {
       labelKey: "nav.network",
       children: [
         {
-          href: "/#mesh-downloads",
+          href: "/mesh",
           labelKey: "nav.mesh",
           hintKey: "nav.mesh.hint",
           icon: "⌁",
@@ -217,7 +217,7 @@ function useMenu(): NavItem[] {
           icon: "✦",
         },
         {
-          href: "/#mesh-downloads",
+          href: "/mesh",
           labelKey: "nav.meshApp",
           hintKey: "nav.meshApp.hint",
           icon: "◫",

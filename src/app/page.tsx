@@ -2,7 +2,7 @@ import { metadataFor } from "@/lib/seo";
 import type { Metadata } from "next";
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/Hero";
-import { Mesh } from "@/components/Mesh";
+import { MeshDownloadsRedirect } from "@/components/MeshDownloadsRedirect";
 import { Mission } from "@/components/Mission";
 import { Network } from "@/components/Network";
 import { Nodes } from "@/components/Nodes";
@@ -20,10 +20,10 @@ export default function Home() {
   return (
     <>
       <div className="noise" aria-hidden />
+      <MeshDownloadsRedirect />
       <Nav />
       <main>
         <Hero />
-        <Mesh />
         <Mission />
         <Network />
         <Nodes />

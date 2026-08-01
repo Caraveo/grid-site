@@ -83,7 +83,7 @@ export default function SecurityDocsPage() {
 
       <H2 id="wallet">Wallet safety</H2>
       <P>
-        The website never needs a recovery phrase. Ember and the CLI keep wallet
+        The website never needs a recovery phrase. Phoenix and the CLI keep wallet
         material on the operator&apos;s machine. The Solana reward key at{" "}
         <code className="font-mono">~/.grid/keys/solana-reward.json</code> is
         created with restrictive permissions and is never overwritten by{" "}

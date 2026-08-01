@@ -50,7 +50,7 @@ export default function EarnDocsPage() {
             "Host and mine tracks in one process",
           ],
           [
-            "Ember",
+            "Phoenix",
             "grid ember NAME --start",
             "Host, mine, named compute, and registry presence",
           ],
@@ -132,7 +132,7 @@ grid stats`}
           ["Network monitor", "Explorer + mesh APIs", "Health and coarse presence"],
           ["Useful job launcher", "Coordinator protocol", "Authorized pilot job types"],
           ["Mesh experience", "grid:// realm + registry", "Requires claimed and active realm"],
-          ["Wallet dashboard", "Ember / CLI", "Pilot chain and Solana devnet"],
+          ["Wallet dashboard", "Phoenix / CLI", "Pilot chain and Solana devnet"],
         ]}
       />
 

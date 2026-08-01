@@ -76,22 +76,22 @@ const meshLinux = MESH_DOWNLOADS.find(({ id }) => id === "linux")?.primary;
 const GET_GRID_LINKS: FooterLink[] = [
   {
     label: "MESH for Mac · Apple silicon",
-    href: meshArm?.href ?? "/#mesh-downloads",
+    href: meshArm?.href ?? "/mesh",
     download: meshArm?.filename,
   },
   {
     label: "MESH for Mac · Intel",
-    href: meshIntel?.href ?? "/#mesh-downloads",
+    href: meshIntel?.href ?? "/mesh",
     download: meshIntel?.filename,
   },
   {
     label: "MESH for Windows",
-    href: meshWindows?.href ?? "/#mesh-downloads",
+    href: meshWindows?.href ?? "/mesh",
     download: meshWindows?.filename,
   },
   {
     label: "MESH for Linux",
-    href: meshLinux?.href ?? "/#mesh-downloads",
+    href: meshLinux?.href ?? "/mesh",
     download: meshLinux?.filename,
   },
   {
@@ -99,7 +99,7 @@ const GET_GRID_LINKS: FooterLink[] = [
     href: DOWNLOADS.cli.darwinX64,
     download: "grid",
   },
-  { label: "All downloads", href: "/#mesh-downloads" },
+  { label: "All downloads", href: "/mesh" },
 ];
 
 const CONNECT_LINKS: FooterLink[] = [
@@ -133,7 +133,7 @@ export function Footer({ siteOrigin }: { siteOrigin?: string } = {}) {
               GRID meters compute. Bitcoin secures value.
             </p>
             <a
-              href={siteHref("/#mesh-downloads", siteOrigin)}
+              href={siteHref("/mesh", siteOrigin)}
               className="mt-7 inline-flex items-center gap-2 text-[0.7rem] font-semibold tracking-[0.16em] text-white/70 uppercase transition hover:text-white"
             >
               Download MESH

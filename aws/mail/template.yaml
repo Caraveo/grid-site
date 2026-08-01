@@ -1,0 +1,235 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: GRID serverless contributor mail (SES, S3, DynamoDB, Lambda, HTTP API)
+
+Parameters:
+  MailDomain:
+    Type: String
+    Default: gridmail.dev
+  SystemSender:
+    Type: String
+    Default: hi@gridmail.dev
+  MailApiSecret:
+    Type: String
+    NoEcho: true
+    MinLength: 32
+  MessageRetentionDays:
+    Type: Number
+    Default: 365
+    MinValue: 30
+    MaxValue: 3650
+
+Resources:
+  MailIdentity:
+    Type: AWS::SES::EmailIdentity
+    Properties:
+      EmailIdentity: !Ref MailDomain
+      DkimSigningAttributes:
+        NextSigningKeyLength: RSA_2048_BIT
+
+  MailBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      LifecycleConfiguration:
+        Rules:
+          - Id: ExpireMail
+            Status: Enabled
+            ExpirationInDays: !Ref MessageRetentionDays
+      VersioningConfiguration:
+        Status: Enabled
+
+  MailBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref MailBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: AllowSesDelivery
+            Effect: Allow
+            Principal:
+              Service: ses.amazonaws.com
+            Action: s3:PutObject
+            Resource: !Sub "${MailBucket.Arn}/raw/*"
+            Condition:
+              StringEquals:
+                AWS:SourceAccount: !Ref AWS::AccountId
+
+  MailTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: mailbox
+          AttributeType: S
+        - AttributeName: item_key
+          AttributeType: S
+        - AttributeName: thread_key
+          AttributeType: S
+        - AttributeName: timestamp
+          AttributeType: S
+      KeySchema:
+        - AttributeName: mailbox
+          KeyType: HASH
+        - AttributeName: item_key
+          KeyType: RANGE
+      GlobalSecondaryIndexes:
+        - IndexName: ThreadIndex
+          KeySchema:
+            - AttributeName: thread_key
+              KeyType: HASH
+            - AttributeName: timestamp
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+      SSESpecification:
+        SSEEnabled: true
+
+  MailFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: GridMailRuntime
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                  - s3:DeleteObject
+                Resource: !Sub "${MailBucket.Arn}/*"
+              - Effect: Allow
+                Action:
+                  - dynamodb:GetItem
+                  - dynamodb:PutItem
+                  - dynamodb:DeleteItem
+                  - dynamodb:BatchWriteItem
+                  - dynamodb:Query
+                  - dynamodb:UpdateItem
+                Resource:
+                  - !GetAtt MailTable.Arn
+                  - !Sub "${MailTable.Arn}/index/*"
+              - Effect: Allow
+                Action:
+                  - ses:SendEmail
+                  - ses:SendRawEmail
+                Resource: "*"
+
+  MailFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Runtime: python3.13
+      Architectures: [arm64]
+      Handler: index.lambda_handler
+      Role: !GetAtt MailFunctionRole.Arn
+      Timeout: 30
+      MemorySize: 512
+      Code:
+        ZipFile: |
+          # Deployment replaces this inline bootstrap with aws/mail/handler.py.
+          def lambda_handler(event, context):
+              return {"statusCode": 503, "body": '{"error":"mail code not packaged"}'}
+      Environment:
+        Variables:
+          MAIL_BUCKET: !Ref MailBucket
+          MAIL_TABLE: !Ref MailTable
+          MAIL_DOMAIN: !Ref MailDomain
+          SYSTEM_SENDER: !Ref SystemSender
+          MAIL_API_SECRET: !Ref MailApiSecret
+
+  AllowSesInvoke:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref MailFunction
+      Principal: ses.amazonaws.com
+      SourceAccount: !Ref AWS::AccountId
+
+  ReceiptRuleSet:
+    Type: AWS::SES::ReceiptRuleSet
+    Properties:
+      RuleSetName: gridmail-inbound
+
+  ReceiptRule:
+    Type: AWS::SES::ReceiptRule
+    DependsOn:
+      - MailBucketPolicy
+      - AllowSesInvoke
+    Properties:
+      RuleSetName: !Ref ReceiptRuleSet
+      Rule:
+        Name: gridmail-domain
+        Enabled: true
+        ScanEnabled: true
+        TlsPolicy: Require
+        Recipients:
+          - !Ref MailDomain
+        Actions:
+          - S3Action:
+              BucketName: !Ref MailBucket
+              ObjectKeyPrefix: raw/
+          - LambdaAction:
+              FunctionArn: !GetAtt MailFunction.Arn
+              InvocationType: Event
+
+  MailHttpApi:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: grid-mail-api
+      ProtocolType: HTTP
+      Target: !GetAtt MailFunction.Arn
+      Description: Private application API for GRID webmail
+
+  AllowApiInvoke:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref MailFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${MailHttpApi}/*"
+
+Outputs:
+  MailApiUrl:
+    Value: !GetAtt MailHttpApi.ApiEndpoint
+  MailBucketName:
+    Value: !Ref MailBucket
+  MailTableName:
+    Value: !Ref MailTable
+  MailFunctionName:
+    Value: !Ref MailFunction
+  ReceiptRuleSetName:
+    Value: !Ref ReceiptRuleSet
+  DkimName1:
+    Value: !GetAtt MailIdentity.DkimDNSTokenName1
+  DkimValue1:
+    Value: !GetAtt MailIdentity.DkimDNSTokenValue1
+  DkimName2:
+    Value: !GetAtt MailIdentity.DkimDNSTokenName2
+  DkimValue2:
+    Value: !GetAtt MailIdentity.DkimDNSTokenValue2
+  DkimName3:
+    Value: !GetAtt MailIdentity.DkimDNSTokenName3
+  DkimValue3:
+    Value: !GetAtt MailIdentity.DkimDNSTokenValue3
+  InboundMx:
+    Value: !Sub "10 inbound-smtp.${AWS::Region}.amazonaws.com"

@@ -169,14 +169,14 @@ export const PAGES = {
     ],
   },
   ember: {
-    title: "Ember — host + mine + compute + registry | GRID",
+    title: "Realm stack — host + mine + compute + registry | GRID",
     description:
-      "An ember is the full stack for one grid:// realm: host useful work, mine security PoR, serve compute, and activate on the public registry.",
-    path: "/ember",
-    label: "EMBER",
+      "The realm stack combines hosting, mining, compute, and registry participation for one grid:// realm.",
+    path: "/docs/concepts#realm-stack",
+    label: "REALM STACK",
     ogImage: "/downloads/og/card-01.png",
     keywords: [
-      "ember",
+      "realm stack",
       "GRID",
       "host",
       "mine",
@@ -250,14 +250,15 @@ export const PAGES = {
     ],
   },
   wallet: {
-    title: "GRID Wallet — macOS, Windows & Linux",
+    title: "Phoenix — GRID Wallet for macOS, Windows & Linux",
     description:
-      "Download the native GRID Wallet for macOS, Windows, or Linux. Manage GRID, claim mining rewards, and configure Solana settlement from an encrypted local vault.",
-    path: "/wallet",
-    label: "WALLET",
+      "Download Phoenix, the native GRID Wallet for macOS, Windows, or Linux. Manage GRID, claim mining rewards, and configure Solana settlement from an encrypted local vault.",
+    path: "/phoenix",
+    label: "PHOENIX · GRID WALLET",
     ogImage: "/downloads/og/card-01.png",
     keywords: [
       "GRID Wallet",
+      "Phoenix wallet",
       "GRID desktop wallet",
       "macOS wallet",
       "Windows wallet",

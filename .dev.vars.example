@@ -3,6 +3,12 @@
 
 NEXTJS_ENV=development
 GRID_WEBHOOK_SECRET=dev-secret-change-me
+
+# Contributor identity + AWS SES mail API. Never commit real production values.
+AWS_MAIL_API_URL=
+AWS_MAIL_API_SECRET=
+CONTRIBUTOR_ENCRYPTION_KEY=local-only-change-me-at-least-32-characters
+CONTRIBUTOR_IP_PEPPER=local-only-change-me
 GRID_PHASE=1
 GENESIS_LAT=39.0
 GENESIS_LNG=-77.5

@@ -125,18 +125,18 @@ export default function Otg27Page() {
       <div className="noise" aria-hidden />
       <Nav />
       <main className="otg-page min-h-screen pt-16 lg:pt-20">
-        <section className="otg-hero relative flex min-h-[calc(100svh-4rem)] overflow-hidden border-b border-white/10 px-5 py-10 sm:px-8 lg:px-10">
+        <section className="otg-hero relative flex min-h-[calc(100svh-4rem)] overflow-hidden border-b border-foreground/10 px-5 py-10 sm:px-8 lg:px-10">
           <div className="otg-grid pointer-events-none absolute inset-0" />
           <div className="otg-orb pointer-events-none absolute" />
           <div className="relative mx-auto flex w-full max-w-7xl flex-col justify-between">
-            <div className="flex items-start justify-between border-t border-white/25 pt-4 font-mono text-[0.65rem] tracking-[0.18em] text-white/45 uppercase">
+            <div className="flex items-start justify-between border-t border-foreground/25 pt-4 font-mono text-[0.65rem] tracking-[0.18em] text-foreground/45 uppercase">
               <span>GRID Community Event / 001</span>
               <span className="hidden sm:block">Signal opens 12.15.27</span>
             </div>
 
             <div className="py-16 sm:py-20">
-              <p className="mb-6 flex items-center gap-3 font-mono text-xs tracking-[0.2em] text-[#9cff57] uppercase">
-                <span className="h-2 w-2 animate-pulse rounded-full bg-[#9cff57]" />
+              <p className="mb-6 flex items-center gap-3 font-mono text-xs tracking-[0.2em] text-[var(--otg-signal)] uppercase">
+                <span className="h-2 w-2 animate-pulse rounded-full bg-[var(--otg-signal)]" />
                 First transmission
               </p>
               <h1 className="otg-display" aria-label="OTG27">
@@ -148,7 +148,7 @@ export default function Otg27Page() {
                   Meet us on the GRID.
                 </h2>
                 <div className="md:justify-self-end">
-                  <p className="max-w-md text-base leading-relaxed text-white/55 sm:text-lg">
+                  <p className="max-w-md text-base leading-relaxed text-foreground/55 sm:text-lg">
                     The first-ever in-person gathering for the GRID blockchain:
                     one day to understand the network, meet the community, and
                     build what comes next.
@@ -165,14 +165,14 @@ export default function Otg27Page() {
               </div>
             </div>
 
-            <div className="grid gap-px border border-white/12 bg-white/12 sm:grid-cols-3">
+            <div className="grid gap-px border border-foreground/12 bg-foreground/12 sm:grid-cols-3">
               {[
                 ["DATE", "DEC 15, 2027"],
                 ["PLACE", "IN PERSON · LOCATION TBA"],
                 ["FORMAT", "TALKS · LABS · COMMUNITY"],
               ].map(([label, value]) => (
-                <div key={label} className="bg-black/70 p-4 backdrop-blur">
-                  <p className="font-mono text-[0.6rem] tracking-[0.2em] text-white/30">
+                <div key={label} className="bg-background/70 p-4 backdrop-blur">
+                  <p className="font-mono text-[0.6rem] tracking-[0.2em] text-foreground/30">
                     {label}
                   </p>
                   <p className="mt-2 text-xs font-semibold tracking-[0.12em]">
@@ -184,14 +184,14 @@ export default function Otg27Page() {
           </div>
         </section>
 
-        <section className="border-b border-white/10 px-5 py-24 sm:px-8 lg:px-10 lg:py-36">
+        <section className="border-b border-foreground/10 px-5 py-24 sm:px-8 lg:px-10 lg:py-36">
           <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.8fr_1.2fr]">
             <p className="otg-kicker">WHY OTG</p>
             <div>
               <h2 className="max-w-4xl text-[clamp(2.5rem,6vw,6rem)] font-medium leading-[0.95] tracking-[-0.055em]">
                 The network becomes real when we&apos;re in the same room.
               </h2>
-              <div className="mt-12 grid gap-8 text-base leading-relaxed text-white/50 sm:grid-cols-2">
+              <div className="mt-12 grid gap-8 text-base leading-relaxed text-foreground/50 sm:grid-cols-2">
                 <p>
                   OTG27 is the annual point of connection for everyone around
                   GRID—whether you run a node, write code, study distributed
@@ -209,7 +209,7 @@ export default function Otg27Page() {
 
         <section id="agenda" className="scroll-mt-20 px-5 py-24 sm:px-8 lg:px-10 lg:py-32">
           <div className="mx-auto max-w-7xl">
-            <div className="grid gap-8 border-b border-white/15 pb-10 lg:grid-cols-2 lg:items-end">
+            <div className="grid gap-8 border-b border-foreground/15 pb-10 lg:grid-cols-2 lg:items-end">
               <div>
                 <p className="otg-kicker">12.15.27 / PROGRAM</p>
                 <h2 className="mt-5 text-5xl font-medium tracking-[-0.05em] sm:text-7xl">
@@ -218,7 +218,7 @@ export default function Otg27Page() {
                   Every layer.
                 </h2>
               </div>
-              <p className="max-w-md text-sm leading-relaxed text-white/45 lg:justify-self-end">
+              <p className="max-w-md text-sm leading-relaxed text-foreground/45 lg:justify-self-end">
                 Times and session details may shift as speakers and the venue
                 are confirmed. Ticket holders receive the final field guide.
               </p>
@@ -228,25 +228,25 @@ export default function Otg27Page() {
               {agenda.map((item, index) => (
                 <li
                   key={item.time}
-                  className="otg-agenda-row grid gap-5 border-b border-white/10 py-7 sm:grid-cols-[8rem_9rem_1fr] sm:gap-8"
+                  className="otg-agenda-row grid gap-5 border-b border-foreground/10 py-7 sm:grid-cols-[8rem_9rem_1fr] sm:gap-8"
                 >
                   <div className="font-mono text-sm">
-                    <span className="text-white">{item.time}</span>
-                    <span className="text-white/25"> — {item.end}</span>
+                    <span className="text-foreground">{item.time}</span>
+                    <span className="text-foreground/25"> — {item.end}</span>
                   </div>
                   <div>
-                    <span className="border border-white/15 px-2 py-1 font-mono text-[0.6rem] tracking-[0.14em] text-[#9cff57]">
+                    <span className="border border-foreground/15 px-2 py-1 font-mono text-[0.6rem] tracking-[0.14em] text-[var(--otg-signal)]">
                       {item.type}
                     </span>
                   </div>
                   <div className="grid gap-3 lg:grid-cols-[0.8fr_1fr]">
                     <h3 className="text-xl font-medium tracking-[-0.02em]">
-                      <span className="mr-3 font-mono text-xs text-white/20">
+                      <span className="mr-3 font-mono text-xs text-foreground/20">
                         {String(index + 1).padStart(2, "0")}
                       </span>
                       {item.title}
                     </h3>
-                    <p className="max-w-xl text-sm leading-relaxed text-white/45">
+                    <p className="max-w-xl text-sm leading-relaxed text-foreground/45">
                       {item.detail}
                     </p>
                   </div>
@@ -258,7 +258,7 @@ export default function Otg27Page() {
 
         <section
           id="tickets"
-          className="scroll-mt-20 border-y border-white/10 bg-white/[0.02] px-5 py-24 sm:px-8 lg:px-10 lg:py-32"
+          className="scroll-mt-20 border-y border-foreground/10 bg-foreground/[0.02] px-5 py-24 sm:px-8 lg:px-10 lg:py-32"
         >
           <div className="mx-auto max-w-7xl">
             <div className="mb-12 grid gap-6 lg:grid-cols-2 lg:items-end">
@@ -268,7 +268,7 @@ export default function Otg27Page() {
                   Pick your layer.
                 </h2>
               </div>
-              <p className="max-w-md text-sm leading-relaxed text-white/45 lg:justify-self-end">
+              <p className="max-w-md text-sm leading-relaxed text-foreground/45 lg:justify-self-end">
                 Every pass gets you into the room. Choose Developer for the
                 deepest technical track or Student to enter the network early.
               </p>
@@ -282,7 +282,7 @@ export default function Otg27Page() {
           <h2 className="mx-auto mt-6 max-w-5xl text-[clamp(3.5rem,10vw,9rem)] font-semibold leading-[0.86] tracking-[-0.08em]">
             SEE YOU
             <br />
-            <span className="text-[#9cff57]">ON THE GRID.</span>
+            <span className="text-[var(--otg-signal)]">ON THE GRID.</span>
           </h2>
           <a href="#tickets" className="otg-btn-signal mt-12">
             Join OTG27

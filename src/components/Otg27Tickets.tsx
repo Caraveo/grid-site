@@ -19,7 +19,7 @@ function CopyValue({ value }: { value: string }) {
   return (
     <button
       type="button"
-      className="mt-2 flex w-full items-center justify-between border border-white/15 bg-black/40 px-3 py-2 font-mono text-xs text-white/70 transition hover:border-[#9cff57]/60"
+      className="mt-2 flex w-full items-center justify-between border border-foreground/15 bg-background/40 px-3 py-2 font-mono text-xs text-foreground/70 transition hover:border-[var(--otg-signal)]/60"
       onClick={async () => {
         await navigator.clipboard.writeText(value);
         setCopied(true);
@@ -125,22 +125,22 @@ export function Otg27Tickets() {
 
   return (
     <>
-      <div className="grid gap-px border border-white/12 bg-white/12 lg:grid-cols-3">
+      <div className="grid gap-px border border-foreground/12 bg-foreground/12 lg:grid-cols-3">
         {OTG27_TICKETS.map((ticket) => (
           <article
             key={ticket.id}
-            className={`relative flex min-h-[30rem] flex-col bg-[#080808] p-6 sm:p-8 ${
+            className={`relative flex min-h-[30rem] flex-col bg-[var(--otg-card-bg)] p-6 sm:p-8 ${
               "featured" in ticket && ticket.featured
                 ? "otg-ticket-featured"
                 : ""
             }`}
           >
             <div className="flex items-center justify-between">
-              <span className="font-mono text-xs text-white/35">
+              <span className="font-mono text-xs text-foreground/35">
                 PASS / {ticket.marker}
               </span>
               {"featured" in ticket && ticket.featured && (
-                <span className="bg-[#9cff57] px-2 py-1 text-[0.6rem] font-bold tracking-[0.16em] text-black uppercase">
+                <span className="bg-[var(--otg-signal)] px-2 py-1 text-[0.6rem] font-bold tracking-[0.16em] text-[var(--otg-signal-fg)] uppercase">
                   Full signal
                 </span>
               )}
@@ -148,25 +148,25 @@ export function Otg27Tickets() {
             <h3 className="mt-14 text-2xl font-semibold tracking-[-0.03em]">
               {ticket.name}
             </h3>
-            <p className="mt-3 min-h-16 text-sm leading-relaxed text-white/45">
+            <p className="mt-3 min-h-16 text-sm leading-relaxed text-foreground/45">
               {ticket.description}
             </p>
             <div className="mt-8 flex items-start gap-1">
-              <span className="mt-2 text-sm text-white/40">$</span>
+              <span className="mt-2 text-sm text-foreground/40">$</span>
               <span className="text-6xl font-semibold tracking-[-0.07em]">
                 {ticket.price}
               </span>
             </div>
-            <p className="mt-1 font-mono text-[0.65rem] tracking-[0.15em] text-white/30 uppercase">
+            <p className="mt-1 font-mono text-[0.65rem] tracking-[0.15em] text-foreground/30 uppercase">
               USD · per person
             </p>
-            <ul className="mt-8 space-y-3 border-t border-white/10 pt-6">
+            <ul className="mt-8 space-y-3 border-t border-foreground/10 pt-6">
               {ticket.includes.map((item) => (
                 <li
                   key={item}
-                  className="flex gap-3 text-sm text-white/60"
+                  className="flex gap-3 text-sm text-foreground/60"
                 >
-                  <span className="text-[#9cff57]">+</span>
+                  <span className="text-[var(--otg-signal)]">+</span>
                   {item}
                 </li>
               ))}
@@ -190,16 +190,16 @@ export function Otg27Tickets() {
 
       {selected && (
         <div
-          className="fixed inset-0 z-[70] flex items-end justify-center bg-black/85 backdrop-blur-md sm:items-center sm:p-6"
+          className="fixed inset-0 z-[70] flex items-end justify-center bg-background/85 backdrop-blur-md sm:items-center sm:p-6"
           role="dialog"
           aria-modal="true"
           aria-labelledby="otg-checkout-title"
           onClick={(event) => event.target === event.currentTarget && close()}
         >
-          <div className="max-h-[92vh] w-full max-w-lg overflow-y-auto border border-white/15 bg-[#080808] shadow-2xl">
-            <div className="flex items-start justify-between border-b border-white/10 p-5">
+          <div className="max-h-[92vh] w-full max-w-lg overflow-y-auto border border-foreground/15 bg-[var(--otg-card-bg)] shadow-2xl">
+            <div className="flex items-start justify-between border-b border-foreground/10 p-5">
               <div>
-                <p className="font-mono text-[0.65rem] tracking-[0.18em] text-[#9cff57] uppercase">
+                <p className="font-mono text-[0.65rem] tracking-[0.18em] text-[var(--otg-signal)] uppercase">
                   OTG27 / Ticket
                 </p>
                 <h2
@@ -212,7 +212,7 @@ export function Otg27Tickets() {
               <button
                 type="button"
                 onClick={close}
-                className="border border-white/15 px-3 py-1.5 text-xs text-white/50 uppercase hover:text-white"
+                className="border border-foreground/15 px-3 py-1.5 text-xs text-foreground/50 uppercase hover:text-foreground"
               >
                 Close
               </button>
@@ -227,13 +227,13 @@ export function Otg27Tickets() {
 
               {done ? (
                 <div className="py-8 text-center">
-                  <p className="font-mono text-xs tracking-[0.2em] text-[#9cff57] uppercase">
+                  <p className="font-mono text-xs tracking-[0.2em] text-[var(--otg-signal)] uppercase">
                     Signal received
                   </p>
                   <h3 className="mt-4 text-3xl font-semibold">
                     You&apos;re on the GRID.
                   </h3>
-                  <p className="mx-auto mt-4 max-w-sm text-sm leading-relaxed text-white/50">
+                  <p className="mx-auto mt-4 max-w-sm text-sm leading-relaxed text-foreground/50">
                     Your payment submission is recorded. Keep your payment note
                     for confirmation and event updates.
                   </p>
@@ -295,20 +295,20 @@ export function Otg27Tickets() {
                   >
                     {busy ? "Creating pass…" : "Continue to payment"}
                   </button>
-                  <p className="text-center text-xs leading-relaxed text-white/30">
+                  <p className="text-center text-xs leading-relaxed text-foreground/30">
                     Student tickets require valid student ID at check-in.
                   </p>
                 </form>
               ) : (
                 <form onSubmit={submitPayment} className="space-y-5">
-                  <div className="border border-white/10 bg-white/[0.03] p-4">
+                  <div className="border border-foreground/10 bg-foreground/[0.03] p-4">
                     <div className="flex justify-between gap-4">
-                      <span className="text-sm text-white/50">
+                      <span className="text-sm text-foreground/50">
                         {order.ticketName} × {order.quantity}
                       </span>
                       <strong>${order.totalUsd}</strong>
                     </div>
-                    <p className="mt-4 text-[0.6rem] tracking-[0.16em] text-white/30 uppercase">
+                    <p className="mt-4 text-[0.6rem] tracking-[0.16em] text-foreground/30 uppercase">
                       Required payment note
                     </p>
                     <CopyValue value={order.paymentNote} />
@@ -320,8 +320,8 @@ export function Otg27Tickets() {
                       onClick={() => setMethod("cash_app")}
                       className={`border px-3 py-3 text-xs tracking-[0.12em] uppercase ${
                         method === "cash_app"
-                          ? "border-[#9cff57] text-[#9cff57]"
-                          : "border-white/15 text-white/45"
+                          ? "border-[var(--otg-signal)] text-[var(--otg-signal)]"
+                          : "border-foreground/15 text-foreground/45"
                       }`}
                     >
                       Cash App
@@ -331,8 +331,8 @@ export function Otg27Tickets() {
                       onClick={() => setMethod("bitcoin")}
                       className={`border px-3 py-3 text-xs tracking-[0.12em] uppercase ${
                         method === "bitcoin"
-                          ? "border-[#9cff57] text-[#9cff57]"
-                          : "border-white/15 text-white/45"
+                          ? "border-[var(--otg-signal)] text-[var(--otg-signal)]"
+                          : "border-foreground/15 text-foreground/45"
                       }`}
                     >
                       Bitcoin
@@ -341,7 +341,7 @@ export function Otg27Tickets() {
 
                   {method === "cash_app" ? (
                     <div>
-                      <p className="text-sm text-white/50">
+                      <p className="text-sm text-foreground/50">
                         Pay {cashtag} using the exact note above.
                       </p>
                       <a
@@ -355,7 +355,7 @@ export function Otg27Tickets() {
                     </div>
                   ) : (
                     <div>
-                      <p className="text-sm text-white/50">
+                      <p className="text-sm text-foreground/50">
                         Send the USD equivalent in BTC to:
                       </p>
                       <CopyValue value={btcAddress} />
