@@ -89,7 +89,13 @@ async function proxyARKRequest(request: NextRequest): Promise<Response> {
  * Static assets, API, and Next internals stay unprefixed.
  */
 export async function middleware(request: NextRequest) {
-  const host = (request.headers.get("host") ?? "").toLowerCase();
+  // Cloudflare/OpenNext may set `host` to the Worker origin while preserving the
+  // public custom domain in `x-forwarded-host`.
+  const host = (
+    request.headers.get("x-forwarded-host") ??
+    request.headers.get("host") ??
+    ""
+  ).toLowerCase();
   const isARKHost =
     host === "ark.grid-compute.com" ||
     host.startsWith("ark.grid-compute.com:") ||
