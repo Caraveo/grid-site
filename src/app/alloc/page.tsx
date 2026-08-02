@@ -6,7 +6,7 @@ import { Nav } from "@/components/Nav";
 import { ScrambleText } from "@/components/ScrambleText";
 import {
   FounderVestingDiagram,
-  GexFundingDiagram,
+  PurchaseFundingDiagram,
   SupplySplitDiagram,
   TreasuryBarDiagram,
 } from "@/components/alloc/AllocationDiagrams";
@@ -23,16 +23,16 @@ const buckets = [
     control: "On-chain emission controller · verified receipts · duplicate protection",
   },
   {
-    amount: "1.10B",
-    percent: "11%",
+    amount: "500M",
+    percent: "5%",
     title: "Network development and grants",
     explanation:
       "Funds open-source engineering, protocol integrations, developer tools, research, and grants that expand useful demand or compute supply. Releases should follow published milestones rather than unrestricted transfers.",
     control: "Milestone releases · public grants ledger · treasury multisig",
   },
   {
-    amount: "550M",
-    percent: "5.5%",
+    amount: "750M",
+    percent: "7.5%",
     title: "Security audits and operations",
     explanation:
       "Pays for independent audits, incident response, infrastructure, verification services, legal and compliance work, and the ordinary cost of operating the network safely.",
@@ -55,28 +55,28 @@ const buckets = [
     control: "Documented awards · vesting contracts · forfeiture of unvested grants",
   },
   {
-    amount: "550M",
-    percent: "5.5%",
+    amount: "250M",
+    percent: "2.5%",
     title: "Community launch programs",
     explanation:
       "Supports early node participation, education, public test programs, community events, and targeted adoption. Campaign rules and results should be published to prevent undisclosed insider distributions.",
     control: "Scheduled programs · eligibility rules · post-program reports",
   },
   {
-    amount: "550M",
-    percent: "5.5%",
+    amount: "250M",
+    percent: "2.5%",
     title: "Liquidity provisioning",
     explanation:
       "Reserved for transparent market liquidity when GRID reaches that stage. These tokens are market infrastructure—not founder proceeds—and should remain in disclosed liquidity or market-making accounts.",
     control: "Dedicated multisig · disclosed venues · inventory reporting",
   },
   {
-    amount: "1.00B",
-    percent: "10%",
-    title: "GRID Exchange reserve",
+    amount: "2.00B",
+    percent: "20%",
+    title: "Purchase Allocation",
     explanation:
-      "Backs disclosed GRID inventory, market operations, and orderly liquidity on GRID Exchange. It is reassigned proportionally from development, security, community launch, and general liquidity—not newly minted supply.",
-    control: "GRID authoritative ledger · dedicated reserve accounts · public inventory reporting",
+      "Provides disclosed GRID inventory for approved Buy and Sell Commands, purchase access for Hodlers, and orderly settlement through GRID Transact and GEX. Its internal 1B GRID Exchange reserve is part of this 2B allocation—not an additional treasury bucket.",
+    control: "Authenticated commands · live quotes · custody reconciliation · public inventory reporting",
   },
   {
     amount: "250M",
@@ -151,33 +151,36 @@ export default function AllocationPage() {
         <p className="section-label">Inside the treasury</p>
         <h2 className="section-title mt-5 max-w-4xl">Five billion, fully assigned.</h2>
         <p className="section-body mt-6 mb-12">
-          “Treasury” is an umbrella, not a blank check. Its eight sub-allocations
-          total exactly 5B Chips, including the dedicated 1B Chip GRID Exchange reserve.
+          “Treasury” is an umbrella, not a blank check. Its eight top-level
+          allocations total exactly 5B Chips. Internal reserves are controls within
+          those allocations and are never counted twice.
         </p>
         <TreasuryBarDiagram />
       </Section>
 
-      <Section id="gex">
+      <Section id="purchase-allocation">
         <div className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20">
           <div>
-            <p className="section-label">GEX · GRID Exchange</p>
-            <h2 className="section-title mt-5">One billion Chips. Fully traced.</h2>
+            <p className="section-label">Purchase Allocation · GRID Transact · GEX</p>
+            <h2 className="section-title mt-5">Two billion GRID. Purchase-ready.</h2>
             <p className="section-body mt-6">
-              GEX receives a dedicated 1B Chip treasury reserve for disclosed exchange
-              inventory, liquidity, and orderly market operations. No new GRID is created:
-              the reserve comes from four existing treasury allocations.
+              Purchase Allocation assigns 2B GRID to approved Buy and Sell Commands,
+              Hodler purchase ability, settlement inventory, and orderly exchange
+              operations. It is funded from Network Development, Community Launch,
+              and Liquidity—not newly minted supply.
             </p>
             <div className="mt-7 border-l-2 border-[var(--allocation-blue)] pl-5">
               <p className="font-mono text-xs tracking-[0.16em] text-white/35 uppercase">
-                Atomic Chip accounting
+                GRID Exchange reserve · contained control
               </p>
               <p className="mt-3 text-sm leading-relaxed text-white/55">
-                The GEX allocation is exactly 1,000,000,000 Chips. The authoritative
-                GRID ledger records the allocation directly in whole Chips.
+                The 1B GRID Exchange reserve is held inside the 2B Purchase Allocation.
+                It supports disclosed inventory and market continuity, but it is not
+                listed again in the 5B treasury total.
               </p>
             </div>
           </div>
-          <GexFundingDiagram />
+          <PurchaseFundingDiagram />
         </div>
       </Section>
 
@@ -253,8 +256,8 @@ export default function AllocationPage() {
             <p className="mt-5 text-sm leading-relaxed text-white/45">
               This page records the planned production allocation. GRID is native to the
               GRID blockchain, with Genesis as the authoritative ledger. Test balances
-              have no economic value and are not counted as treasury, GEX, or founder
-              distributions.
+              have no economic value and are not counted as treasury, Purchase
+              Allocation, GEX reserve, or founder distributions.
             </p>
           </article>
         </div>

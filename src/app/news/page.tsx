@@ -8,6 +8,16 @@ export const metadata: Metadata = metadataFor("/news");
 
 const stories = [
   {
+    href: "/new/gaming",
+    date: "August 2, 2026",
+    tag: "Field note",
+    number: "04",
+    title: "Gaming is useful compute.",
+    summary:
+      "VOID is more than a game. It is a systems-first laboratory for understanding how persistent worlds, real-time simulation, and latency-sensitive workloads could operate across the GRID.",
+    featured: true,
+  },
+  {
     href: "/news/contribute",
     date: "July 30, 2026",
     tag: "Open call",
@@ -15,7 +25,7 @@ const stories = [
     title: "Welcome to the GRID",
     summary:
       "A data-rich call to developers, maintainers, security reviewers, community leaders, writers, designers, researchers, and OTG organizers to help turn GRID into a contributor-owned practice.",
-    featured: true,
+    featured: false,
   },
   {
     href: "/news/open",

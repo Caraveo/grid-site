@@ -186,7 +186,7 @@ const coreTerms: DictionaryTerm[] = [
     category: "GRID",
     definition: "GRID’s exchange surface for disclosed CHIP inventory, liquidity, and market operations.",
     example: "A GEX balance is reconciled against the authoritative GRID ledger.",
-    related: ["Exchange", "CHIP", "GRID"],
+    related: ["Purchase Allocation", "Buy Command", "Sell Command"],
   },
   {
     term: "GRID",

@@ -232,6 +232,18 @@
     "description": "An open invitation for engineers, designers, writers, researchers, operators, and organizers to build GRID."
   },
   {
+    "path": "/news/gaming",
+    "label": "NEWS · FIELD NOTE",
+    "title": "Gaming Is Useful Compute — GRID News",
+    "description": "Why persistent multiplayer worlds are useful compute, and how VOID can challenge GRID to become a responsive, resilient planetary computer."
+  },
+  {
+    "path": "/new/gaming",
+    "label": "NEWS · FIELD NOTE",
+    "title": "Gaming Is Useful Compute — GRID News",
+    "description": "Why persistent multiplayer worlds are useful compute, and how VOID can challenge GRID to become a responsive, resilient planetary computer."
+  },
+  {
     "path": "/news/letter",
     "label": "NEWS · LETTER",
     "title": "A Letter to the Crypto Community — GRID",

@@ -298,12 +298,10 @@ function DesktopDropdown({
         </a>
         {item.labelKey === "nav.shop" && (
           <a
-            href="https://void.grid-compute.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Open VOID in a new tab"
-            title="VOID"
-            className="inline-flex h-5 w-5 items-center justify-center border border-white/20 font-mono text-[0.7rem] text-white/55 transition hover:border-white/60 hover:text-white"
+            href={siteHref("/new/gaming", siteOrigin)}
+            aria-label="Read Gaming is useful compute"
+            title="Gaming is useful compute"
+            className="inline-flex items-center justify-center px-1 font-mono text-[0.7rem] text-white/55 transition hover:translate-x-0.5 hover:text-white"
           >
             →
           </a>
@@ -570,13 +568,11 @@ export function Nav({ siteOrigin }: { siteOrigin?: string } = {}) {
                     </a>
                     {item.labelKey === "nav.shop" && (
                       <a
-                        href="https://void.grid-compute.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label="Open VOID in a new tab"
-                        title="VOID"
+                        href={siteHref("/new/gaming", siteOrigin)}
+                        aria-label="Read Gaming is useful compute"
+                        title="Gaming is useful compute"
                         onClick={() => setOpen(false)}
-                        className="inline-flex h-8 w-8 items-center justify-center border border-white/20 font-mono text-sm text-white/60 transition hover:border-white/60 hover:text-white"
+                        className="inline-flex items-center justify-center px-2 py-2 font-mono text-sm text-white/60 transition hover:translate-x-0.5 hover:text-white"
                       >
                         →
                       </a>
