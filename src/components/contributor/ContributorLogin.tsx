@@ -49,6 +49,14 @@ export default function ContributorLogin() {
   const [ticket, setTicket] = useState("");
   const [identity, setIdentity] = useState("");
   const [passkeyBusy, setPasskeyBusy] = useState(false);
+  const returnTo = search.get("returnTo") === "/api/exchange/handoff"
+    ? "/api/exchange/handoff"
+    : "/dashboard";
+
+  function finishLogin() {
+    router.push(returnTo);
+    router.refresh();
+  }
 
   useEffect(() => {
     const verify = search.get("verify");
@@ -85,8 +93,7 @@ export default function ContributorLogin() {
         setMode("login");
       } else if (mode === "2fa") {
         await api("login/2fa", { ticket, code: form.get("code") });
-        router.push("/dashboard");
-        router.refresh();
+        finishLogin();
       } else {
         const data = await api("login", {
           identity: form.get("identity"),
@@ -96,8 +103,7 @@ export default function ContributorLogin() {
           setTicket(data.ticket ?? "");
           setMode("2fa");
         } else {
-          router.push("/dashboard");
-          router.refresh();
+          finishLogin();
         }
       }
     } catch (reason) {
@@ -127,8 +133,7 @@ export default function ContributorLogin() {
         challengeId: start.challengeId,
         response: credential,
       });
-      router.push("/dashboard");
-      router.refresh();
+      finishLogin();
     } catch (reason) {
       const message = reason instanceof Error ? reason.message : "Passkey sign-in failed";
       setError(/not allowed|cancel|abort/i.test(message) ? "Passkey sign-in was cancelled." : message);
