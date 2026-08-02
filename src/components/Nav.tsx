@@ -289,13 +289,25 @@ function DesktopDropdown({
 
   if (!item.children?.length) {
     return (
-      <li>
+      <li className="flex items-center gap-2">
         <a
           href={siteHref(item.href ?? "#", siteOrigin)}
           className="text-[0.7rem] font-medium tracking-[0.2em] text-white/70 uppercase transition hover:text-white"
         >
           {t(item.labelKey)}
         </a>
+        {item.labelKey === "nav.shop" && (
+          <a
+            href="https://void.grid-compute.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open VOID in a new tab"
+            title="VOID"
+            className="inline-flex h-5 w-5 items-center justify-center border border-white/20 font-mono text-[0.7rem] text-white/55 transition hover:border-white/60 hover:text-white"
+          >
+            →
+          </a>
+        )}
       </li>
     );
   }
@@ -548,13 +560,28 @@ export function Nav({ siteOrigin }: { siteOrigin?: string } = {}) {
                     )}
                   </>
                 ) : (
-                  <a
-                    href={siteHref(item.href ?? "#", siteOrigin)}
-                    onClick={() => setOpen(false)}
-                    className="block py-3 text-sm tracking-[0.18em] text-white/80 uppercase"
-                  >
-                    {t(item.labelKey)}
-                  </a>
+                  <div className="flex items-center justify-between gap-3">
+                    <a
+                      href={siteHref(item.href ?? "#", siteOrigin)}
+                      onClick={() => setOpen(false)}
+                      className="flex-1 py-3 text-sm tracking-[0.18em] text-white/80 uppercase"
+                    >
+                      {t(item.labelKey)}
+                    </a>
+                    {item.labelKey === "nav.shop" && (
+                      <a
+                        href="https://void.grid-compute.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Open VOID in a new tab"
+                        title="VOID"
+                        onClick={() => setOpen(false)}
+                        className="inline-flex h-8 w-8 items-center justify-center border border-white/20 font-mono text-sm text-white/60 transition hover:border-white/60 hover:text-white"
+                      >
+                        →
+                      </a>
+                    )}
+                  </div>
                 )}
               </li>
             ))}
