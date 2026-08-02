@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
+import { ServiceStatusBoard } from "@/components/ServiceStatusBoard";
 import { metadataFor } from "@/lib/seo";
 
 export const metadata: Metadata = metadataFor("/status");
@@ -343,6 +344,8 @@ export default function StatusPage() {
           </div>
         </div>
       </header>
+
+      <ServiceStatusBoard />
 
       <section className="border-t border-foreground/10 px-5 py-16 sm:py-20">
         <div className="mx-auto max-w-7xl">
