@@ -23,14 +23,14 @@ export default function WalletsDocsPage() {
         reward pilot.
       </Note>
 
-      <H2 id="downloads">Official desktop wallet v0.2.25 builds</H2>
+      <H2 id="downloads">Official desktop wallet v0.2.26 builds</H2>
       <Table
         headers={["Platform", "Format", "Release"]}
         rows={[
-          ["macOS Apple silicon", "ARK or Phoenix · native package", "v0.2.25"],
-          ["macOS Intel", "ARK universal or Phoenix · native package", "v0.2.25"],
-          ["Windows x86_64", "ARK or Phoenix · EXE/MSI", "v0.2.25"],
-          ["Linux x86_64", "ARK or Phoenix · AppImage/Debian", "v0.2.25"],
+          ["macOS Apple silicon", "ARK or Phoenix · native package", "v0.2.26"],
+          ["macOS Intel", "ARK universal or Phoenix · native package", "v0.2.26"],
+          ["Windows x86_64", "ARK or Phoenix · EXE/MSI", "v0.2.26"],
+          ["Linux x86_64", "ARK or Phoenix · AppImage/Debian", "v0.2.26"],
           ["iOS / Android", "Not released", "Coming soon"],
         ]}
       />

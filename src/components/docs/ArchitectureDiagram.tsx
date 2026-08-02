@@ -103,7 +103,7 @@ export function ArchitectureDiagram() {
                 </h3>
               </div>
               <span className="rounded-md bg-[#50F01C] px-2 py-1 font-mono text-[10px] font-semibold text-black">
-                v0.2.25
+                v0.2.26
               </span>
             </div>
             <p className="mt-1 text-xs leading-relaxed text-muted">
