@@ -55,7 +55,13 @@
     "path": "/chip",
     "label": "CHIP",
     "title": "What Is a CHIP? — GRID",
-    "description": "Learn how GRID’s Computational Hybrid Instrument Protocol combines compute utility, portable token rails, and coin settlement."
+    "description": "A CHIP is a token or coin used in market exchanges. Learn how GEX, the GRID Exchange Chip, works within its associated exchange."
+  },
+  {
+    "path": "/status",
+    "label": "STATUS",
+    "title": "GRID Build Status — Feature Readiness",
+    "description": "An evidence-based assessment of GRID network, compute, product, economy, exchange, and operational readiness."
   },
   {
     "path": "/compare",

@@ -442,18 +442,12 @@ export function Nav({ siteOrigin }: { siteOrigin?: string } = {}) {
             {t("nav.ember")}
           </a>
           <a
-            href="https://discord.gg/nVs7NBCuqZ"
+            href="https://exchange.grid-compute.com"
             target="_blank"
             rel="noreferrer"
-            className="hidden border border-[#5865F2]/60 px-4 py-2 text-[0.65rem] font-semibold tracking-[0.18em] text-[#c6cbff] uppercase transition hover:border-[#8f98ff] hover:text-white xl:inline-flex"
+            className="hidden border border-cyan-300/55 px-4 py-2 text-[0.65rem] font-semibold tracking-[0.18em] text-cyan-200 uppercase transition hover:border-cyan-200 hover:text-white xl:inline-flex"
           >
-            Discord
-          </a>
-          <a
-            href={siteHref("/registry", siteOrigin)}
-            className="inline-flex border border-white/50 bg-white px-4 py-2 text-[0.65rem] font-semibold tracking-[0.18em] text-black uppercase transition hover:bg-transparent hover:text-white"
-          >
-            {t("nav.registry")}
+            GEX
           </a>
           <a
             href={siteHref("/#download", siteOrigin)}
@@ -580,22 +574,13 @@ export function Nav({ siteOrigin }: { siteOrigin?: string } = {}) {
             </li>
             <li className="pt-2">
               <a
-                href="https://discord.gg/nVs7NBCuqZ"
+                href="https://exchange.grid-compute.com"
                 target="_blank"
                 rel="noreferrer"
                 onClick={() => setOpen(false)}
-                className="btn-ghost w-full border-[#5865F2]/60 text-[#c6cbff] hover:border-[#8f98ff] hover:text-white"
+                className="btn-ghost w-full border-cyan-300/55 text-cyan-200 hover:border-cyan-200 hover:text-white"
               >
-                Join Discord
-              </a>
-            </li>
-            <li className="pt-2">
-              <a
-                href={siteHref("/registry", siteOrigin)}
-                onClick={() => setOpen(false)}
-                className="btn-primary w-full"
-              >
-                {t("nav.registry")}
+                GEX
               </a>
             </li>
             <li className="pt-2 pb-2">

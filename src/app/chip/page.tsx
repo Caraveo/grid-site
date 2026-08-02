@@ -30,8 +30,8 @@ const distinctions = [
   },
   {
     label: "CHIP",
-    title: "Utility with its own computational truth",
-    copy: "A CHIP represents useful work inside its own signed network history while remaining portable through an external public rail.",
+    title: "Used in market exchanges",
+    copy: "A CHIP is a token or coin used in market exchanges. It can represent exchange utility while retaining the rules and backing of its issuing market.",
   },
   {
     label: "Coin",
@@ -44,9 +44,9 @@ const dictionary = [
   {
     term: "CHIP",
     pronunciation: "/tʃɪp/",
-    kind: "noun · GRID cryptography",
+    kind: "noun · market exchange asset",
     definition:
-      "A computational hybrid instrument: an asset whose utility is created and evidenced by a compute network, while ownership can travel through an external token rail toward coin settlement.",
+      "A token or coin used in market exchanges. In GRID markets, GEX is the GRID Exchange Chip: an exchange-scoped instrument used for trading and settlement inside its associated exchange.",
   },
   {
     term: "token",
@@ -88,9 +88,9 @@ export default function ChipPage() {
               className="mt-9 block font-mono text-xs tracking-[0.22em] text-cyan-200/70 sm:text-sm"
             />
             <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl">
-              GRID is not described by “token” or “coin” alone. A CHIP combines the
-              portable utility of a token with a blockchain-native record of useful
-              computation.
+              A CHIP is a token or coin used in market exchanges. GRID extends that
+              familiar market instrument with verifiable computational history and
+              exchange-specific controls.
             </p>
             <a href="#model" className="btn-primary mt-10">
               See the model
@@ -128,15 +128,25 @@ export default function ChipPage() {
             <p className="section-label">The new category</p>
             <h2 className="section-title mt-5">Between a token and a coin.</h2>
             <p className="section-body mt-6">
-              CHIP is GRID’s architectural term for an asset whose utility originates
-              in a computational network, whose work history is recorded by that
-              network, and whose ownership can move across established settlement rails.
+              CHIP is GRID’s architectural term for a token or coin used in market
+              exchanges. Its utility can originate in a computational network while
+              its market behavior remains governed by the exchange where it is used.
             </p>
+            <div className="mt-8 border-l-2 border-cyan-300/55 bg-cyan-300/[0.055] p-5">
+              <p className="font-mono text-[0.65rem] tracking-[0.16em] text-cyan-300 uppercase">
+                Exchange note
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-muted">
+                GEX means GRID Exchange Chip. A GEX is used and swapped only inside
+                its associated exchange. A Swipe moves value between exchanges by
+                settling through GRID Exchange; it does not transfer the source GEX.
+              </p>
+            </div>
           </div>
 
           <div
             className="border border-foreground/15 bg-foreground/[0.025] p-5 sm:p-8"
-            aria-label="Token and coin converge into CHIP-GRID, which connects through SOL to BTC"
+            aria-label="Token and coin converge into a CHIP used within a market exchange"
           >
             <div className="grid gap-px bg-foreground/10 sm:grid-cols-[1fr_auto_1fr]">
               <div className="bg-background p-6 text-center">
@@ -169,15 +179,15 @@ export default function ChipPage() {
 
             <div className="flex flex-wrap items-center justify-center gap-3 font-mono text-sm tracking-[0.08em] sm:text-base">
               <strong className="border border-cyan-300/45 bg-cyan-300/[0.1] px-5 py-4 text-cyan-200">
-                CHIP-GRID
+                GEX <span className="text-cyan-200/65">(GRID Exchange Chip)</span>
               </strong>
               <span className="text-muted">→</span>
               <span className="border border-foreground/15 px-5 py-4 text-foreground">
-                SOL <span className="text-muted">(Token)</span>
+                MARKET <span className="text-muted">(Swap)</span>
               </span>
               <span className="text-muted">→</span>
               <span className="border border-amber-300/35 px-5 py-4 text-amber-200">
-                BTC <span className="text-muted">(Coin)</span>
+                EXCHANGE <span className="text-muted">(Settlement)</span>
               </span>
             </div>
           </div>
@@ -197,20 +207,19 @@ export default function ChipPage() {
               Well… both and neither.
             </p>
             <p className="mt-6 text-base leading-8 text-muted sm:text-lg">
-              A CHIP behaves like a token when it moves through a public ledger. It
-              behaves like a coin when its meaning comes from its own network history.
-              But it is not merely either one: its utility originates in verified
-              computation, then travels through separate transaction and settlement
-              layers. That hybrid is the point. It is a CHIP.
+              A CHIP may technically be a token or a coin. What makes it a CHIP is
+              its role inside a market exchange: it is the instrument participants
+              hold and swap under that exchange’s rules. In GRID Exchange, that
+              instrument is GEX.
             </p>
           </div>
         </div>
 
         <div className="mt-14 grid gap-px bg-foreground/10 md:grid-cols-3">
           {[
-            ["Token-like", "Portable ownership and fast transfer through the Solana rail."],
+            ["Token-like", "Accounted for in exact units and used to exchange value."],
             ["Coin-like", "Meaning anchored in GRID’s own signed computational history."],
-            ["Distinctly CHIP", "Utility begins with verified work—not issuance alone or a conventional monetary chain."],
+            ["Distinctly CHIP", "Its defining role is use inside a market exchange."],
           ].map(([title, copy]) => (
             <article key={title} className="bg-background p-7">
               <h3 className="font-mono text-xs tracking-[0.18em] text-cyan-300 uppercase">
@@ -284,9 +293,9 @@ export default function ChipPage() {
             <p className="section-label">How it works · public architecture</p>
             <h2 className="section-title mt-5">Value begins with verified work.</h2>
             <p className="section-body mt-6">
-              CHIP exists because “token” describes portability and “coin” describes
-              a native chain, but neither word fully describes utility born inside a
-              compute network and carried outward for settlement.
+              CHIP names the market role shared by tokens and coins when they are
+              used inside exchanges. GRID’s computational history establishes the
+              utility; the associated exchange defines where its GEX can be swapped.
             </p>
             <div className="mt-8 border-l-2 border-cyan-300/45 bg-cyan-300/[0.055] p-5">
               <p className="font-mono text-[0.65rem] tracking-[0.16em] text-cyan-300 uppercase">
@@ -303,8 +312,8 @@ export default function ChipPage() {
             {[
               ["Compute", "GRID begins when independent machines perform useful work."],
               ["Truth", "The GRID chain records signed receipts, contribution, and settlement history."],
-              ["Portability", "Solana provides a fast public token rail for ownership and movement."],
-              ["Settlement", "Bitcoin remains the preferred final Transact Security Layer."],
+              ["Exchange", "GEX is issued, held, and swapped only within its associated market exchange."],
+              ["Swipe", "Value can move exchange → GRID Exchange → exchange without transferring the source GEX."],
             ].map(([title, copy], index) => (
               <div key={title} className="grid gap-3 bg-background p-6 sm:grid-cols-[3rem_8rem_1fr] sm:items-baseline">
                 <span className="font-mono text-xs text-cyan-300/60">
@@ -324,13 +333,12 @@ export default function ChipPage() {
             GRID definition
           </p>
           <blockquote className="mt-6 max-w-5xl text-2xl font-semibold leading-snug tracking-tight text-foreground sm:text-4xl">
-            “A CHIP is computational utility with its own verifiable history,
-            designed to travel through public token rails toward durable coin settlement.”
+            “A CHIP is a token or coin used in market exchanges.”
           </blockquote>
           <p className="mt-7 max-w-3xl text-sm leading-relaxed text-muted">
-            CHIP is terminology used by GRID to explain its architecture. It is not
-            presented as an established cryptographic standard or a separate promise
-            of financial value.
+            GEX is the GRID Exchange Chip. It is swapped only inside its associated
+            exchange. Exchange-to-exchange movement uses Swipe settlement rather than
+            transferring GEX outside that exchange.
           </p>
         </div>
       </Section>
