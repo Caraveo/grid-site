@@ -9,7 +9,7 @@ import { buildMetadata, PAGES } from "@/lib/seo";
 export const metadata: Metadata = metadataFor("/phoenix");
 
 const releaseBase =
-  "https://github.com/Caraveo/grid-wallets/releases/download/v0.2.26";
+  "https://github.com/Caraveo/grid-wallets/releases/download/v0.2.27";
 
 const downloads = [
   {
@@ -108,7 +108,7 @@ export default function PhoenixWalletPage() {
 
       <Section id="downloads">
         <div className="mb-12 max-w-2xl">
-          <p className="section-label">Phoenix desktop release · v0.2.26 preview</p>
+          <p className="section-label">Phoenix desktop release · v0.2.27 preview</p>
           <h2 className="section-title mt-5">Pick your platform.</h2>
           <p className="section-body mt-6">
             These preview builds use local custody. Back up the recovery phrase

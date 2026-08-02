@@ -35,8 +35,8 @@ FORCE=0
 SYSTEM=0
 UNINSTALL=0
 YES=0
-VERSION_HINT="0.2.26"
-ASSET_REV="20260802-v0226-phoenix-node"
+VERSION_HINT="0.2.27"
+ASSET_REV="20260802-v0227-phoenix-node"
 
 for arg in "$@"; do
   case "$arg" in

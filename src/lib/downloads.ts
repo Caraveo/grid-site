@@ -131,16 +131,16 @@ export const DOWNLOADS = {
   },
   cli: {
     darwinX64:
-      "/downloads/cli/grid-darwin-x86_64?rev=20260802-v0226-phoenix-node",
+      "/downloads/cli/grid-darwin-x86_64?rev=20260802-v0227-phoenix-node",
     darwinArm64:
-      "/downloads/cli/grid-darwin-aarch64?rev=20260802-v0226-phoenix-node",
+      "/downloads/cli/grid-darwin-aarch64?rev=20260802-v0227-phoenix-node",
     linuxX64:
-      "/downloads/cli/grid-linux-x86_64?rev=20260802-v0226-phoenix-node" as string | null,
+      "/downloads/cli/grid-linux-x86_64?rev=20260802-v0227-phoenix-node" as string | null,
     windowsX64:
-      "/downloads/cli/grid-windows-x86_64.exe?rev=20260802-v0226-phoenix-node",
+      "/downloads/cli/grid-windows-x86_64.exe?rev=20260802-v0227-phoenix-node",
     installSh: "/downloads/install.sh",
     installPs: "/downloads/install.ps1",
-    version: "0.2.26",
+    version: "0.2.27",
   },
 };
 

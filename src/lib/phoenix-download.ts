@@ -1,5 +1,5 @@
 const RELEASE =
-  "https://github.com/Caraveo/grid-wallets/releases/download/v0.2.26";
+  "https://github.com/Caraveo/grid-wallets/releases/download/v0.2.27";
 
 export type PhoenixDownloadChoice = {
   label: "Get Phoenix" | "Get Phoenix Wallet";

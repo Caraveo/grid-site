@@ -10,7 +10,7 @@ export default function CliDocsPage() {
     <>
       <H1>GRID CLI</H1>
       <Lead>
-        GRID 0.2.26 is the primary operator surface: join the P2P fabric, mine
+        GRID 0.2.27 is the primary operator surface: join the P2P fabric, mine
         verified work, host computes, inspect resources, manage wallets, and talk
         to the public registry.
       </Lead>
@@ -25,7 +25,7 @@ grid --version
 grid --help
 
 # Current expected release:
-# grid 0.2.26`}
+# grid 0.2.27`}
       />
 
       <H2 id="init">Initialize operator state</H2>
