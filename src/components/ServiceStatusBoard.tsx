@@ -89,7 +89,7 @@ export function ServiceStatusBoard() {
   const refresh = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await fetch("/api/status/services", { cache: "no-store" });
+      const response = await fetch("/api/services/status-v1", { cache: "no-store" });
       if (!response.ok) throw new Error(`Status API returned ${response.status}`);
       setPayload((await response.json()) as StatusPayload);
       setError("");
