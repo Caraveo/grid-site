@@ -1,11 +1,19 @@
 const treasuryBuckets = [
-  { label: "Development + grants", amount: "1.50B", percent: 30, color: "#67e8f9" },
-  { label: "Security + operations", amount: "750M", percent: 15, color: "#a5b4fc" },
+  { label: "Development + grants", amount: "1.10B", percent: 22, color: "#67e8f9" },
+  { label: "Security + operations", amount: "550M", percent: 11, color: "#a5b4fc" },
   { label: "Founder", amount: "500M", percent: 10, color: "#f0abfc" },
   { label: "Contributors", amount: "500M", percent: 10, color: "#c4b5fd" },
-  { label: "Community launch", amount: "750M", percent: 15, color: "#6ee7b7" },
-  { label: "Liquidity", amount: "750M", percent: 15, color: "#fde68a" },
+  { label: "Community launch", amount: "550M", percent: 11, color: "#6ee7b7" },
+  { label: "Liquidity", amount: "550M", percent: 11, color: "#fde68a" },
+  { label: "GRID Exchange reserve", amount: "1.00B", percent: 20, color: "#34d399" },
   { label: "Emergency reserve", amount: "250M", percent: 5, color: "#fca5a5" },
+];
+
+const gexSources = [
+  { label: "Network development + grants", amount: "400M Chips", percent: 40, color: "#67e8f9" },
+  { label: "Security audits + operations", amount: "200M Chips", percent: 20, color: "#a5b4fc" },
+  { label: "Community launch programs", amount: "200M Chips", percent: 20, color: "#6ee7b7" },
+  { label: "Liquidity provisioning", amount: "200M Chips", percent: 20, color: "#fde68a" },
 ];
 
 export function SupplySplitDiagram() {
@@ -27,7 +35,7 @@ export function SupplySplitDiagram() {
           <p className="mt-5 text-5xl font-semibold tracking-tight text-white sm:text-6xl">5B</p>
           <p className="mt-2 text-lg font-semibold text-white">Treasury allocation</p>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/45">
-            Divided into seven disclosed buckets with separate release controls.
+            Divided into eight disclosed buckets with separate release controls.
           </p>
         </div>
       </div>
@@ -64,7 +72,55 @@ export function TreasuryBarDiagram() {
         ))}
       </div>
       <figcaption id="treasury-bar-caption" className="mt-6 text-xs leading-relaxed text-white/35">
-        The seven treasury buckets total exactly 5,000,000,000 GRID.
+        The eight treasury buckets total exactly 5,000,000,000 GRID.
+      </figcaption>
+    </figure>
+  );
+}
+
+export function GexFundingDiagram() {
+  return (
+    <figure className="panel rounded-sm p-6 sm:p-8" aria-labelledby="gex-funding-caption">
+      <div className="flex h-12 overflow-hidden rounded-sm border border-white/12 bg-black/30">
+        {gexSources.map((source) => (
+          <div
+            key={source.label}
+            style={{ width: `${source.percent}%`, backgroundColor: source.color }}
+            title={`${source.label}: ${source.amount}`}
+          />
+        ))}
+      </div>
+      <div className="mt-7 grid gap-4 sm:grid-cols-2">
+        {gexSources.map((source) => (
+          <div key={source.label} className="rounded-sm border border-white/10 bg-black/20 p-4">
+            <div className="flex items-start gap-3">
+              <span className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: source.color }} />
+              <div>
+                <p className="text-sm font-medium text-white">{source.label}</p>
+                <p className="mt-2 font-mono text-lg font-semibold text-white">{source.amount}</p>
+                <p className="mt-1 font-mono text-[0.68rem] text-white/35">{source.percent}% of GEX reserve</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="mt-7 grid gap-3 border-t border-white/12 pt-6 sm:grid-cols-3">
+        <div>
+          <p className="font-mono text-2xl font-semibold text-white">1.00B Chips</p>
+          <p className="mt-1 text-xs tracking-[0.14em] text-white/35 uppercase">GEX reserve</p>
+        </div>
+        <div>
+          <p className="font-mono text-2xl font-semibold text-white">4 sources</p>
+          <p className="mt-1 text-xs tracking-[0.14em] text-white/35 uppercase">Treasury reassignment</p>
+        </div>
+        <div>
+          <p className="font-mono text-xl font-semibold text-[var(--allocation-blue)]">1,000,000,000</p>
+          <p className="mt-1 text-xs tracking-[0.14em] text-white/35 uppercase">Chips allocated to GEX</p>
+        </div>
+      </div>
+      <figcaption id="gex-funding-caption" className="mt-6 text-xs leading-relaxed text-white/35">
+        This is a treasury reassignment, not a mint. The four source reductions total exactly
+        1,000,000,000 Chips and preserve the 10B maximum supply.
       </figcaption>
     </figure>
   );

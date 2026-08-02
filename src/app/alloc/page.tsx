@@ -6,10 +6,10 @@ import { Nav } from "@/components/Nav";
 import { ScrambleText } from "@/components/ScrambleText";
 import {
   FounderVestingDiagram,
+  GexFundingDiagram,
   SupplySplitDiagram,
   TreasuryBarDiagram,
 } from "@/components/alloc/AllocationDiagrams";
-import { buildMetadata, PAGES } from "@/lib/seo";
 
 export const metadata: Metadata = metadataFor("/alloc");
 
@@ -23,16 +23,16 @@ const buckets = [
     control: "On-chain emission controller · verified receipts · duplicate protection",
   },
   {
-    amount: "1.50B",
-    percent: "15%",
+    amount: "1.10B",
+    percent: "11%",
     title: "Network development and grants",
     explanation:
       "Funds open-source engineering, protocol integrations, developer tools, research, and grants that expand useful demand or compute supply. Releases should follow published milestones rather than unrestricted transfers.",
     control: "Milestone releases · public grants ledger · treasury multisig",
   },
   {
-    amount: "750M",
-    percent: "7.5%",
+    amount: "550M",
+    percent: "5.5%",
     title: "Security audits and operations",
     explanation:
       "Pays for independent audits, incident response, infrastructure, verification services, legal and compliance work, and the ordinary cost of operating the network safely.",
@@ -55,20 +55,28 @@ const buckets = [
     control: "Documented awards · vesting contracts · forfeiture of unvested grants",
   },
   {
-    amount: "750M",
-    percent: "7.5%",
+    amount: "550M",
+    percent: "5.5%",
     title: "Community launch programs",
     explanation:
       "Supports early node participation, education, public test programs, community events, and targeted adoption. Campaign rules and results should be published to prevent undisclosed insider distributions.",
     control: "Scheduled programs · eligibility rules · post-program reports",
   },
   {
-    amount: "750M",
-    percent: "7.5%",
+    amount: "550M",
+    percent: "5.5%",
     title: "Liquidity provisioning",
     explanation:
       "Reserved for transparent market liquidity when GRID reaches that stage. These tokens are market infrastructure—not founder proceeds—and should remain in disclosed liquidity or market-making accounts.",
     control: "Dedicated multisig · disclosed venues · inventory reporting",
+  },
+  {
+    amount: "1.00B",
+    percent: "10%",
+    title: "GRID Exchange reserve",
+    explanation:
+      "Backs disclosed GRID inventory, market operations, and orderly liquidity on GRID Exchange. It is reassigned proportionally from development, security, community launch, and general liquidity—not newly minted supply.",
+    control: "GRID authoritative ledger · dedicated reserve accounts · public inventory reporting",
   },
   {
     amount: "250M",
@@ -143,10 +151,34 @@ export default function AllocationPage() {
         <p className="section-label">Inside the treasury</p>
         <h2 className="section-title mt-5 max-w-4xl">Five billion, fully assigned.</h2>
         <p className="section-body mt-6 mb-12">
-          “Treasury” is an umbrella, not a blank check. Its seven sub-allocations
-          total exactly 5B GRID.
+          “Treasury” is an umbrella, not a blank check. Its eight sub-allocations
+          total exactly 5B Chips, including the dedicated 1B Chip GRID Exchange reserve.
         </p>
         <TreasuryBarDiagram />
+      </Section>
+
+      <Section id="gex">
+        <div className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20">
+          <div>
+            <p className="section-label">GEX · GRID Exchange</p>
+            <h2 className="section-title mt-5">One billion Chips. Fully traced.</h2>
+            <p className="section-body mt-6">
+              GEX receives a dedicated 1B Chip treasury reserve for disclosed exchange
+              inventory, liquidity, and orderly market operations. No new GRID is created:
+              the reserve comes from four existing treasury allocations.
+            </p>
+            <div className="mt-7 border-l-2 border-[var(--allocation-blue)] pl-5">
+              <p className="font-mono text-xs tracking-[0.16em] text-white/35 uppercase">
+                Atomic Chip accounting
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-white/55">
+                The GEX allocation is exactly 1,000,000,000 Chips. The authoritative
+                GRID ledger records the allocation directly in whole Chips.
+              </p>
+            </div>
+          </div>
+          <GexFundingDiagram />
+        </div>
       </Section>
 
       <Section>
@@ -219,9 +251,10 @@ export default function AllocationPage() {
             <p className="section-label">Current status</p>
             <h2 className="mt-5 text-3xl font-semibold tracking-tight text-white">Policy before mainnet.</h2>
             <p className="mt-5 text-sm leading-relaxed text-white/45">
-              This page records the planned production allocation. GRID currently uses
-              Solana devnet for engineering tests. Devnet tokens have no economic value
-              and are not counted as mainnet treasury or founder distributions.
+              This page records the planned production allocation. GRID is native to the
+              GRID blockchain, with Genesis as the authoritative ledger. Test balances
+              have no economic value and are not counted as treasury, GEX, or founder
+              distributions.
             </p>
           </article>
         </div>
