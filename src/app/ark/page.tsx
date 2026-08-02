@@ -6,7 +6,7 @@ export const metadata: Metadata = metadataFor("/ark");
 
 export default function ARKPage() {
   const release =
-    "https://github.com/Caraveo/grid-wallets/releases/download/v0.2.27";
+    "https://github.com/Caraveo/grid-wallets/releases/download/v0.2.28";
   const desktop = [
     ["Mac", "Universal native SwiftUI", `${release}/ARK-macOS-universal.zip`],
     ["Windows", "Native desktop installer", `${release}/ARK-Windows-x86_64-setup.exe`],
@@ -36,7 +36,7 @@ export default function ARKPage() {
                 href={href}
                 className="mt-8 inline-flex border border-white/20 px-4 py-2 text-sm transition hover:border-[#50F01C] hover:text-[#50F01C]"
               >
-                Download v0.2.27
+                Download v0.2.28
               </a>
             </div>
           ))}
