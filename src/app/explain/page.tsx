@@ -133,7 +133,7 @@ export default function ExplainPage() {
           label="03 · Three layers"
           title={
             <>
-              Work · GRID · Bitcoin
+              Work · GRID · Blockchain
             </>
           }
         >
@@ -157,19 +157,19 @@ export default function ExplainPage() {
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-white/50">
                   The utility token that meters compute and rewards verified
-                  work. It is not equity and not a claim on Bitcoin.
+                  work. It is not equity or a claim on another blockchain.
                 </p>
               </div>
               <div>
                 <h3 className="text-sm font-semibold tracking-[0.15em] uppercase">
-                  Bitcoin · TSL
+                  Blockchain · Security
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-white/50">
                   <strong className="font-normal text-white/80">
                     Transact Security Layer
                   </strong>
                   . High-value settlement and cash-out path. GRID meters work;
-                  Bitcoin secures value.
+                  Blockchain settlement secures value.
                 </p>
               </div>
             </div>

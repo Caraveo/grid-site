@@ -105,7 +105,7 @@ banner() {
 ${BOLD}${CYAN}      /\\
      /  \\
     / ## \\     G R I D
-    \\    /     useful mining · bitcoin TSL
+    \\    /     useful mining · blockchain security
      \\  /
       \\/${RESET}
 

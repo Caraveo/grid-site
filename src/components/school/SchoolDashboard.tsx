@@ -125,7 +125,7 @@ const lessons: Lesson[] = [
     eyebrow: "Trust architecture",
     duration: "13 min",
     level: "Technical",
-    summary: "Follow peers, signatures, registry identities, sessions, and Bitcoin’s settlement role through the trust model.",
+    summary: "Follow peers, signatures, registry identities, sessions, and blockchain settlement through the trust model.",
     outcomes: ["Explain what peers exchange", "Understand identity and signed state", "Describe the Transact Security Layer"],
     sections: [
       {
@@ -136,9 +136,9 @@ const lessons: Lesson[] = [
         ],
       },
       {
-        title: "Bitcoin as the settlement boundary",
+        title: "Blockchain as the settlement boundary",
         paragraphs: [
-          "GRID meters network activity and useful work. Bitcoin is positioned as a Transact Security Layer for higher-value settlement and the eventual cash-out path. The two systems have different jobs: GRID coordinates service; Bitcoin anchors value.",
+          "GRID meters network activity and useful work. Audited blockchain rails provide higher-value settlement and eventual cash-out paths. GRID coordinates service while the selected settlement rail anchors value.",
           "Security also means refusing bad inputs and bad incentives. Workloads must be authorized, secrets must remain scoped, administrative actions need stronger authentication, and public APIs should expose useful state without leaking private contributor or operator information.",
         ],
         callout: "Security is a chain of boundaries—identity, authorization, execution, evidence, replication, and settlement.",
@@ -147,7 +147,7 @@ const lessons: Lesson[] = [
     links: [{ label: "Security documentation", href: "/docs/security" }, { label: "Network documentation", href: "/docs/network" }, { label: "Registry", href: "/registry" }],
     quiz: [
       { question: "What should a peer do with received state?", choices: ["Trust it automatically", "Validate it before accepting or relaying it", "Post it to Slack", "Convert it to Bitcoin"], answer: 1, explanation: "Peer verification is a basic boundary in a P2P system." },
-      { question: "What is Bitcoin’s stated role in GRID?", choices: ["UI framework", "Transact Security Layer for settlement", "Realm registry", "Container scheduler"], answer: 1, explanation: "GRID meters work while Bitcoin anchors higher-value settlement." },
+      { question: "What is the Blockchain Security Layer’s role in GRID?", choices: ["UI framework", "Settlement security boundary", "Realm registry", "Container scheduler"], answer: 1, explanation: "GRID meters work while audited blockchain rails anchor higher-value settlement." },
     ],
   },
   {
@@ -189,7 +189,7 @@ const lessons: Lesson[] = [
     duration: "12 min",
     level: "Foundation",
     summary: "Learn why GRID uses CHIP—not token or coin alone—to describe computational utility with verifiable history and portable settlement.",
-    outcomes: ["Define CHIP in plain language", "Compare a token, CHIP, and coin", "Trace CHIP-GRID through SOL toward BTC settlement"],
+    outcomes: ["Define CHIP in plain language", "Compare a token, CHIP, and coin", "Trace CHIP-GRID through audited settlement rails"],
     sections: [
       {
         title: "What a CHIP is",
@@ -197,13 +197,13 @@ const lessons: Lesson[] = [
           "CHIP means computational hybrid instrument. It describes utility created inside a compute network, evidenced by that network’s signed history, and made portable through an external token rail. A CHIP sits conceptually between a token and a coin without pretending that those categories are interchangeable.",
           "A token normally inherits another blockchain’s ledger. A coin is native to its own blockchain. CHIP-GRID begins with GRID’s own computational truth—authorized work, evidence, receipts, and signed network history—then uses established public networks for movement and durable settlement.",
         ],
-        callout: "Token → CHIP ← Coin. CHIP-GRID → SOL token → BTC coin.",
+        callout: "Token → CHIP ← Coin. CHIP-GRID → public rail → audited blockchain settlement.",
       },
       {
         title: "Why CHIP exists",
         paragraphs: [
-          "Crypto vocabulary often forces a project into one of two boxes. Calling GRID only a token hides the compute network that creates and verifies its utility. Calling it a coin implies a conventional native monetary blockchain and obscures the separate roles of Solana and Bitcoin.",
-          "CHIP gives the crypto community a more precise category. GRID supplies computational utility and signed evidence. Solana supplies a fast public token rail. Bitcoin supplies the preferred final Transact Security Layer. The public model explains these roles without publishing private keys, anti-abuse controls, operator thresholds, or sensitive signing and deployment details.",
+          "Crypto vocabulary often forces a project into one of two boxes. Calling GRID only a token hides the compute network that creates and verifies its utility. Calling it a coin implies a conventional monetary blockchain and obscures the separate roles of GRID, public transfer rails, and settlement layers.",
+          "CHIP gives the crypto community a more precise category. GRID supplies computational utility and signed evidence. Solana can supply a fast public token rail. Audited blockchains supply the final settlement security layer. The public model explains these roles without publishing private keys, anti-abuse controls, operator thresholds, or sensitive signing and deployment details.",
         ],
         callout: "CHIP exists to name where the utility comes from—not to manufacture a new promise of price or profit.",
       },
@@ -224,7 +224,7 @@ const lessons: Lesson[] = [
         question: "Which role mapping matches the public CHIP model?",
         choices: ["GRID is settlement, SOL is compute, BTC is identity", "GRID is utility, SOL is the token rail, BTC is final settlement", "GRID, SOL, and BTC are the same asset", "BTC schedules GRID containers"],
         answer: 1,
-        explanation: "GRID creates and records computational utility, Solana carries public token ownership, and Bitcoin anchors the preferred settlement boundary.",
+        explanation: "GRID creates and records computational utility, Solana can carry public token ownership, and audited blockchain rails anchor settlement.",
       },
     ],
   },

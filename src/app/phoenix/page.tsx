@@ -155,15 +155,15 @@ export default function PhoenixWalletPage() {
             <h2 className="section-title mt-5">Utility to settlement.</h2>
             <p className="section-body mt-6">
               The app keeps the roles separate so the status is never ambiguous.
-              GRID management is local. Solana rewards are on devnet. The Bitcoin
-              consolidation route remains a release gate—not a pretend button.
+              GRID management is local. Solana rewards are on devnet. Additional
+              blockchain settlement routes remain release gates—not pretend buttons.
             </p>
           </div>
           <div className="panel grid items-center gap-4 rounded-sm p-7 sm:grid-cols-[1fr_auto_1fr_auto_1fr] sm:p-10">
             {[
               ["GRID", "LIVE", "Compute utility · wallet · mining claims"],
               ["SOL", "DEVNET", "Public reward rail · test assets"],
-              ["BTC", "ROADMAP", "Audited consolidation · final settlement"],
+              ["RAILS", "ROADMAP", "Audited blockchain settlement"],
             ].map(([asset, status, detail], index) => (
               <div key={asset} className="contents">
                 <div>

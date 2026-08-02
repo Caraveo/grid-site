@@ -132,7 +132,7 @@ export function Footer({ siteOrigin }: { siteOrigin?: string } = {}) {
               Useful compute, coordinated across a planetary network.
             </p>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-white/35">
-              GRID meters compute. Bitcoin secures value.
+              GRID meters compute. Blockchains secure settlement.
             </p>
             <a
               href={siteHref("/mesh", siteOrigin)}

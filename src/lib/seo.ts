@@ -154,7 +154,7 @@ export const PAGES = {
   home: {
     title: "GRID — Useful Mining. Planetary Compute.",
     description:
-      "Run a node. Do real work. Earn GRID. The planetary supercomputer built from machines everywhere — Bitcoin is the Transact Security Layer.",
+      "Run a node. Do real work. Earn GRID. The planetary supercomputer built from machines everywhere, with a Blockchain Security Layer for settlement.",
     path: "/",
     label: "GRID",
     ogImage: "/downloads/og/card-00.png",
@@ -165,7 +165,7 @@ export const PAGES = {
       "distributed compute",
       "DePIN",
       "Mesh browser",
-      "Bitcoin TSL",
+      "Blockchain security",
     ],
   },
   ember: {
@@ -203,7 +203,7 @@ export const PAGES = {
   explain: {
     title: "Explain — GRID & MESH in plain English",
     description:
-      "A simple visual overview of GRID (planetary compute network) and Mesh (the grid:// browser). How useful mining works, how names resolve, and how Bitcoin secures value.",
+      "A simple visual overview of GRID (planetary compute network) and Mesh (the grid:// browser). How useful mining works, how names resolve, and how blockchain settlement secures value.",
     path: "/explain",
     label: "EXPLAIN",
     ogImage: "/downloads/og/card-03.png",
@@ -219,7 +219,7 @@ export const PAGES = {
   token: {
     title: "Token — GRID → SOL → BTC",
     description:
-      "GRID meters useful compute, Solana provides the public transfer rail, and Bitcoin remains the final Transact Security Layer.",
+      "GRID meters useful compute, Solana provides a public transfer rail, and audited blockchains provide the final settlement security layer.",
     path: "/token",
     label: "TOKEN",
     ogImage: "/downloads/og/card-03.png",
@@ -227,7 +227,7 @@ export const PAGES = {
       "GRID token",
       "Solana",
       "SOL",
-      "Bitcoin",
+      "Blockchain",
       "utility token",
       "distributed compute",
       "settlement layer",

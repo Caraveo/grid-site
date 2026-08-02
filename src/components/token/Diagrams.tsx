@@ -57,9 +57,9 @@ export function ConsolidationDiagram() {
             <span className="h-2 w-2 rounded-full bg-amber-200 shadow-[0_0_18px_rgba(253,230,138,.65)]" />
           </div>
           <div>
-            <p className="text-xl font-semibold text-white">Bitcoin TSL</p>
+            <p className="text-xl font-semibold text-white">Blockchain Security Layer</p>
             <p className="mt-1 text-sm leading-relaxed text-white/45">
-              Bitcoin remains the final value and security destination.
+              Audited blockchain rails provide settlement and security.
             </p>
           </div>
         </div>

@@ -7,7 +7,7 @@ const phases = [
     title: "Prepare",
     status: "done" as const,
     tagline: "Spec & social contract",
-    body: "White paper, token design, Bitcoin as Transact Security Layer, letter to miners.",
+    body: "White paper, token design, Blockchain Security Layer, letter to miners.",
     beats: ["Vision locked", "Token + TSL", "Miner-first rules"],
   },
   {
@@ -101,7 +101,7 @@ export function Timeline() {
           {[
             { k: "Now", v: "Phase 1 · Ignition" },
             { k: "Action", v: "curl · coord · node" },
-            { k: "Exit", v: "Bitcoin TSL" },
+            { k: "Security", v: "Blockchain layer" },
           ].map((item) => (
             <div
               key={item.k}

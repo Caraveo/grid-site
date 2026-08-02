@@ -97,7 +97,7 @@ export function LayersDiagram() {
     },
     {
       y: 132,
-      title: "BITCOIN",
+      title: "BLOCKCHAIN",
       sub: "Transact Security Layer · final value",
       className: "fill-foreground/[0.1] stroke-foreground/20",
     },
@@ -108,7 +108,7 @@ export function LayersDiagram() {
       viewBox="0 0 360 190"
       className="h-auto w-full text-foreground"
       role="img"
-      aria-label="Three layers: work, GRID token, Bitcoin security"
+      aria-label="Three layers: work, GRID token, blockchain security"
     >
       {layers.map((l, i) => (
         <g key={l.title}>
@@ -175,7 +175,7 @@ export function FlowDiagram() {
     { n: "2", t: "Host / Mine", d: "Do real work" },
     { n: "3", t: "Verify", d: "PoR checks it" },
     { n: "4", t: "Earn", d: "Get GRID" },
-    { n: "5", t: "Exit", d: "→ Bitcoin" },
+    { n: "5", t: "Settle", d: "→ Blockchain rail" },
   ];
 
   return (
@@ -408,7 +408,7 @@ export function GridVsMeshDiagram() {
           </li>
           <li className="flex gap-3">
             <span className="text-white/30">▸</span>
-            Earn GRID · Bitcoin TSL
+            Earn GRID · Blockchain security
           </li>
           <li className="flex gap-3">
             <span className="text-white/30">▸</span>

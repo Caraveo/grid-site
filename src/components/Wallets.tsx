@@ -19,7 +19,7 @@ const surfaces = [
   },
   {
     title: "GRID → SOL → BTC",
-    body: "GRID management and Solana devnet rewards now; Bitcoin consolidation is the next audited gate.",
+    body: "GRID management and Solana devnet rewards now; additional blockchain rails require an audited gate.",
     phase: "ROADMAP",
   },
 ];
@@ -38,7 +38,7 @@ export function Wallets() {
           <h2 className="section-title mt-5">
             <ScrambleText text="Keys" /> at the edge.
             <br />
-            Exit on <ScrambleText text="Bitcoin." />
+            Settle on <ScrambleText text="blockchain rails." />
           </h2>
           <p className="section-body mt-6">
             Native desktop apps use the same encrypted vault, recovery phrase,

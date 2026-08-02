@@ -134,9 +134,9 @@ export default function ConceptsPage() {
         Private signing material never appears in public responses.
       </P>
 
-      <H3 id="bitcoin-tsl">Bitcoin as Transact Security Layer</H3>
+      <H3 id="bitcoin-tsl">Blockchain Security Layer</H3>
       <P>
-        GRID treats Bitcoin as the settlement / security layer for value, while
+        GRID uses audited blockchain rails as settlement and security layers for value, while
         useful work and compute happen on the mesh. Public APIs describe{" "}
         <em>resource presence</em>; they do not expose wallet private keys or
         settlement rails beyond marketing cashtags used for activation fees.

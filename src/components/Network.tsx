@@ -13,7 +13,7 @@ const pillars = [
   },
   {
     title: "Settlement",
-    body: "GRID meters compute. Bitcoin is the Transact Security Layer for hard settlement when you cash out.",
+    body: "GRID meters compute. The Blockchain Security Layer provides the hard-settlement boundary.",
   },
 ];
 

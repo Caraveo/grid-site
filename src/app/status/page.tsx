@@ -187,9 +187,9 @@ const featureGroups: FeatureGroup[] = [
         next: "Implement the program, multisig governance, audits, public testing, and reconciliation.",
       },
       {
-        name: "Bitcoin Transact Security Layer",
+        name: "Blockchain Security Layer",
         percent: 18,
-        evidence: "Bitcoin is defined as the settlement boundary and CLI architecture contains early support.",
+        evidence: "Blockchain settlement is the security boundary; supported rails remain subject to audited integration.",
         next: "Implement audited execution, reserve policies, Lightning decisions, and operational settlement.",
       },
       {

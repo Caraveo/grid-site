@@ -294,8 +294,8 @@
   {
     "path": "/token",
     "label": "TOKEN",
-    "title": "GRID, Solana & Bitcoin",
-    "description": "Understand how GRID compute utility, Solana’s public transfer rail, and Bitcoin settlement fit together."
+    "title": "GRID, Solana & Blockchain",
+    "description": "Understand how GRID compute utility, Solana’s public transfer rail, and blockchain settlement fit together."
   },
   {
     "path": "/transact",

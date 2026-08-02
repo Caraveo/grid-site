@@ -80,7 +80,7 @@ export function Miners() {
               {
                 step: "03",
                 title: "Earn GRID",
-                body: "Verified work pays. Sell it, stack it, or settle value through Bitcoin.",
+                body: "Verified work pays. Sell it, stack it, or settle value through supported blockchain rails.",
               },
             ].map((s) => (
               <div key={s.step} className="panel relative p-8 text-center">

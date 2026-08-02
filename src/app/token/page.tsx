@@ -34,7 +34,7 @@ const flow = [
   ["02", "Verify", "The network checks that the work meets the requested result."],
   ["03", "Account", "GRID represents the verified utility moving through the network."],
   ["04", "Consolidate", "Solana provides the fast public ownership and transfer rail."],
-  ["05", "Settle", "Bitcoin remains the preferred final settlement and security layer."],
+  ["05", "Settle", "The Blockchain Security Layer provides the final settlement boundary."],
 ];
 
 export default function TokenPage() {
@@ -57,7 +57,7 @@ export default function TokenPage() {
           />
           <p className="mt-8 max-w-2xl text-lg leading-relaxed text-white/50 sm:text-xl">
             GRID meters useful compute. Solana makes that value fast to own and move.
-            Bitcoin remains the Transact Security Layer.
+            Blockchain rails provide the settlement security layer.
           </p>
           <div className="mt-10 flex flex-wrap gap-3">
             <a href="#architecture" className="btn-primary">
@@ -89,7 +89,7 @@ export default function TokenPage() {
             <h2 className="section-title mt-5">Consolidation, without confusion.</h2>
             <p className="section-body mt-6">
               The layers do different jobs. GRID is the unit of utility. Solana is
-              the public transfer network. Bitcoin is the final settlement layer.
+              the public transfer network. Audited blockchain rails provide final settlement.
             </p>
           </div>
           <ConsolidationDiagram />
@@ -121,7 +121,7 @@ export default function TokenPage() {
         <p className="section-label">Three assets · three jobs</p>
         <h2 className="section-title mt-5 max-w-4xl">Connected layers. Separate roles.</h2>
         <p className="section-body mt-6 mb-12">
-          SOL is not GRID. GRID is not Bitcoin. Keeping the roles separate makes
+          SOL is not GRID. GRID is its own authoritative blockchain. Keeping the roles separate makes
           the system easier to use and easier to reason about.
         </p>
         <AssetRolesDiagram />
