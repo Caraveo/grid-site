@@ -27,6 +27,12 @@
     "noIndex": true
   },
   {
+    "path": "/dictionary",
+    "label": "DICTIONARY",
+    "title": "Crypto & GRID Dictionary",
+    "description": "Compact definitions and practical examples for essential crypto terminology and GRID-native terms including Bonó, CHIP, GEX, Genesis, and Proof of Resource."
+  },
+  {
     "path": "/login",
     "label": "LOGIN",
     "title": "Sign In to GRID",
@@ -290,6 +296,12 @@
     "label": "TOKEN",
     "title": "GRID, Solana & Bitcoin",
     "description": "Understand how GRID compute utility, Solana’s public transfer rail, and Bitcoin settlement fit together."
+  },
+  {
+    "path": "/transact",
+    "label": "TRANSACT",
+    "title": "GRID Transact — Fund in Dollars, Settle in GRID",
+    "description": "Preview the compliance-first funding path from approved fiat payments to USDC settlement and native GRID custody."
   },
   {
     "path": "/wallet",

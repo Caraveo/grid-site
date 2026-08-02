@@ -121,6 +121,11 @@ export async function middleware(request: NextRequest) {
     host.startsWith("engine.grid-compute.com:") ||
     host === "engine.localhost" ||
     host.startsWith("engine.localhost:");
+  const isTransactHost =
+    host === "transact.grid-compute.com" ||
+    host.startsWith("transact.grid-compute.com:") ||
+    host === "transact.localhost" ||
+    host.startsWith("transact.localhost:");
 
   const { pathname } = request.nextUrl;
 
@@ -168,6 +173,20 @@ export async function middleware(request: NextRequest) {
     ) return NextResponse.next();
     const url = request.nextUrl.clone();
     url.pathname = pathname === "/" ? "/engine" : `/engine${pathname}`;
+    return NextResponse.rewrite(url);
+  }
+
+  if (isTransactHost) {
+    if (
+      pathname.startsWith("/transact") ||
+      pathname.startsWith("/login") ||
+      pathname.startsWith("/api") ||
+      pathname.startsWith("/_next") ||
+      pathname.startsWith("/downloads") ||
+      /\.[a-zA-Z0-9]+$/.test(pathname)
+    ) return NextResponse.next();
+    const url = request.nextUrl.clone();
+    url.pathname = pathname === "/" ? "/transact" : `/transact${pathname}`;
     return NextResponse.rewrite(url);
   }
 

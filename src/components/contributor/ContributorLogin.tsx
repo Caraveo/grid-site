@@ -49,9 +49,11 @@ export default function ContributorLogin() {
   const [ticket, setTicket] = useState("");
   const [identity, setIdentity] = useState("");
   const [passkeyBusy, setPasskeyBusy] = useState(false);
-  const returnTo = search.get("returnTo") === "/api/exchange/handoff"
-    ? "/api/exchange/handoff"
-    : "/dashboard";
+  const requestedReturn = search.get("returnTo");
+  const returnTo =
+    requestedReturn === "/api/exchange/handoff" || requestedReturn === "/transact"
+      ? requestedReturn
+      : "/dashboard";
 
   function finishLogin() {
     router.push(returnTo);

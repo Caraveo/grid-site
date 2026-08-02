@@ -25,6 +25,7 @@
     { "pattern": "engine.grid-compute.com", "custom_domain": true },
     { "pattern": "mail.grid-compute.com", "custom_domain": true },
     { "pattern": "ark.grid-compute.com", "custom_domain": true },
+    { "pattern": "transact.grid-compute.com", "custom_domain": true },
   ],
   "services": [
     {
@@ -64,6 +65,8 @@
     "MAIL_SYSTEM_SENDER": "hi@gridmail.dev",
     "CONTRIBUTOR_APP_ORIGIN": "https://grid-compute.com",
     "CONTRIBUTOR_BOOTSTRAP_ADMIN_EMAIL": "hi@grid-compute.com",
+    "TRANSACT_LIVE_ENABLED": "false",
+    "STRIPE_ONRAMP_ENABLED": "false",
   },
   // Secrets (never commit):
   //   npx wrangler secret put GRID_ADMIN_SECRET   # min 16 chars, admin dashboard
@@ -71,4 +74,7 @@
   //   npx wrangler secret put AWS_MAIL_API_SECRET
   //   npx wrangler secret put CONTRIBUTOR_ENCRYPTION_KEY
   //   npx wrangler secret put CONTRIBUTOR_IP_PEPPER
+  //   npx wrangler secret put STRIPE_SECRET_KEY
+  //   npx wrangler secret put STRIPE_WEBHOOK_SECRET
+  //   npx wrangler secret put TRANSACT_AUDIT_PEPPER
 }

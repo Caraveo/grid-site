@@ -31,6 +31,13 @@ function useMenu(): NavItem[] {
       labelKey: "nav.learn",
       children: [
         {
+          href: "/dictionary",
+          labelKey: "nav.dictionary",
+          hintKey: "nav.dictionary.hint",
+          icon: "Aa",
+          wide: true,
+        },
+        {
           href: "/explain",
           labelKey: "nav.explain",
           hintKey: "nav.explain.hint",

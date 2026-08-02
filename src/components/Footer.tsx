@@ -56,6 +56,7 @@ const EXPLORE_LINKS: FooterLink[] = [
   { label: "Nodes", href: "/#nodes" },
   { label: "Registry", href: "/registry" },
   { label: "Status", href: "/status" },
+  { label: "Dictionary", href: "/dictionary" },
   { label: "News", href: "/news" },
   { label: "Roadmap", href: "/#timeline" },
 ];
