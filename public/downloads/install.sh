@@ -35,8 +35,8 @@ FORCE=0
 SYSTEM=0
 UNINSTALL=0
 YES=0
-VERSION_HINT="0.2.27"
-ASSET_REV="20260802-v0227-phoenix-node"
+VERSION_HINT="0.2.29"
+ASSET_REV="20260829-v0229-phoenix-node"
 
 for arg in "$@"; do
   case "$arg" in
@@ -321,7 +321,7 @@ curl -fsSL --proto '=https' --tlsv1.2 "${ORIGIN}/downloads/cli/SHA256SUMS?rev=${
 curl -fsSL --proto '=https' --tlsv1.2 "${ORIGIN}/downloads/cli/SHA256SUMS.sig?rev=${ASSET_REV}" -o "$sig"
 curl -fsSL --proto '=https' --tlsv1.2 "${ORIGIN}/downloads/cli/release-signing-public.pem?rev=${ASSET_REV}" -o "$pub"
 fingerprint="$(openssl pkey -pubin -in "$pub" -outform DER 2>/dev/null | openssl dgst -sha256 | awk '{print $NF}')"
-[[ "$fingerprint" == "8f3b2b9970e9f6caeeab3a125a966ba9f3650b7ebdc33f46d9e568eaa3be77c4" ]] ||
+[[ "$fingerprint" == "3b6f3f44e431f66987033259bedd8f55eba2515238e732b211409f9e094a1f90" ]] ||
   die "release signing key fingerprint changed — installation stopped"
 if ! openssl dgst -sha256 -verify "$pub" -signature "$sig" "$sums" >/dev/null 2>&1; then
   die "release manifest signature is invalid — installation stopped"
