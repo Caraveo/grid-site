@@ -7,8 +7,8 @@ export const dynamic = "force-dynamic";
 const REGISTRY = "https://grid-compute.com";
 const GENESIS = process.env.GENESIS_API_URL || "https://genesis.grid-compute.com";
 // Nodes publish their privacy-preserving globe heartbeat every five minutes.
-// Keep a small delivery margin so a node does not disappear between pulses.
-const ONLINE_MS = 6 * 60_000;
+// Keep a generous delivery margin so a node does not disappear between pulses.
+const ONLINE_MS = 15 * 60_000;
 
 function genesisGeography() {
   const lat = Number(process.env.GENESIS_LAT);

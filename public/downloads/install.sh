@@ -35,8 +35,8 @@ FORCE=0
 SYSTEM=0
 UNINSTALL=0
 YES=0
-VERSION_HINT="0.2.31"
-ASSET_REV="20260831-v0231-genesis-send"
+VERSION_HINT="0.2.32"
+ASSET_REV="20260831-v0232-mesh-globe"
 
 for arg in "$@"; do
   case "$arg" in

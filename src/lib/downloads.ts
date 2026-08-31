@@ -131,16 +131,16 @@ export const DOWNLOADS = {
   },
   cli: {
     darwinX64:
-      "/downloads/cli/grid-darwin-x86_64?rev=20260831-v0231-genesis-send",
+      "/downloads/cli/grid-darwin-x86_64?rev=20260831-v0232-mesh-globe",
     darwinArm64:
-      "/downloads/cli/grid-darwin-aarch64?rev=20260831-v0231-genesis-send",
+      "/downloads/cli/grid-darwin-aarch64?rev=20260831-v0232-mesh-globe",
     linuxX64:
-      "/downloads/cli/grid-linux-x86_64?rev=20260831-v0231-genesis-send" as string | null,
+      "/downloads/cli/grid-linux-x86_64?rev=20260831-v0232-mesh-globe" as string | null,
     windowsX64:
-      "/downloads/cli/grid-windows-x86_64.exe?rev=20260831-v0231-genesis-send",
+      "/downloads/cli/grid-windows-x86_64.exe?rev=20260831-v0232-mesh-globe",
     installSh: "/downloads/install.sh",
     installPs: "/downloads/install.ps1",
-    version: "0.2.31",
+    version: "0.2.32",
   },
 };
 
