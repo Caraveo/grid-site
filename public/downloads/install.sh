@@ -35,8 +35,8 @@ FORCE=0
 SYSTEM=0
 UNINSTALL=0
 YES=0
-VERSION_HINT="0.2.29"
-ASSET_REV="20260829-v0229-phoenix-node"
+VERSION_HINT="0.2.31"
+ASSET_REV="20260831-v0231-genesis-send"
 
 for arg in "$@"; do
   case "$arg" in
@@ -381,8 +381,7 @@ ${BOLD}Next steps${RESET}
   ${CYAN}grid status${RESET}                 ${DIM}# node + blockchain size + security check${RESET}
   ${CYAN}grid auth --help${RESET}            ${DIM}# protect operator keys (passkey)${RESET}
   ${CYAN}grid init --name my-node --class S${RESET}
-  ${CYAN}grid solana create${RESET}           ${DIM}# create a devnet GRID reward wallet${RESET}
-  ${CYAN}grid mine${RESET}                    ${DIM}# verified PoR → automatic Solana rewards${RESET}
+  ${CYAN}grid mine${RESET}                    ${DIM}# verified PoR → native Genesis-signed GRID${RESET}
   ${CYAN}grid node${RESET}                   ${DIM}# P2P peer + host + mine${RESET}
   ${CYAN}grid registry${RESET}               ${DIM}# public mesh from grid-compute.com${RESET}
 
