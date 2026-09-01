@@ -26,6 +26,8 @@
     { "pattern": "mail.grid-compute.com", "custom_domain": true },
     { "pattern": "ark.grid-compute.com", "custom_domain": true },
     { "pattern": "transact.grid-compute.com", "custom_domain": true },
+    { "pattern": "mesh.grid-compute.com", "custom_domain": true },
+    { "pattern": "seek.grid-compute.com", "custom_domain": true },
   ],
   "services": [
     {

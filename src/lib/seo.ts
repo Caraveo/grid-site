@@ -217,14 +217,16 @@ export const PAGES = {
     ],
   },
   token: {
-    title: "Token — GRID → SOL → BTC",
+    title: "Token — Native GRID · Optional Solana · BTC Settlement",
     description:
-      "GRID meters useful compute, Solana provides a public transfer rail, and audited blockchains provide the final settlement security layer.",
+      "GRID meters useful compute and settles natively through Genesis-signed blocks. Solana is an optional compatibility rail, and audited blockchains provide the final settlement boundary.",
     path: "/token",
     label: "TOKEN",
     ogImage: "/downloads/og/card-03.png",
     keywords: [
       "GRID token",
+      "native GRID",
+      "Genesis chain",
       "Solana",
       "SOL",
       "Blockchain",
@@ -252,7 +254,7 @@ export const PAGES = {
   wallet: {
     title: "Phoenix — GRID Wallet for macOS, Windows & Linux",
     description:
-      "Download Phoenix, the native GRID Wallet for macOS, Windows, or Linux. Manage GRID, claim mining rewards, and configure Solana settlement from an encrypted local vault.",
+      "Download Phoenix, the native GRID Wallet for macOS, Windows, or Linux. Manage native GRID, claim Genesis-signed mining rewards, and protect keys in an encrypted local vault.",
     path: "/phoenix",
     label: "PHOENIX · GRID WALLET",
     ogImage: "/downloads/og/card-01.png",
@@ -263,7 +265,7 @@ export const PAGES = {
       "macOS wallet",
       "Windows wallet",
       "Linux wallet",
-      "Solana rewards",
+      "native GRID rewards",
       "GRID mining",
     ],
   },
@@ -343,5 +345,14 @@ export const PAGES = {
     label: "ADMIN",
     ogImage: "/downloads/og/card-04.png",
     noIndex: true,
+  },
+  seek: {
+    title: "Seek — Search the mesh | GRID",
+    description:
+      "Seek is the default search engine for Mesh — the grid:// browser. Search the mesh, the web, and the compute network.",
+    path: "/seek",
+    label: "SEEK",
+    ogImage: "/downloads/og/card-00.png",
+    keywords: ["Seek", "search", "Mesh", "grid://", "GRID search"],
   },
 } as const satisfies Record<string, PageSeo>;

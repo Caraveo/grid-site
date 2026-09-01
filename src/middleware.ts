@@ -126,8 +126,42 @@ export async function middleware(request: NextRequest) {
     host.startsWith("transact.grid-compute.com:") ||
     host === "transact.localhost" ||
     host.startsWith("transact.localhost:");
+  const isMeshHost =
+    host === "mesh.grid-compute.com" ||
+    host.startsWith("mesh.grid-compute.com:") ||
+    host === "mesh.localhost" ||
+    host.startsWith("mesh.localhost:");
+  const isSeekHost =
+    host === "seek.grid-compute.com" ||
+    host.startsWith("seek.grid-compute.com:") ||
+    host === "seek.localhost" ||
+    host.startsWith("seek.localhost:");
 
   const { pathname } = request.nextUrl;
+
+  if (isMeshHost) {
+    return NextResponse.redirect(new URL("/mesh", ARK_WEB_ORIGIN), 308);
+  }
+
+  if (isSeekHost) {
+    if (
+      pathname.startsWith("/api") ||
+      pathname.startsWith("/_next") ||
+      pathname.startsWith("/downloads") ||
+      /\.[a-zA-Z0-9]+$/.test(pathname)
+    ) {
+      return NextResponse.next();
+    }
+    const url = request.nextUrl.clone();
+    if (pathname === "/search") {
+      url.pathname = "/seek";
+    } else if (pathname === "/") {
+      url.pathname = "/seek";
+    } else {
+      url.pathname = pathname;
+    }
+    return NextResponse.rewrite(url);
+  }
 
   if (isARKHost) {
     return proxyARKRequest(request);
