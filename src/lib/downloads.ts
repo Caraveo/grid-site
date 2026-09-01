@@ -36,9 +36,9 @@ export type MeshDownload = {
   available: boolean;
 };
 
-const MESH_VERSION = "0.2.24";
+const MESH_VERSION = "0.2.25";
 const MESH_RELEASE =
-  "https://github.com/Caraveo/grid-net/releases/download/v0.2.24";
+  "https://github.com/Caraveo/grid-net/releases/download/v0.2.25";
 
 /**
  * Mesh browser builds.
@@ -140,7 +140,7 @@ export const DOWNLOADS = {
       "/downloads/cli/grid-windows-x86_64.exe?rev=20260831-v0232-mesh-globe",
     installSh: "/downloads/install.sh",
     installPs: "/downloads/install.ps1",
-    version: "0.2.32",
+    version: "0.4.0",
   },
 };
 
